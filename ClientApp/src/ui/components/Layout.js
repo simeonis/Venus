@@ -7,11 +7,11 @@ export class Layout extends Component {
 
   render () {
     return (
-      <div>
+      <div className="page-wrapper with-navbar dark-mode">
         <NavMenu />
-        <Container>
+        <div class="content-wrapper">
           {this.props.children}
-        </Container>
+        </div>
       </div>
     );
   }

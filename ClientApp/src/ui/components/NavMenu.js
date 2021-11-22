@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 
@@ -23,20 +22,23 @@ export class NavMenu extends Component {
 
   render () {
     return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-          <Container>
-            <NavbarBrand tag={Link} to="/">Venus</NavbarBrand>
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
-          </Container>
-        </Navbar>
+      <header className="container-fluid dark-mode">
+        <nav className="navbar">
+            <a href="#" class="navbar-brand">
+              {/* <img src="..." alt="..." /> */}
+              Venus
+            </a>
+
+            {/* <!-- Navbar nav --> */}
+            <ul class="navbar-nav d-none d-md-flex">
+              <li class="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
+              <li class="nav-item">
+                <Link className="nav-link " to="/signup">Signup</Link>
+              </li>
+            </ul>
+        </nav>
       </header>
     );
   }
