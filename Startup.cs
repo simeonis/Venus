@@ -24,9 +24,9 @@ namespace venus
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<VenusDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("Default")));
+            services.AddDbContext<VenusDbContext>(options => {
+                options.UseSqlServer(Configuration["ConnectionStrings:MBSConnStr"]);
+            });
 
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -36,8 +36,8 @@ namespace venus
             // services.AddIdentityServer()
             //     .AddApiAuthorization<ApplicationUser, VenusDbContext>();
 
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
+            services.AddAuthentication();
+                //.AddIdentityServerJwt();
 
             services.AddControllersWithViews();
 
@@ -70,7 +70,7 @@ namespace venus
 
 
             app.UseAuthentication();
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
