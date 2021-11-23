@@ -25,7 +25,7 @@ namespace venus
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<VenusDbContext>(options => {
-                options.UseSqlServer(Configuration["ConnectionStrings:MBSConnStr"]);
+                options.UseSqlServer("(localdb)\\MSSQLLocalDB; Database = VenusDb; MultipleActiveResultSets = True; Trusted_Connection = True");
             });
 
             //services.AddDatabaseDeveloperPageExceptionFilter();

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using venus.Models;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace venus.Models
 {
@@ -12,7 +13,8 @@ namespace venus.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Connection String");
+
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VenusDb;MultipleActiveResultSets=True;Trusted_Connection=True");
         }
     }
 }
