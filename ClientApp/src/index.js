@@ -1,5 +1,5 @@
 //import 'bootstrap/dist/css/bootstrap.css';
-import "./css/halfmoon-variables.css"
+import "./ui/css/halfmoon-variables.css"
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';

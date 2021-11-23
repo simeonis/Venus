@@ -32,10 +32,10 @@ export class NavMenu extends Component {
             {/* <!-- Navbar nav --> */}
             <ul class="navbar-nav d-none d-md-flex">
               <li class="nav-item">
-                <Link className="nav-link" to="/login">Login</Link>
+                <Link className="nav-link" to="/accounts/login">Login</Link>
               </li>
               <li class="nav-item">
-                <Link className="nav-link " to="/signup">Signup</Link>
+                <Link className="nav-link " to="/accounts/signup">Signup</Link>
               </li>
             </ul>
         </nav>
