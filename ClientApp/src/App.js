@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './ui/components/Layout';
 import { Home } from './ui/pages/Home';
-import { Login } from './ui/pages/Login';
-import { SignUp } from './ui/pages/SignUp';
+
 
 import ApiAuthorizationRoutes from './routes/ApiAuthorizationRoutes';
 

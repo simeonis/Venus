@@ -5,7 +5,7 @@ import { Route, Switch,useRouteMatch } from 'react-router';
 // import { ApplicationPaths, LoginActions, LogoutActions } from '../constants/ApiAuthorizationConstants';
 
 import {Login} from "../ui/pages/Login";
-import {SignUp} from "../ui/pages/SignUp";
+import {Register} from "../ui/pages/Register";
 
 export default function ApiAuthorizationRoutes() {
 
@@ -19,7 +19,7 @@ export default function ApiAuthorizationRoutes() {
                 <h1>Auth</h1>
             </Route>
             <Route path={`${path}/login`} component={Login} />
-            <Route path={`${path}/signup`} component={SignUp} />
+            <Route path={`${path}/signup`} component={Register} />
         </Switch>
       </Fragment>
     );

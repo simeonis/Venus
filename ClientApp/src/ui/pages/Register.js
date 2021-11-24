@@ -1,23 +1,66 @@
-import React, { Component } from 'react';
+import React, {useState} from 'react';
+import axios from 'axios'
 
-export const SignUp  = () => {
 
+export const Register  = () => {
+
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false)
+    const [response, setResponse] = useState("")
+    const [error, setError] = useState("")
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+
+        if(name === ""){
+
+        }
+        else if(email === ""){
+
+        }
+        else if(password === ""){
+
+        }
+        else{
+
+            const userDto = { 
+                name: name, 
+                email : email, 
+                password: password
+            };
+
+            axios.post('https://localhost:5001/api/account/register', userDto)
+                .then(response => setResponse(response))
+                .catch(error => {
+                    setError(error);
+                    console.error('There was an error!', error);
+                });
+        }
+    }
 
     return (
       <div className="container d-flex flex-column align-items-center ">
             <h1>Sign Up</h1>
             {/* <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% --> */}
-            <form action="..." method="..." className="w-400 mw-full">
+            <form  className="w-400 mw-full">
                 {/* <!-- name --> */}
                 <div className="form-group">
                     <label for="full-name" className="required">Full name</label>
-                    <input type="text" className="form-control" id="full-name" placeholder="Full name" required="required" />
+                    <input type="text" className="form-control" id="full-name" placeholder="Full name" required="required" onChange={(e) => setName(e.target.value)} />
                 </div>
 
-                  {/* <!-- Email --> */}
-                  <div className="form-group">
+                {/* <!-- Email --> */}
+                <div className="form-group">
                     <label for="email" className="required">Email</label>
-                    <input type="text" className="form-control" id="email" placeholder="Email" required="required" />
+                    <input type="text" className="form-control" id="email" placeholder="Email" required="required" onChange={(e) => setEmail(e.target.value)}  />
+                </div>
+
+                {/* <!-- Password --> */}
+                <div className="form-group">
+                    <label for="password" className="required">Password</label>
+                    <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)}  />
                 </div>
 
                 {/* <!-- Radio --> */}
@@ -48,8 +91,8 @@ export const SignUp  = () => {
                 {/* <!-- Select --> */}
                 <div className="form-group">
                     <label for="area-of-specialization" className="required">Area of specialization</label>
-                    <select className="form-control" id="area-of-specialization" required="required">
-                    <option value="" selected="selected" disabled="disabled">Select your area of specialization</option>
+                    <select className="form-control" defaultValue="" id="area-of-specialization" required="required">
+                    <option value="" disabled="disabled">Select your area of specialization</option>
                     <option value="front-end">Front-end</option>
                     <option value="back-end">Back-end</option>
                     <option value="full-stack">Full-stack</option>
@@ -76,7 +119,7 @@ export const SignUp  = () => {
                 {/* <!-- Switch --> */}
                 <div className="form-group">
                     <div className="custom-switch">
-                    <input type="checkbox" id="remember-my-information" />
+                    <input type="checkbox" id="remember-my-information" onChange={(e) => setRememberMe(e.target.checked)}  />
                     <label for="remember-my-information">Remember my information</label>
                     </div>
                 </div>
@@ -90,7 +133,7 @@ export const SignUp  = () => {
                 </div>
 
                 {/* <!-- Submit button --> */}
-                <input className="btn btn-primary" type="submit" value="Submit" />
+                <button className="btn btn-primary" onClick={(e) => handleSubmit(e)} >Submit</button>
             </form>
       </div>
     );
