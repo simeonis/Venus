@@ -94,10 +94,12 @@ namespace venus.Controllers
             await _userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
             //take to Dashboard
 
-            return Ok();
+            var UserDto = new UserDto();
+
+            UserDto.Name = user.UserName;
+
+            return Ok(UserDto);
         }
-
-
     }
 
 }

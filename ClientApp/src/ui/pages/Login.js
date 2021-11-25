@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 export const Login = () => {
     const [email, setEmail] = useState("");
@@ -10,6 +11,8 @@ export const Login = () => {
     const [error, setError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const { login } = useContext(AuthContext);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -28,9 +31,9 @@ export const Login = () => {
                 rememberMe: rememberMe
             };
 
-            console.log("LOGIN_DTO " + JSON.stringify(loginDto))
+            login(loginDto)
 
-            //axios.post('https://localhost:5001/api/account/login', loginDto)
+            //axios.post('https://localhost:44301/api/account/login', loginDto)
             //    .then(response => setResponse(response))
             //    .catch(error => {
             //        setError(error);

@@ -1,34 +1,48 @@
-﻿import React, { createContext, useState } from 'react';
+﻿import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import { useHistory  } from 'react-router-dom';
+
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [authenticated, setAuthenticated] = useState(false)
+    const [error, setError] = useState();
 
+    const history = useHistory();
+
+    useEffect(() => {
+        console.log("In Use Effect " + authenticated)
+
+        if (authenticated) {
+            history.push('/auth/home')
+        }
+
+    }, [authenticated]) //dependency added
 
     const login = (loginDto) => {
 
         console.log("login " + JSON.stringify(loginDto))
 
-        axios.post('https://localhost:5001/api/account/login', loginDto)
-            .then(response => setResponse(response))
+        axios.post('https://localhost:44301/api/account/login', loginDto)
+            .then(response => {
+                setUser(response)
+                setAuthenticated(true)
+            })
             .catch(error => {
                 setError(error);
+                setAuthenticated(false)
                 console.error('There was an error!', error);
             });
-
-        if (OK) {
-            getUser();
-        }
     }
 
     const register = (userDto) => {
 
         console.log("Register " + JSON.stringify(userDto))
 
-        axios.post('https://localhost:5001/api/account/register', userDto)
-            .then(response => setResponse(response))
+        axios.post('https://localhost:44301/api/account/register', userDto)
+            .then()
             .catch(error => {
                 setError(error);
                 console.error('There was an error!', error);
@@ -49,7 +63,8 @@ export const AuthProvider = ({ children }) => {
             value={{
                 login,
                 register,
-                authenticated
+                authenticated,
+                error
             }}>
             {children}
         </AuthContext.Provider>

@@ -4,11 +4,11 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { AuthContext } from '../../context/AuthContext'
 
-const AuthorizeRoute = () => {
+const AuthorizeRoute = ({ component: Component, ...rest }) => {
 
-    const [authenticated] = useContext(AuthContext)
+    const { authenticated } = useContext(AuthContext)
 
-    const { component: Component, ...rest } = this.props;
+    console.log("authenticated " + authenticated)
 
     return <Route {...rest}
         render={(props) => {
@@ -16,7 +16,8 @@ const AuthorizeRoute = () => {
                 return <Component {...props} />
             }
             else {
-                return <Redirect to={redirectUrl} />
+                console.log("Redirecting...")
+                return <Redirect to={'/'} />
             }
         }}
     />
