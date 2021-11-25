@@ -7,16 +7,18 @@ import { Home } from './ui/pages/Home';
 import ApiAuthorizationRoutes from './routes/ApiAuthorizationRoutes';
 
 import './ui/css/custom.css'
+import { AuthProvider } from './context/AuthContext';
 
-export default class App extends Component {
-  static displayName = App.name;
+const App = () => {
 
-  render () {
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path="/accounts" component={ApiAuthorizationRoutes} />
-      </Layout>
+        <Layout>
+            <AuthProvider>
+                <Route exact path='/' component={Home} />
+                <Route path="/accounts" component={ApiAuthorizationRoutes} />
+            </AuthProvider>
+        </Layout>
     );
-  }
 }
+
+export default App

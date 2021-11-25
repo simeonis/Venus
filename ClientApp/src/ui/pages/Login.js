@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 export const Login = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [rememberMe, setRememberMe] = useState(false)
-    const [response, setResponse] = useState("")
-    const [error, setError] = useState("")
-    const [emailError, setEmailError] = useState("")
-    const [passwordError, setPasswordError] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
+    const [response, setResponse] = useState("");
+    const [error, setError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-
+       
         if(email === ""){
             setEmailError("Email cannot be empty")
         }
@@ -30,12 +30,12 @@ export const Login = () => {
 
             console.log("LOGIN_DTO " + JSON.stringify(loginDto))
 
-            axios.post('https://localhost:5001/api/account/login', loginDto)
-                .then(response => setResponse(response))
-                .catch(error => {
-                    setError(error);
-                    console.error('There was an error!', error);
-                });
+            //axios.post('https://localhost:5001/api/account/login', loginDto)
+            //    .then(response => setResponse(response))
+            //    .catch(error => {
+            //        setError(error);
+            //        console.error('There was an error!', error);
+            //    });
         }
     }
 

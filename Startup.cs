@@ -30,7 +30,7 @@ namespace venus
 
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>() //options => options.SignIn.RequireConfirmedAccount = true
                 .AddEntityFrameworkStores<VenusDbContext>();
 
             // services.AddIdentityServer()

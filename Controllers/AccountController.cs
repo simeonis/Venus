@@ -12,7 +12,6 @@ using System.Security.Claims;
 using venus.Models;
 
 
-
 namespace venus.Controllers
 {
 
@@ -47,6 +46,8 @@ namespace venus.Controllers
                 return BadRequest(ModelState);
             }
 
+            Console.WriteLine("Register");
+
             var user = new ApplicationUser() { UserName = dto.Email, Email = dto.Email };
 
             IdentityResult result = await _userManager.CreateAsync(user, dto.Password);
@@ -64,6 +65,7 @@ namespace venus.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
+            Console.WriteLine("Login Endpoint");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

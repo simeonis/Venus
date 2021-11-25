@@ -35,12 +35,12 @@ export const Register  = () => {
                 password: password
             };
 
-            axios.post('https://localhost:5001/api/account/register', userDto)
-                .then(response => setResponse(response))
-                .catch(error => {
-                    setError(error);
-                    console.error('There was an error!', error);
-                });
+            //axios.post('https://localhost:5001/api/account/register', userDto)
+            //    .then(response => setResponse(response))
+            //    .catch(error => {
+            //        setError(error);
+            //        console.error('There was an error!', error);
+            //    });
         }
     }
 
