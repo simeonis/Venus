@@ -10,18 +10,22 @@ export const Register  = () => {
     const [rememberMe, setRememberMe] = useState(false)
     const [response, setResponse] = useState("")
     const [error, setError] = useState("")
+    const [nameError, setNameError] = useState("")
+    const [emailError, setEmailError] = useState("")
+    const [passwordError, setPasswordError] = useState("")
 
     const handleSubmit = (e) =>{
         e.preventDefault();
 
         if(name === ""){
+            setNameError("Name cannot be empty")
+        }
+        if(email === ""){
+            setEmailError("Email cannot be empty")
 
         }
-        else if(email === ""){
-
-        }
-        else if(password === ""){
-
+        if(password === ""){
+            setPasswordError("Password cannot be empty")
         }
         else{
 
@@ -47,18 +51,21 @@ export const Register  = () => {
             <form  className="w-400 mw-full">
                 {/* <!-- name --> */}
                 <div className="form-group">
+                    <p className="text-danger">{nameError}</p>
                     <label for="full-name" className="required">Full name</label>
                     <input type="text" className="form-control" id="full-name" placeholder="Full name" required="required" onChange={(e) => setName(e.target.value)} />
                 </div>
 
                 {/* <!-- Email --> */}
                 <div className="form-group">
+                    <p className="text-danger">{emailError}</p>
                     <label for="email" className="required">Email</label>
                     <input type="text" className="form-control" id="email" placeholder="Email" required="required" onChange={(e) => setEmail(e.target.value)}  />
                 </div>
 
                 {/* <!-- Password --> */}
                 <div className="form-group">
+                    <p className="text-danger">{passwordError}</p>
                     <label for="password" className="required">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)}  />
                 </div>

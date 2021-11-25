@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 using venus.Models;
 
@@ -21,12 +22,12 @@ namespace venus.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private UserManager<ApplicationUser> _userManager;
-        //private SignInManager<ApplicationUser> _signInManager;
+        private SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager) //SigninManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
-            //_signInManager = signInManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet("/hello")]
@@ -77,21 +78,19 @@ namespace venus.Controllers
                 // return error;
             }
 
-            //var result = await signInManager.PasswordSignInAsync(dto.Email, dto.Password, dto.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(dto.Email, dto.Password, dto.RememberMe, true);
 
-            //IdentityResult result = await _signinManager.FindByEmailAsync(user, dto.Password);
+            if (!result.Succeeded)
+            {
+                //return GetErrorResult(result);
+            }
+            else if (result.IsLockedOut)
+            {
+                //return locked out 
+            }
 
-            // if (!result.Succeeded)
-            // {
-            //     //return GetErrorResult(result);
-            // }
-            // else if (result.IsLockedOut)
-            // {
-            //     //return locked out 
-            // }
-
-            //await userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
-            //Take to Dashboard
+            await _userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
+            //take to Dashboard
 
             return Ok();
         }
