@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,7 +18,6 @@ namespace venus.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
-        private const string LocalLoginProvider = "Local";
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
 
@@ -28,13 +26,6 @@ namespace venus.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
-        [HttpGet("/hello")]
-        public async Task<ActionResult<string>> Hello()
-        {
-            return "Hello";
-        }
-
 
         // POST api/Account/Register
         [AllowAnonymous]
@@ -54,7 +45,7 @@ namespace venus.Controllers
 
             if (!result.Succeeded)
             {
-                //return GetErrorResult(result);
+                return new ContentResult() { Content = "Create User Failed", StatusCode = 403 };
             }
 
             return Ok();
@@ -71,35 +62,37 @@ namespace venus.Controllers
                 return BadRequest(ModelState);
             }
 
-
             var user = await _userManager.FindByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                return new ContentResult() { Content = "User Not Found", StatusCode = 403 };
+            }
 
             if (await _userManager.CheckPasswordAsync(user, dto.Password) == false)
             {
-
-                // return error;
+                return new ContentResult() { Content = "Bad Password", StatusCode = 403 };
             }
 
             var result = await _signInManager.PasswordSignInAsync(dto.Email, dto.Password, dto.RememberMe, true);
 
             if (!result.Succeeded)
             {
-                //return GetErrorResult(result);
+                return new ContentResult() { Content = "SignIn Failed: Try Again", StatusCode = 403 };
             }
             else if (result.IsLockedOut)
             {
-                //return locked out 
+                return new ContentResult() { Content = "Account Locked Out", StatusCode = 403 };
             }
 
             await _userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
-            //take to Dashboard
 
-            var UserDto = new UserDto();
-
-            UserDto.Name = user.UserName;
+            var UserDto = new UserDto
+            {
+                Name = user.UserName
+            };
 
             return Ok(UserDto);
         }
     }
-
 }

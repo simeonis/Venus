@@ -19,21 +19,30 @@ export const AuthProvider = ({ children }) => {
             history.push('/auth/home')
         }
 
-    }, [authenticated]) //dependency added
+    }, [authenticated])
 
     const login = (loginDto) => {
 
         console.log("login " + JSON.stringify(loginDto))
 
-        axios.post('https://localhost:44301/api/account/login', loginDto)
+        let service = axios.create({
+            baseURL: "https://localhost:44301/api/",
+            responseType: "json"
+        });
+
+        service.post('https://localhost:44301/api/account/login', loginDto)
             .then(response => {
-                setUser(response)
-                setAuthenticated(true)
+                if (response !== null) {
+                    console.log("RESP " + JSON.stringify(response))
+                    setUser(response)
+                    setAuthenticated(true)
+                }
+
             })
             .catch(error => {
-                setError(error);
+                setError(error.response);
                 setAuthenticated(false)
-                console.error('There was an error!', error);
+                console.error('There was an error!', error.response);
             });
     }
 
@@ -51,7 +60,6 @@ export const AuthProvider = ({ children }) => {
 
     const getUser = () => {
         //axios.get(User)
-
         if (user) {
             setUser(user)
             setAuthenticated(true)

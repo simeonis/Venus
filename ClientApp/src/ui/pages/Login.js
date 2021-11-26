@@ -8,11 +8,10 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const [response, setResponse] = useState("");
-    const [error, setError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
-    const { login } = useContext(AuthContext);
+    const { login, error } = useContext(AuthContext);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -32,13 +31,6 @@ export const Login = () => {
             };
 
             login(loginDto)
-
-            //axios.post('https://localhost:44301/api/account/login', loginDto)
-            //    .then(response => setResponse(response))
-            //    .catch(error => {
-            //        setError(error);
-            //        console.error('There was an error!', error);
-            //    });
         }
     }
 
@@ -46,6 +38,9 @@ export const Login = () => {
       <div className="container d-flex flex-column align-items-center ">
             <h1>Login</h1>
             <form className="w-400 mw-full">
+                {
+                    error ? <p className="text-danger">{error.data}</p> : null
+                }
                 {/* <!-- Input --> */}
                 <div className="form-group">
                     <p className="text-danger">{emailError}</p>
