@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Http;
+using venus.Helpers;
 using venus.Models;
 
 
 namespace venus.Controllers
 {
-
     [Authorize]
     [Route("api/account")]
     public class AccountController : Controller
     {
-        private UserManager<ApplicationUser> _userManager;
-        private SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
@@ -80,19 +80,55 @@ namespace venus.Controllers
             {
                 return new ContentResult() { Content = "SignIn Failed: Try Again", StatusCode = 403 };
             }
-            else if (result.IsLockedOut)
+            if (result.IsLockedOut)
             {
                 return new ContentResult() { Content = "Account Locked Out", StatusCode = 403 };
             }
 
             await _userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
 
-            var UserDto = new UserDto
+            var userDto = new UserDto
             {
                 Name = user.UserName
             };
 
-            return Ok(UserDto);
+            
+            var jwt = JwtService.Generate(user.Id);
+            
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            {
+                HttpOnly = true
+            });
+            
+            //replace with success   new { message="success" }
+            return Ok();
+        }
+
+
+        [HttpPost("user")]
+        public async Task<IActionResult> GetUser()
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = JwtService.Verify(jwt);
+                var userId = token.Issuer;
+
+                var user = await _userManager.FindByIdAsync(userId);
+
+                var userDto = new UserDto
+                {
+                    Name = user.UserName,
+                    Email = user.Email
+                };
+                return Ok(userDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
     }
 }

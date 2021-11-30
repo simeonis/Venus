@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using venus.Helpers;
 using venus.Models;
 
 namespace venus
@@ -24,11 +24,14 @@ namespace venus
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddDbContext<VenusDbContext>(options => {
-                options.UseSqlServer("(localdb)\\MSSQLLocalDB; Database = VenusDb; MultipleActiveResultSets = True; Trusted_Connection = True");
+                options.UseSqlServer(Configuration.GetConnectionString("MBSConnStr"));
             });
 
             //services.AddDatabaseDeveloperPageExceptionFilter();
+            
+            
 
             services.AddDefaultIdentity<ApplicationUser>() //options => options.SignIn.RequireConfirmedAccount = true
                 .AddEntityFrameworkStores<VenusDbContext>();
@@ -37,9 +40,8 @@ namespace venus
             //     .AddApiAuthorization<ApplicationUser, VenusDbContext>();
 
             services.AddAuthentication();
-                //.AddIdentityServerJwt();
 
-            services.AddControllersWithViews();
+            services.AddControllers();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -68,6 +70,12 @@ namespace venus
 
             app.UseRouting();
 
+            app.UseCors(options =>options
+                .WithOrigins(new []{"http://localhost:5000", "http://localhost:5001"})
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+            );
 
             app.UseAuthentication();
             //app.UseIdentityServer();

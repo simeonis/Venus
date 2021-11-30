@@ -1,6 +1,6 @@
 using System;
 
-namespace venus
+namespace venus.Models
 {
     public class WeatherForecast
     {

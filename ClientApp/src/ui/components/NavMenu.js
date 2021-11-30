@@ -23,17 +23,17 @@ export class NavMenu extends Component {
     return (
       <header className="container-fluid dark-mode">
         <nav className="navbar">
-            <a href="#" class="navbar-brand">
+            <a href="#" className="navbar-brand">
               {/* <img src="..." alt="..." /> */}
               Venus
             </a>
 
             {/* <!-- Navbar nav --> */}
-            <ul class="navbar-nav d-none d-md-flex">
-              <li class="nav-item">
+            <ul className="navbar-nav d-none d-md-flex">
+              <li className="nav-item">
                 <Link className="nav-link" to="/accounts/login">Login</Link>
               </li>
-              <li class="nav-item">
+              <li className="nav-item">
                 <Link className="nav-link " to="/accounts/signup">Signup</Link>
               </li>
             </ul>

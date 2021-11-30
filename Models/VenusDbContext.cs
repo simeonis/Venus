@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using venus.Models;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace venus.Models

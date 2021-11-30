@@ -1,4 +1,3 @@
-
 namespace venus.Models
 {
     public class LoginDto
