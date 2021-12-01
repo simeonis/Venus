@@ -2,7 +2,7 @@ import React, {Component, useContext, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
 
-export const NavMenu = ({sidebar, toggleSidebar}) => {
+export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   const [collapsed, setCollapsed] = useState(true)
 
   const { logout, authenticated } = useContext(AuthContext);
@@ -11,14 +11,12 @@ export const NavMenu = ({sidebar, toggleSidebar}) => {
    
   }
   
-  console.log("Sidbar " + sidebar)
-  
   return (
-    <header className="container-fluid dark-mode">
+    <header className="container-fluid">
       <nav className="navbar">
 
           <button onClick={() => toggleSidebar()}>
-              <i className={ sidebar ? "fas fa-arrow-left a" : "fas fa-arrow-right b" }/>
+              <i className={ sidebar ? "fas fa-arrow-left" : "fas fa-arrow-right" }/>
           </button>
 
           <a href="#" className="navbar-brand">
@@ -45,6 +43,9 @@ export const NavMenu = ({sidebar, toggleSidebar}) => {
           </ul>
           )
         }
+        <button onClick={() => toggleDarkMode()}>
+            <i className="fas fa-moon" />
+        </button>
       </nav>
     </header>
   );
