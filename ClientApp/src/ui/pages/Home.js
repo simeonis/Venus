@@ -7,7 +7,6 @@ export class Home extends Component {
     return (
       <div className="page-wrapper dark-mode">
         <h1>Home Page</h1>
-        <button className="btn btn-danger" type="button">Danger</button>
       </div>
     );
   }

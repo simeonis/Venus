@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import { Route } from 'react-router';
 import { Layout } from './ui/components/Layout';
 import { Home } from './ui/pages/Home';
@@ -14,13 +14,13 @@ import { AuthProvider } from './context/AuthContext';
 const App = () => {
 
     return (
-        <Layout>
-            <AuthProvider>
+        <AuthProvider>
+            <Layout>
                 <Route exact path='/' component={Home} />
                 <Route path="/accounts" component={ApiAuthorizationRoutes} />
                 <Route path="/auth" component={AuthorizedRoutes} />
-            </AuthProvider>
-        </Layout>
+            </Layout>
+        </AuthProvider>
     );
 }
 

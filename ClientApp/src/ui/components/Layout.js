@@ -1,17 +1,32 @@
-import React, { Component } from 'react';
+import React, {Component, useState} from 'react';
 import { NavMenu } from './NavMenu';
+import {Sidebar} from "./Sidebar";
 
-export class Layout extends Component {
-  static displayName = Layout.name;
+export const Layout = (props) => {
+    const [sidebar, setSidebar] = useState(true)
+  
+    const toggleSidebar = () => {
+        let pWrap = document.getElementById("page-wrap");
+        
+        if(sidebar){
+            pWrap.setAttribute("data-sidebar-hidden", "hidden")
+            setSidebar(false)
+        }
+        else{
+            pWrap.removeAttribute("data-sidebar-hidden");
+            setSidebar(true)
+        }
+    }
 
-  render () {
+    
     return (
-      <div className="page-wrapper with-navbar dark-mode">
-        <NavMenu />
+      <div id="page-wrap" className="page-wrapper with-navbar with-sidebar dark-mode">
+        <NavMenu toggleSidebar={toggleSidebar} sidebar={sidebar} />
+        <Sidebar toggleSidebar={toggleSidebar} />
+          
         <div className="content-wrapper">
-          {this.props.children}
+          {props.children}
         </div>
       </div>
-    );
-  }
+    )
 }

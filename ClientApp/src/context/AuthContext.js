@@ -67,6 +67,22 @@ export const AuthProvider = ({ children }) => {
                 console.error('There was an error!', error.response);
             });
     }
+    
+    const logout = () =>{
+        axios.post(ApiUrls.logOut)
+            .then(response => {
+                if (response !== null) {
+                    console.log("Logout response " + JSON.stringify(response))
+                    setUser(null)
+                    setAuthenticated(false)
+                }
+            })
+            .catch(error => {
+                setError(error.response);
+                setAuthenticated(false)
+                console.error('There was an error!', error.response);
+            });
+    }
 
     return (
         <AuthContext.Provider
@@ -74,6 +90,7 @@ export const AuthProvider = ({ children }) => {
                 login,
                 register,
                 getUser,
+                logout,
                 authenticated,
                 user,
                 error

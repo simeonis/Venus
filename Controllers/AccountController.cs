@@ -100,8 +100,7 @@ namespace venus.Controllers
                 HttpOnly = true
             });
             
-            //replace with success   new { message="success" }
-            return Ok();
+            return Ok(new { message="success" });
         }
 
 
@@ -130,5 +129,19 @@ namespace venus.Controllers
             
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
+        
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogOut()
+        {
+            Console.WriteLine("Log out");
+            
+            Response.Cookies.Delete("jwt");
+
+            await _signInManager.SignOutAsync();
+            
+            return Ok(new { message="success" });
+        }
     }
+
+
 }
