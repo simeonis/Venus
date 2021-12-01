@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         console.log("In Use Effect " + authenticated)
-
+        
+        getUser()
+        
         if (authenticated) {
             history.push('/auth/home')
         }
@@ -59,10 +61,11 @@ export const AuthProvider = ({ children }) => {
                 if (response !== null) {
                     console.log("User " + JSON.stringify(response))
                     setUser(response.data)
+                    setAuthenticated(true)
                 }
             })
             .catch(error => {
-                setError(error.response);
+                //setError(error.response);
                 setAuthenticated(false)
                 console.error('There was an error!', error.response);
             });
