@@ -29,7 +29,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
           authenticated? (
               <ul className="navbar-nav d-none d-md-flex">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/home" onClick={() => logout()}>Logout</Link>
+                  <Link className="nav-link" to="/accounts/login" onClick={() => logout()}>Logout</Link>
                 </li>
               </ul>
           ):(

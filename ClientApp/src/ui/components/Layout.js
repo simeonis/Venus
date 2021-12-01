@@ -1,10 +1,13 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import { NavMenu } from './NavMenu';
 import {Sidebar} from "./Sidebar";
+import {AuthContext} from "../../context/AuthContext";
 
 export const Layout = (props) => {
     const [sidebar, setSidebar] = useState(true)
     const [darkMode, setDarkMode] = useState(false)
+
+    const { authenticated } = useContext(AuthContext)
   
     const toggleSidebar = () => {
         let pWrap = document.getElementById("page-wrap");
@@ -34,7 +37,7 @@ export const Layout = (props) => {
     }
     
     return (
-      <div id="page-wrap" className="page-wrapper with-navbar with-sidebar">
+      <div id="page-wrap" className={authenticated? "page-wrapper with-navbar with-sidebar" : "page-wrapper with-navbar"}>
         <NavMenu toggleSidebar={toggleSidebar} sidebar={sidebar} toggleDarkMode={toggleDarkMode} />
         <Sidebar toggleSidebar={toggleSidebar} />
           
