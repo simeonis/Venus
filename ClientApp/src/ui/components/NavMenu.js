@@ -1,6 +1,7 @@
-import React, {Component, useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
+import {FaArrowLeft, FaArrowRight, FaMoon} from 'react-icons/fa';
 
 
 export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
@@ -19,7 +20,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               authenticated? (
                   <button className="bg-transparent border-0" onClick={() => toggleSidebar()}>
                       {
-                        // sidebar ? <FontAwesomeIcon icon={['fas', 'arrow-left']} /> : <FontAwesomeIcon icon={['fas', 'arrow-right']} />
+                          sidebar ? <FaArrowLeft /> :  <FaArrowRight /> 
                       }
                   </button>
               ): null
@@ -51,7 +52,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               )
           }
           <button onClick={() => toggleDarkMode()}>
-              {/*<FontAwesomeIcon icon={['fas', 'moon']} />*/}
+              <FaMoon />
           </button>
       </nav>
     </header>

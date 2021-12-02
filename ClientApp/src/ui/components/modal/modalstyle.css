@@ -1,0 +1,40 @@
+﻿.modal-wrap{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(153, 153, 153, 0.44);
+}
+.myModal{
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.close-modal{
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.my-modal-content{
+    padding: 0 2em;
+}
+
+.modal-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2em;
+}
