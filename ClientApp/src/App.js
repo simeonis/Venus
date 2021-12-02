@@ -2,6 +2,7 @@ import React  from 'react';
 import { Route } from 'react-router';
 import { Layout } from './ui/components/Layout';
 import { Home } from './ui/pages/Home';
+import { BugList } from './ui/pages/bug/BugList';
 
 
 import ApiAuthorizationRoutes from './routes/ApiAuthorizationRoutes';
@@ -19,6 +20,7 @@ const App = () => {
                 <Route exact path='/' component={Home} />
                 <Route path="/accounts" component={ApiAuthorizationRoutes} />
                 <Route path="/auth" component={AuthorizedRoutes} />
+                <Route path="/bugs" component={BugList} />
             </Layout>
         </AuthProvider>
     );
