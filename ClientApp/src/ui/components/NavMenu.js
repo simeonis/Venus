@@ -1,7 +1,7 @@
 import React, {Component, useContext, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   const [collapsed, setCollapsed] = useState(true)
@@ -19,7 +19,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               authenticated? (
                   <button className="bg-transparent border-0" onClick={() => toggleSidebar()}>
                       {
-                        sidebar ? <FontAwesomeIcon icon={['fas', 'arrow-left']} /> : <FontAwesomeIcon icon={['fas', 'arrow-right']} />
+                        // sidebar ? <FontAwesomeIcon icon={['fas', 'arrow-left']} /> : <FontAwesomeIcon icon={['fas', 'arrow-right']} />
                       }
                   </button>
               ): null
@@ -51,7 +51,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               )
           }
           <button onClick={() => toggleDarkMode()}>
-              <FontAwesomeIcon icon={['fas', 'moon']} />
+              {/*<FontAwesomeIcon icon={['fas', 'moon']} />*/}
           </button>
       </nav>
     </header>
