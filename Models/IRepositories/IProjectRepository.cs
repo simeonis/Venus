@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace venus.Models
+namespace venus.Models.IRepositories
 {
-    interface IProjectRepository
+    public interface IProjectRepository 
     {
+        IEnumerable<Project> Projects { get; }
+        IEnumerable<Bug> Bugs { get; }
+        Project GetProject(Guid id);
+        IEnumerable<Project> GetProjects();
+        Project AddProject(Project project);
+        Project UpdateProject(Project project);
+        void DeleteProject(Guid id);
+
         ApplicationUser AddUserToProject(Guid projId, ApplicationUser appUser);
     }
 }

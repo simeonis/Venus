@@ -9,8 +9,8 @@ namespace venus.Models.IRepositories
     {
         Bug GetBug(Guid bugID);
         IEnumerable<Bug> GetBugs();
-        Bug AddBug(Bug bug);
-        Bug UpdateBug(Bug bug);
-        Bug DeleteBug(Guid bugID);
+        Bug AddBug(BugDto bug);
+        bool DeleteBug(Guid bugID);
+        void Save();
     }
 }

@@ -1,7 +1,7 @@
 ﻿import React, {useState, useEffect} from "react"
 import {Modal} from "../../components/modal/Modal"
 import axios from "axios";
-import {ApiUrls} from "../../../ApiConstants";
+import { ApiUrls } from "../../../constants/ApiConstants";
 import "./manageAccess.css"
 
 export const ManageAccess = () =>{

@@ -27,12 +27,9 @@ namespace venus
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddDbContext<VenusDbContext>(options => {
-                options.UseSqlServer(Configuration.GetConnectionString("MBSConnStr"));
-            });
 
             services.AddScoped<IBugRepository, EFBugRepository>();
-
+            services.AddScoped<IProjectRepository, EFProjectRepository>();
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>() //options => options.SignIn.RequireConfirmedAccount = true
@@ -43,7 +40,12 @@ namespace venus
 
             services.AddAuthentication();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddDbContext<VenusDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("MBSConnStr"));
+            });
+
+            services.AddScoped<IBugRepository, EFBugRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
