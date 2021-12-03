@@ -28,6 +28,8 @@ namespace venus
         {
             services.AddCors();
 
+            services.AddScoped<IBugRepository, EFBugRepository>();
+            services.AddScoped<IProjectRepository, EFProjectRepository>();
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>() //options => options.SignIn.RequireConfirmedAccount = true

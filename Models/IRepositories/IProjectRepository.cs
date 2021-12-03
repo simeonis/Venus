@@ -5,7 +5,15 @@ using System.Threading.Tasks;
 
 namespace venus.Models
 {
-    interface IProjectRepository 
+    public interface IProjectRepository 
     {
+        IEnumerable<Project> Projects { get; }
+        IEnumerable<Bug> Bugs { get; }
+        Project GetProject(Guid id);
+        IEnumerable<Project> GetProjects();
+        Project AddProject(Project project);
+        Project UpdateProject(Project project);
+        void DeleteProject(Guid id);
+
     }
 }
