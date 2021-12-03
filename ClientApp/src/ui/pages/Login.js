@@ -33,7 +33,7 @@ export const Login = () => {
     }
 
     return (
-      <div className="container d-flex flex-column align-items-center ">
+      <div className="container d-flex flex-column align-items-center">
             <h1>Login</h1>
             <form className="w-400 mw-full">
                 {

@@ -13,9 +13,9 @@ namespace venus.Models
         public Guid ID { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
-        public Severity Severity { get; set; } = Severity.Medium;
+        public string Severity { get; private set; } = "";
         public string Category { get; set; } = "";
-        public string Status { get; set; }
+        public string Status { get; private set; }
         public DateTime Date { get; set; } = DateTime.Now;
 
         public Bug(string title, string details, Status status)
@@ -23,6 +23,16 @@ namespace venus.Models
             this.ID = Guid.NewGuid();
             this.Title = title;
             this.Details = details;
+            this.Status = status.ToString();
+        }
+
+        public void SetSeverity(Severity severity)
+        {
+            this.Severity = severity.ToString();
+        }
+
+        public void SetStatus(Status status)
+        {
             this.Status = status.ToString();
         }
     }

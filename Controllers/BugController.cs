@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using venus.Models;
+using venus.Models.IRepositories;
 
 namespace venus.Controllers
 {
@@ -11,12 +12,28 @@ namespace venus.Controllers
     [Route("api/bug")]
     public class BugController : Controller
     {
-        private static List<Bug> bugList = new List<Bug> { new Bug("Bug #1", "Test1", Status.Unassigned), new Bug("Bug #2", "Test2", Status.Completed) };
+        private IBugRepository bugRepository;
+
+        public BugController(IBugRepository repository)
+        {
+            this.bugRepository = repository;
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Bug> Get(Guid? id)
+        {
+            if (id == null)
+            {
+                return BadRequest("Value must be passed in the request body");
+            }
+
+            return Ok(bugRepository.GetBug(id.Value));
+        }
 
         [HttpGet]
         public ActionResult<Bug> Get()
         {
-            return Ok(bugList);
+            return Ok(bugRepository.GetBugs());
         }
     }
 }
