@@ -53,6 +53,10 @@ namespace venus.Models
             dbContext.Projects.Remove(project);
             dbContext.SaveChanges();
         }
+        public void Save()
+        {
+            dbContext.SaveChanges();
+        }
 
     }
 

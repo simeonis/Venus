@@ -20,23 +20,15 @@ namespace venus.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Bug> Bugs { get; set; }
-        //public string Color { get; private set; }
+        public string Color { get; set; }
 
-        public Project(string title, string description //, Colors color
-        )
+        public Project()
         {
             this.ID = Guid.NewGuid();
-            this.Title = title;
-            this.Description = description;
+            this.Title = "";
+            this.Description = "";
             this.Bugs = new List<Bug>();
-            // this.Color = color.ToString();
+            this.Color = Colors.Green.ToString();
         }
-
-        public Project(){}
-
-        // public void setColor(Colors color)
-        // {
-        //     this.Color = color.ToString();
-        // }
     }
 }
