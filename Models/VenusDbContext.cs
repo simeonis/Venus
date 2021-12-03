@@ -9,6 +9,7 @@ namespace venus.Models
         public VenusDbContext(DbContextOptions<VenusDbContext> options) : base(options) { }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        //public DbSet<Project> Projects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
