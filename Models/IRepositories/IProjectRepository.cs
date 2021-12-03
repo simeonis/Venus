@@ -14,7 +14,5 @@ namespace venus.Models.IRepositories
         Project AddProject(Project project);
         Project UpdateProject(Project project);
         void DeleteProject(Guid id);
-
-        ApplicationUser AddUserToProject(Guid projId, ApplicationUser appUser);
     }
 }

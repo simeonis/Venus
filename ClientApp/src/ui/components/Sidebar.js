@@ -33,7 +33,16 @@ export const Sidebar = ({toggleSidebar}) =>{
                     <br/>
                     <h5 className="sidebar-title">Account</h5>
                     <div className="sidebar-divider" />
-                    <Link className="sidebar-link" to="/manage" >Manage</Link>
+                    
+                    {/*Update this is an actual Project*/}
+                    <Link
+                        className="sidebar-link"
+                        to={{
+                        pathname: '/manage',
+                        state: {
+                            project: {projId: 1234}
+                        }
+                    }}>Manage</Link>
                     <a href="#" className="sidebar-link">Settings</a>
                     <a href="#" className="sidebar-link" onClick={() =>logout()}>Logout</a>
                 </div>

@@ -1,20 +1,32 @@
 ﻿import React, {useState, useEffect} from "react"
-import {Modal} from "../../components/modal/Modal"
+import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import { ApiUrls } from "../../../constants/ApiConstants";
 import "./manageAccess.css"
+
+import {Modal} from "../../components/modal/Modal"
 
 export const ManageAccess = () =>{
     
     const [modal, setModal] = useState(false)
     const [members, setMembers] = useState([])
     const [error, setError] = useState([])
+
+    const location = useLocation()
+
+    const { project } = location.state
     
-    const handleAddPeople = ()=>{
-        axios.post(ApiUrls.addUserToProject)
+    const handleAddPeople = (email) => {
+
+        const userToProjDto = {
+            projId : project.projId,
+            userEmail: email,
+        };
+
+        axios.post(ApiUrls.addUserToProject, userToProjDto)
             .then(response => {
                 if (response !== null) {
-                    setMembers(response.data)
+                    setMembers([response.data, ...members])
                 }
             })
             .catch(error => {
@@ -30,8 +42,14 @@ export const ManageAccess = () =>{
         setModal(false)
     }
 
-    const handleRemovePeople = () => {
-        axios.post(ApiUrls.addUserToProject)
+    const handleRemovePeople = (email) => {
+        
+        const userToProjDto = {
+            projId : project.projId,
+            userEmail: email,
+        };
+        
+        axios.post(ApiUrls.removeUserFromProject, userToProjDto)
             .then(response => {
                 if (response !== null) {
                     setMembers(response.data)
@@ -44,10 +62,10 @@ export const ManageAccess = () =>{
     }
     
     const getMembers = () =>{
-        axios.post(ApiUrls.getProjectMembers)
+        axios.get(ApiUrls.getProjectMembers, { params: { projId: project.projId } })
             .then(response => {
                 if (response !== null) {
-                    setMembers(response.data)
+                    setMembers([...response.data])
                 }
             })
             .catch(error => {
@@ -91,6 +109,7 @@ export const ManageAccess = () =>{
                             members.map(member =>(
                                 <div>
                                     <h2>{member.name}</h2>
+                                    <button onClick={() => handleRemovePeople(member.email)}>Remove</button>
                                 </div>
                             ))
 
@@ -98,7 +117,6 @@ export const ManageAccess = () =>{
                     }
                 </div>
             </div>
-          
         </div>
     )
 }

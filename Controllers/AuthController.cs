@@ -124,6 +124,7 @@ namespace venus.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                
             }
             
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };

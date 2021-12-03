@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using venus.Models.IRepositories;
 
 namespace venus.Models.EFRepositories
 {
     public class EFProjectRepository : IProjectRepository
     {
-        private VenusDbContext dbContext;
+        private readonly VenusDbContext dbContext;
         
         public EFProjectRepository(VenusDbContext ctx)
         {
@@ -52,20 +53,6 @@ namespace venus.Models.EFRepositories
             Project project = dbContext.Projects.FirstOrDefault(p => p.ID == id);
             dbContext.Projects.Remove(project);
             dbContext.SaveChanges();
-        }
-
-        public static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1"), new Project("Project 2", "Description 2")};
-
-        public ApplicationUser AddUserToProject(Guid projId, ApplicationUser appUser)
-        {
-            var project = projectList.Find(proj => proj.ID == projId);
-
-            if (project == null || project.UsersList.All(u => u.Id == appUser.Id))
-                return null;
-            
-            project.UsersList.Add(appUser);
-
-            return appUser;
         }
     }
 }
