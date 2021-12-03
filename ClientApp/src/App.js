@@ -2,8 +2,8 @@ import React  from 'react';
 import { Route } from 'react-router';
 import { Layout } from './ui/components/Layout';
 import { Home } from './ui/pages/Home';
-import { BugList } from './ui/pages/Bug/BugList';
-import { CreateBug } from './ui/pages/Bug/CreateBug';
+import { BugList } from './ui/pages/bug/BugList';
+import { CreateBug } from './ui/pages/bug/CreateBug';
 
 import ApiAuthorizationRoutes from './routes/ApiAuthorizationRoutes';
 import AuthorizedRoutes from './routes/AuthorizedRoutes';
