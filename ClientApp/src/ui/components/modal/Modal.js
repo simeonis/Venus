@@ -15,10 +15,8 @@ export const Modal = ({hideModal, ...props}) => {
                     <FaWindowClose className="close-modal" onClick={() => hideModal()}  />
                 </div>
                 
-
                 <div className="my-5 h-100 my-modal-content">{props.children}</div>
-
-               
+                
             </div>
         </div>
        

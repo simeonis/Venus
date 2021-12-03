@@ -18,7 +18,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
       <nav className="navbar">
           {
               authenticated? (
-                  <button className="bg-transparent border-0" onClick={() => toggleSidebar()}>
+                  <button onClick={() => toggleSidebar()}>
                       {
                           sidebar ? <FaArrowLeft /> :  <FaArrowRight /> 
                       }

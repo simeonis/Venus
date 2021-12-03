@@ -24,6 +24,8 @@ namespace venus.Models
         //Bug model not created yet
         //public List<Bug> BugsList { get; set; }
 
+        public List<ApplicationUser> UsersList { get; set; }
+
         public Project(string title, string description //, Colors color
         )
         {

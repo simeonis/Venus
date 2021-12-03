@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace venus.Models
 {
-    interface IProjectRepository 
+    interface IProjectRepository
     {
+        ApplicationUser AddUserToProject(Guid projId, ApplicationUser appUser);
     }
 }
