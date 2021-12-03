@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,16 +24,12 @@ namespace venus.Controllers
         }
 
 
-        private static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1"), new Project("Project 2", "Description 2")};
-
+        //private static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1"), new Project("Project 2", "Description 2")};
+        
         [HttpGet]
         public ActionResult<Project> Get()
         {
-            //Test GET with list above
-            return Ok(projectList);
-
-            //Once DB is set up
-            //return Ok(projectRepository.GetProjects());
+            return Ok(projectRepository.GetProjects());
         }
 
         [HttpGet("{id}")]
@@ -43,11 +40,7 @@ namespace venus.Controllers
                 return BadRequest("ID was not found");
             }
 
-            //Test GET with list above
-            return Ok(projectList.Where(p => p.ID == id));
-
-            //Once DB is set up
-            //return Ok(projectRepository.GetProject(id));
+            return Ok(projectRepository.GetProject(id));
 
         }
 
@@ -62,15 +55,31 @@ namespace venus.Controllers
                     Description = project.Description,
                 }
                 );
+
+
         [HttpPut]
         public Project Put([FromBody] Project project) =>
             projectRepository.UpdateProject(project);
         
+
         [HttpDelete("{id}")]
         public void Delete(Guid id) => 
             projectRepository.DeleteProject(id);
 
-        //Patch TO DO
+
+        [HttpPatch("{id}")]
+        public StatusCodeResult Patch(Guid id, [FromBody] JsonPatchDocument<Project> patch)
+        {
+            var project = (Project)((OkObjectResult)Get(id).Result).Value;
+            if(project != null)
+            {
+                patch.ApplyTo(project);
+                projectRepository.Save();
+                return Ok();
+            }
+            return NotFound();
+
+        }
 
         [HttpPost("add-user" )]
         public async Task<IActionResult> AddUserToProject([FromBody] UserToProjDto userToProjDto)
