@@ -11,9 +11,9 @@ export default function AuthorizedRoutes() {
     return (
         <Fragment>
             <Switch>
-                <AuthorizeRoute path={`${path}`} component={Auth} redirectPath="/login" />
-                <AuthorizeRoute path={`${path}home`} component={Auth} redirectPath="/login" />
-                <AuthorizeRoute path={`${path}manage`} component={ManageAccess} />
+                <AuthorizeRoute exact path={`${path}`} component={Auth} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}home`} component={Auth} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}manage`} component={ManageAccess} />
             </Switch>
         </Fragment>
     );
