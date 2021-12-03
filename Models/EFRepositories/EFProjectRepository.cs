@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace venus.Models
 {
-    public class ProjectRepository : IProjectRepository
+    public class EFProjectRepository : IProjectRepository
     {
     }
 }

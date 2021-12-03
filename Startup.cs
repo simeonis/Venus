@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using venus.Helpers;
 using venus.Models;
+using venus.Models.EFRepositories;
+using venus.Models.IRepositories;
 
 namespace venus
 {
@@ -29,9 +31,9 @@ namespace venus
                 options.UseSqlServer(Configuration.GetConnectionString("MBSConnStr"));
             });
 
+            services.AddScoped<IBugRepository, EFBugRepository>();
+
             //services.AddDatabaseDeveloperPageExceptionFilter();
-            
-            
 
             services.AddDefaultIdentity<ApplicationUser>() //options => options.SignIn.RequireConfirmedAccount = true
                 .AddEntityFrameworkStores<VenusDbContext>();

@@ -1,5 +1,5 @@
 ﻿
-const baseUrl = 'https://localhost:5001/api';
+const baseUrl = `https://localhost:5001/api`;
 
 export const ApiUrls = {
     login: `${baseUrl}/account/login`,
@@ -8,4 +8,5 @@ export const ApiUrls = {
     logOut: `${baseUrl}/account/logout`,
     getProjectMembers: `${baseUrl}/project/members`,
     addUserToProject: `${baseUrl}/project/adduser`
+    bug: `${baseUrl}/bug`
 }
