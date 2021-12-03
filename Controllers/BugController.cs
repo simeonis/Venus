@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace venus.Controllers
     [Route("api/bug")]
     public class BugController : Controller
     {
-        private IBugRepository bugRepository;
+        private readonly IBugRepository bugRepository;
 
         public BugController(IBugRepository repository)
         {
-            this.bugRepository = repository;
+            bugRepository = repository;
         }
 
         [HttpGet("{id}")]
@@ -24,7 +25,7 @@ namespace venus.Controllers
         {
             if (id == null)
             {
-                return BadRequest("Value must be passed in the request body");
+                return BadRequest("Invalid Bug-ID");
             }
 
             return Ok(bugRepository.GetBug(id.Value));
@@ -34,6 +35,34 @@ namespace venus.Controllers
         public ActionResult<Bug> Get()
         {
             return Ok(bugRepository.GetBugs());
+        }
+
+        [HttpPost]
+        public Bug Post([FromBody] BugDto bugPost) => bugRepository.AddBug(bugPost);
+
+        [HttpDelete("{id}")]
+        public StatusCodeResult Delete(Guid? id)
+        {
+            if (bugRepository.DeleteBug(id.Value))
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPatch("{id}")]
+        public StatusCodeResult Patch(Guid? id, [FromBody] JsonPatchDocument<Bug> patch)
+        {
+            var bug = (Bug)((OkObjectResult)Get(id).Result).Value;
+            if (bug != null)
+            {
+                patch.ApplyTo(bug);
+                bugRepository.Save();
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }

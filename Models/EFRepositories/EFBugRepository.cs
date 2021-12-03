@@ -1,54 +1,61 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using venus.Models.IRepositories;
 
 namespace venus.Models.EFRepositories
 {
     public class EFBugRepository : IBugRepository
     {
-        // Temporary
-        private static List<Bug> bugList = new List<Bug> 
-        { 
-            new Bug("Bug #1", "Test1", Status.Unassigned), 
-            new Bug("Bug #2", "Test2", Status.Completed) 
-        };
+        private VenusDbContext context;
+
+        public EFBugRepository(VenusDbContext context)
+        {
+            this.context = context;
+        }
 
         public Bug GetBug(Guid bugID)
         {
-            return bugList.FirstOrDefault(b => b.ID.Equals(bugID));
+            return context.Bugs.FirstOrDefault(b => b.ID.Equals(bugID));
         }
 
         public IEnumerable<Bug> GetBugs()
         {
-            return bugList;
+            return context.Bugs.ToList();
         }
 
-        public Bug AddBug(Bug bug)
+        public Bug AddBug(BugDto bugDto)
         {
+            Bug bug = new Bug(bugDto);
+
             // Unique ID
-            if (!bugList.Where(b => b.ID.Equals(bug.ID)).Any())
+            if (!context.Bugs.Where(b => b.ID.Equals(bug.ID)).Any())
             {
-                bugList.Add(bug);
-                return bug;
+                var result = context.Bugs.Add(bug);
+                context.SaveChanges();
+                return result.Entity;
             }
 
             // ID already exist
             return null;
         }
 
-        public Bug UpdateBug(Bug bug)
+        public bool DeleteBug(Guid bugID)
         {
-            // TO-DO
-            return bug;
+            var bugs = context.Bugs.Where(b => b.ID.Equals(bugID));
+            if (bugs.Any())
+            {
+                context.Bugs.Remove(bugs.First());
+                context.SaveChanges();
+                return true;
+            }
+            
+            return false;
         }
 
-        public Bug DeleteBug(Guid bugID)
+        public void Save()
         {
-            Bug bug = bugList.FirstOrDefault(b => b.ID.Equals(bugID));
-            bugList.Remove(bug);
-            return bug;
+            context.SaveChanges();
         }
     }
 }

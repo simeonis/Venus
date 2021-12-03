@@ -1,6 +1,6 @@
 ﻿import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { ApiUrls } from "../../../ApiConstants";
+import { ApiUrls } from "../../../constants/ApiConstants";
 
 export const BugList = () => {
     // TO-DO
@@ -12,7 +12,7 @@ export const BugList = () => {
         axios.get(ApiUrls.bug)
             .then(response => {
                 if (response !== null) {
-                    console.log("RESP " + JSON.stringify(response))
+                    console.log("RESP " + JSON.stringify(response.data))
                     setBugList(response.data)
                 }
             })

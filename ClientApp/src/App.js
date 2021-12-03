@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './ui/components/Layout';
 import { Home } from './ui/pages/Home';
 import { BugList } from './ui/pages/Bug/BugList';
+import { CreateBug } from './ui/pages/Bug/CreateBug';
 
 import ApiAuthorizationRoutes from './routes/ApiAuthorizationRoutes';
 import AuthorizedRoutes from './routes/AuthorizedRoutes';
@@ -20,6 +21,7 @@ const App = () => {
                 <Route path="/accounts" component={ApiAuthorizationRoutes} />
                 <Route path="/auth" component={AuthorizedRoutes} />
                 <Route path="/bugs" component={BugList} />
+                <Route path="/createbug" component={CreateBug} />
             </Layout>
         </AuthProvider>
     );

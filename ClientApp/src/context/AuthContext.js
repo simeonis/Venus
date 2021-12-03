@@ -1,7 +1,7 @@
 ﻿import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory  } from 'react-router-dom';
-import { ApiUrls } from "../ApiConstants";
+import { ApiUrls } from "../constants/ApiConstants";
 
 export const AuthContext = createContext();
 
