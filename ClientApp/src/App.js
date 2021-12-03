@@ -9,6 +9,8 @@ import AuthorizedRoutes from './routes/AuthorizedRoutes';
 
 import './ui/css/custom.css'
 import { AuthProvider } from './context/AuthContext';
+import AuthorizeRoute from "./ui/components/AuthorizeRoute";
+import {Login} from "./ui/pages/Login";
 
 
 const App = () => {
@@ -16,9 +18,8 @@ const App = () => {
     return (
         <AuthProvider>
             <Layout>
-                <Route exact path='/' component={Home} />
-                <Route path="/accounts" component={ApiAuthorizationRoutes} />
-                <Route path="/auth" component={AuthorizedRoutes} />
+                <Route path="/" component={AuthorizedRoutes} />
+                <Route path="/" component={ApiAuthorizationRoutes} />
             </Layout>
         </AuthProvider>
     );

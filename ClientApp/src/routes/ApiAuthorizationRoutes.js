@@ -9,11 +9,8 @@ export default function ApiAuthorizationRoutes() {
     return(
       <Fragment>
           <Switch>
-            <Route exact path={path}>
-                <h1>Auth</h1>
-            </Route>
-            <Route path={`${path}/login`} component={Login} />
-            <Route path={`${path}/signup`} component={Register} />
+            <Route path={`${path}login`} component={Login} />
+            <Route path={`${path}signup`} component={Register} />
         </Switch>
       </Fragment>
     );

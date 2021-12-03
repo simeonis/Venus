@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         getUser()
         
         if (authenticated) {
-            history.push('/auth/home')
+            history.push('/home')
         }
 
     }, [authenticated])

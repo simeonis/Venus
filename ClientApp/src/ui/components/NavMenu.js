@@ -7,7 +7,7 @@ import {FaArrowLeft, FaArrowRight, FaMoon} from 'react-icons/fa';
 export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   const [collapsed, setCollapsed] = useState(true)
 
-  const { logout, authenticated } = useContext(AuthContext);
+  const { authenticated } = useContext(AuthContext);
   
   const toggleNavbar = () => {
    
@@ -34,19 +34,13 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
           
           {/* <!-- Navbar nav --> */}
           {
-              authenticated? (
-                  <ul className="navbar-nav d-none d-md-flex">
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/accounts/login" onClick={() => logout()}>Logout</Link>
-                    </li>
-                  </ul>
-              ):(
+              authenticated? null:(
               <ul className="navbar-nav d-none d-md-flex">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/accounts/login">Login</Link>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link " to="/accounts/signup">Signup</Link>
+                  <Link className="nav-link " to="/signup">Signup</Link>
                 </li>
               </ul>
               )

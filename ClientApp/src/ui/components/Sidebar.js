@@ -33,9 +33,9 @@ export const Sidebar = ({toggleSidebar}) =>{
                     <br/>
                     <h5 className="sidebar-title">Account</h5>
                     <div className="sidebar-divider" />
-                    <Link className="sidebar-link" to="/auth/manage" >Manage</Link>
+                    <Link className="sidebar-link" to="/manage" >Manage</Link>
                     <a href="#" className="sidebar-link">Settings</a>
-                    <a href="#" className="sidebar-link">Logout</a>
+                    <a href="#" className="sidebar-link" onClick={() =>logout()}>Logout</a>
                 </div>
             </div>
         ):null
