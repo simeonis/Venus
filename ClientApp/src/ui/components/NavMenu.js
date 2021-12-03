@@ -1,12 +1,13 @@
-import React, {Component, useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
+import {FaArrowLeft, FaArrowRight, FaMoon} from 'react-icons/fa';
 
 
 export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   const [collapsed, setCollapsed] = useState(true)
 
-  const { logout, authenticated } = useContext(AuthContext);
+  const { authenticated } = useContext(AuthContext);
   
   const toggleNavbar = () => {
    
@@ -19,7 +20,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               authenticated? (
                   <button className="bg-transparent border-0" onClick={() => toggleSidebar()}>
                       {
-                        // sidebar ? <FontAwesomeIcon icon={['fas', 'arrow-left']} /> : <FontAwesomeIcon icon={['fas', 'arrow-right']} />
+                          sidebar ? <FaArrowLeft /> :  <FaArrowRight /> 
                       }
                   </button>
               ): null
@@ -33,19 +34,13 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
           
           {/* <!-- Navbar nav --> */}
           {
-              authenticated? (
-                  <ul className="navbar-nav d-none d-md-flex">
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/accounts/login" onClick={() => logout()}>Logout</Link>
-                    </li>
-                  </ul>
-              ):(
+              authenticated? null:(
               <ul className="navbar-nav d-none d-md-flex">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/accounts/login">Login</Link>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link " to="/accounts/signup">Signup</Link>
+                  <Link className="nav-link " to="/signup">Signup</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link " to="/bugs">View Bugs</Link>
@@ -57,7 +52,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               )
           }
           <button onClick={() => toggleDarkMode()}>
-              {/*<FontAwesomeIcon icon={['fas', 'moon']} />*/}
+              <FaMoon />
           </button>
       </nav>
     </header>

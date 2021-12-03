@@ -11,7 +11,7 @@ namespace venus.Controllers
     [Route("api/project")]
     public class ProjectController : Controller
     {
-        private static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1", Colors.Blue), new Project("Project 2", "Description 2", Colors.Green )};
+        private static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1"), new Project("Project 2", "Description 2")};
         
         [HttpGet]
         public ActionResult<Project> Get()

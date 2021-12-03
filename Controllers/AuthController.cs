@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Http;
 using venus.Helpers;
 using venus.Models;
 
-
 namespace venus.Controllers
 {
     [Authorize]
@@ -142,6 +141,4 @@ namespace venus.Controllers
             return Ok(new { message="success" });
         }
     }
-
-
 }

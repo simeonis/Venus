@@ -17,9 +17,8 @@ const App = () => {
     return (
         <AuthProvider>
             <Layout>
-                <Route exact path='/' component={Home} />
-                <Route path="/accounts" component={ApiAuthorizationRoutes} />
-                <Route path="/auth" component={AuthorizedRoutes} />
+                <Route path="/" component={AuthorizedRoutes} />
+                <Route path="/" component={ApiAuthorizationRoutes} />
                 <Route path="/bugs" component={BugList} />
                 <Route path="/createbug" component={CreateBug} />
             </Layout>
