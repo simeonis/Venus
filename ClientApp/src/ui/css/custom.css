@@ -21,6 +21,10 @@ code {
     text-align: center;
 }
 
+.form-control {
+    line-height: normal;
+}
+
 .form-control.form-control-sm.status {
     width: fit-content;
 }
@@ -50,4 +54,11 @@ th.min, td.min {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.float-group {
+    position: fixed;
+    top: 4em;
+    right: 4em;
+    z-index: 10;
 }

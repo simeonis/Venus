@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using venus.Models;
 
 namespace venus.Migrations
 {
     [DbContext(typeof(VenusDbContext))]
-    partial class VenusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211204074825_UpdatedBug")]
+    partial class UpdatedBug
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
