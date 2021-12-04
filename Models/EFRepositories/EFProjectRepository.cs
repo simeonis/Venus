@@ -33,9 +33,10 @@ namespace venus.Models.EFRepositories
             return Projects.ToList();
         }
 
-        public Project AddProject(Project project)
+        public Project AddProject(ProjectDto projectDto)
         {
-            if(!dbContext.Projects.Where(p => p == project).Any())
+            Project project = new Project(projectDto);
+            if(!dbContext.Projects.Where(p => p.ID.Equals(project.ID)).Any())
             {
                 var res = dbContext.Projects.Add(project);
                 dbContext.SaveChanges();

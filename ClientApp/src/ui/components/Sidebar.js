@@ -30,6 +30,7 @@ export const Sidebar = ({toggleSidebar}) =>{
                     <a href="#" className="sidebar-link">Add Project</a>
                     <a href="#" className="sidebar-link">Existing Project</a>
                     <a href="#" className="sidebar-link">Existing Project</a>
+                    <Link className="sidebar-link" to="/createproject">Create Project</Link>
                     <br/>
                     <h5 className="sidebar-title">Account</h5>
                     <div className="sidebar-divider" />
