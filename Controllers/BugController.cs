@@ -51,6 +51,20 @@ namespace venus.Controllers
             return NotFound();
         }
 
+        [HttpDelete]
+        public StatusCodeResult Delete([FromBody] IEnumerable<Bug> bugs)
+        {
+            foreach (Bug bug in bugs)
+            {
+                if (!bugRepository.DeleteBug(bug.ID))
+                {
+                    return NotFound();
+                }
+            }
+
+            return Ok();
+        }
+
         [HttpPatch("{id}")]
         public StatusCodeResult Patch(Guid? id, [FromBody] JsonPatchDocument<Bug> patch)
         {
