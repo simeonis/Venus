@@ -10,12 +10,12 @@ export const Modal = ({hideModal, ...props}) => {
     
     return(
         <div className="modal-wrap" onClick={() => hideModal()}>
-            <div className="myModal bg-white-lm bg-dark-dm text-muted" id="modal-search" onClick={(e) => stopProp(e)}>
+            <div className="myModal text-muted" id="modal-search" onClick={(e) => stopProp(e)}>
                 <div className="close-wrap">
                     <FaWindowClose className="close-modal" onClick={() => hideModal()}  />
                 </div>
                 
-                <div className="my-5 h-100 my-modal-content">{props.children}</div>
+                <div className="my-5 h-full my-modal-content">{props.children}</div>
                 
             </div>
         </div>

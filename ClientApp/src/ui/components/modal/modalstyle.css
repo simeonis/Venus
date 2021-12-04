@@ -9,12 +9,23 @@
     align-items: center;
     background-color: rgba(153, 153, 153, 0.44);
 }
+
+.dark-mode .modal-wrap{
+    background-color: rgba(70, 70, 70, 0.38);
+}
+
+
 .myModal{
     z-index: 10;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #ecf0f1;
+}
+
+.dark-mode .myModal{
+    background-color: #47494d;
 }
 
 .close-wrap {

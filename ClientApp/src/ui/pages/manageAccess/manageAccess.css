@@ -1,3 +1,29 @@
 ﻿.manList{
     /*background-color: dodgerblue;*/
+    
+  
+}
+
+.intern-wrap{
+    max-width: 800px;
+    width:100%;
+}
+
+.user-card{
+    background-color: #ecf0f1; 
+}
+
+.dark-mode .user-card{
+    background-color: #47494d;
+}
+
+.title{
+    white-space: nowrap;
+}
+
+.user-found-row{
+    background-color: #ecf0f1;
+}
+.dark-mode .user-found-row{
+    background-color: #191c20;
 }
