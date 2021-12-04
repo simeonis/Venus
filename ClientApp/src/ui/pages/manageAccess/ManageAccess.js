@@ -1,20 +1,34 @@
 ﻿import React, {useState, useEffect} from "react"
-import {Modal} from "../../components/modal/Modal"
+import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import { ApiUrls } from "../../../constants/ApiConstants";
 import "./manageAccess.css"
+
+import {Modal} from "../../components/modal/Modal"
 
 export const ManageAccess = () =>{
     
     const [modal, setModal] = useState(false)
     const [members, setMembers] = useState([])
+    const [user, setUser] = useState()
     const [error, setError] = useState([])
+    const [email, setEmail] = useState("")
+
+    const location = useLocation()
+
+    const { project } = location.state
     
-    const handleAddPeople = ()=>{
-        axios.post(ApiUrls.addUserToProject)
+    const handleAddPeople = () => {
+
+        const userToProjDto = {
+            projId : project.projId,
+            userEmail: user.email,
+        };
+
+        axios.post(ApiUrls.addUserToProject, userToProjDto)
             .then(response => {
                 if (response !== null) {
-                    setMembers(response.data)
+                    setMembers([response.data, ...members])
                 }
             })
             .catch(error => {
@@ -30,11 +44,18 @@ export const ManageAccess = () =>{
         setModal(false)
     }
 
-    const handleRemovePeople = () => {
-        axios.post(ApiUrls.addUserToProject)
+    const handleRemovePeople = (email) => {
+        
+        const userToProjDto = {
+            projId : project.projId,
+            userEmail: email,
+        };
+        
+        axios.delete(ApiUrls.removeUserFromProject,{ data: userToProjDto })
             .then(response => {
                 if (response !== null) {
-                    setMembers(response.data)
+                    console.log("RES in DELETE " + JSON.stringify( response.data))
+                    setMembers([...response.data])
                 }
             })
             .catch(error => {
@@ -44,15 +65,30 @@ export const ManageAccess = () =>{
     }
     
     const getMembers = () =>{
-        axios.post(ApiUrls.getProjectMembers)
+        axios.get(ApiUrls.getProjectMembers, { params: { id: project.projId } })
             .then(response => {
                 if (response !== null) {
-                    setMembers(response.data)
+                    setMembers([...response.data])
                 }
             })
             .catch(error => {
                 //setError(error.response);
                 setError(error)
+            });
+    }
+    
+    const searchUser = (e) =>{
+        e.preventDefault()
+        console.log("email " + email)
+        
+        axios.get(ApiUrls.searchUser, { params: { email: email } })
+            .then(response => {
+                if (response !== null) {
+                    setUser(response.data)
+                }
+            })
+            .catch(error => {
+                setError(error.response)
             });
     }
 
@@ -70,10 +106,16 @@ export const ManageAccess = () =>{
                     <Modal hideModal={hideModal}>
                             <form className="modal-form">
                                 <div>
-                                    <input  /><button>Search</button>
+                                    <input onChange={(e) => setEmail(e.target.value)}  /><button onClick={(e) => searchUser(e)}>Search</button>
                                 </div>
-                                <button className="btn btn-primary btn-block mt-10" onClick={() => handleAddPeople()}>Add User</button>
+                                
                             </form>
+                        <div>
+                            {
+                                user ? <p>{user.userName}</p> : null
+                            }
+                        </div>
+                        <button className="btn btn-primary btn-block mt-10" onClick={() => handleAddPeople()}>Add User</button>
                     </Modal>
                 ) : null
             }
@@ -89,8 +131,9 @@ export const ManageAccess = () =>{
                         members.length > 0 ?
                         (
                             members.map(member =>(
-                                <div>
-                                    <h2>{member.name}</h2>
+                                <div className="d-flex justify-content-start align-items-center bg-primary w-lg-500">
+                                    <h2>{member.userName}</h2>
+                                    <button onClick={() => handleRemovePeople(member.email)}>Remove</button>
                                 </div>
                             ))
 
@@ -98,7 +141,6 @@ export const ManageAccess = () =>{
                     }
                 </div>
             </div>
-          
         </div>
     )
 }

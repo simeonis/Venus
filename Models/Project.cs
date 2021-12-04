@@ -19,23 +19,20 @@ namespace venus.Models
         public Guid ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        //public string Color { get; private set; }
-        
-        //Bug model not created yet
-        //public List<Bug> BugsList { get; set; }
+        public List<Bug> Bugs { get; set; }
+        public string Color { get; set; }
 
-        public Project(string title, string description //, Colors color
-        )
+        public List<ApplicationUser> UsersList { get; set; }
+
+       
+        public Project()
         {
             this.ID = Guid.NewGuid();
-            this.Title = title;
-            this.Description = description;
-            // this.Color = color.ToString();
+            this.Title = "";
+            this.Description = "";
+            this.Bugs = new List<Bug>();
+            this.Color = Colors.Green.ToString();
+            UsersList = new List<ApplicationUser>();
         }
-
-        // public void setColor(Colors color)
-        // {
-        //     this.Color = color.ToString();
-        // }
     }
 }

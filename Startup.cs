@@ -28,6 +28,8 @@ namespace venus
         {
             services.AddCors();
 
+            services.AddScoped<IBugRepository, EFBugRepository>();
+            services.AddScoped<IProjectRepository, EFProjectRepository>();
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>() //options => options.SignIn.RequireConfirmedAccount = true
@@ -38,7 +40,7 @@ namespace venus
 
             services.AddAuthentication();
 
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<VenusDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("MBSConnStr"));
             });

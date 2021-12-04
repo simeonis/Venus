@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using venus.Models;
 
 namespace venus.Migrations
 {
     [DbContext(typeof(VenusDbContext))]
-    partial class VenusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211203084425_Project")]
+    partial class Project
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.Property<Guid>("ProjectsID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UsersListId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ProjectsID", "UsersListId");
-
-                    b.HasIndex("UsersListId");
-
-                    b.ToTable("ApplicationUserProject");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -274,6 +261,9 @@ namespace venus.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
@@ -285,22 +275,9 @@ namespace venus.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.HasOne("venus.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("venus.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -359,6 +336,18 @@ namespace venus.Migrations
                     b.HasOne("venus.Models.Project", null)
                         .WithMany("Bugs")
                         .HasForeignKey("ProjectID");
+                });
+
+            modelBuilder.Entity("venus.Models.Project", b =>
+                {
+                    b.HasOne("venus.Models.ApplicationUser", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("venus.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("venus.Models.Project", b =>

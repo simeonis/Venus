@@ -10,7 +10,7 @@ namespace venus.Models
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Bug> Bugs { get; set; }
-        //public DbSet<Project> Projects { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
