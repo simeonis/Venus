@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace venus.Models
 {
-    public enum Colors
+    public enum ProjectColor
     {
         Red,
         Blue,
@@ -31,8 +31,17 @@ namespace venus.Models
             this.Title = "";
             this.Description = "";
             this.Bugs = new List<Bug>();
-            this.Color = Colors.Green.ToString();
-            UsersList = new List<ApplicationUser>();
+            this.UsersList = new List<ApplicationUser>();
+            this.Color = ProjectColor.Green.ToString();
+        }
+
+        public Project(ProjectDto projectDto)
+        {
+            ID = Guid.NewGuid();
+            Title = projectDto.Title;
+            Description = projectDto.Description;
+            Color = projectDto.Color;
+
         }
     }
 }

@@ -11,7 +11,7 @@ namespace venus.Models.IRepositories
         IEnumerable<Bug> Bugs { get; }
         Project GetProject(Guid id);
         IEnumerable<Project> GetProjects();
-        Project AddProject(Project project);
+        Project AddProject(ProjectDto projectDto);
         Project UpdateProject(Project project);
         void DeleteProject(Guid id);
         void Save();

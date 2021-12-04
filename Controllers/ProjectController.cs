@@ -44,16 +44,9 @@ namespace venus.Controllers
         }
 
         [HttpPost]
-        public Project Post([FromBody] Project project) =>
+        public Project Post([FromBody] ProjectDto project) =>
         
-            projectRepository.AddProject(
-                new Project
-                {
-                    //ID = Guid.NewGuid(),
-                    Title = project.Title,
-                    Description = project.Description,
-                }
-                );
+            projectRepository.AddProject(project);
 
 
         [HttpPut]
