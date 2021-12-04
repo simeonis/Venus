@@ -40,7 +40,7 @@ export const Sidebar = ({toggleSidebar}) =>{
                         to={{
                         pathname: '/manage',
                         state: {
-                            project: {projId: 1234}
+                            project: {projId: "a3f885d7-e6bd-478d-9bc9-aa979fae575e"}
                         }
                     }}>Manage</Link>
                     <a href="#" className="sidebar-link">Settings</a>

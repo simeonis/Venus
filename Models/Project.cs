@@ -32,6 +32,7 @@ namespace venus.Models
             this.Description = "";
             this.Bugs = new List<Bug>();
             this.Color = Colors.Green.ToString();
+            UsersList = new List<ApplicationUser>();
         }
     }
 }

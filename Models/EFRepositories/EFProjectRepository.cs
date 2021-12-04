@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using venus.Models.IRepositories;
 
 namespace venus.Models.EFRepositories
@@ -15,19 +16,21 @@ namespace venus.Models.EFRepositories
             dbContext = ctx;
         }
         
-        public IEnumerable<Project> Projects => dbContext.Projects;
+        public IEnumerable<Project> Projects => dbContext.Projects.Include(p => p.UsersList);
 
         //not sure if this works
         public IEnumerable<Bug> Bugs => dbContext.Projects.FirstOrDefault().Bugs;
 
         public Project GetProject(Guid id)
         {
-            return dbContext.Projects.FirstOrDefault(p => p.ID == id);
+            Console.WriteLine(id);
+            
+            return Projects.First(p => p.ID == id);
         }
 
         public IEnumerable<Project> GetProjects()
         {
-            return dbContext.Projects.ToList();
+            return Projects.ToList();
         }
 
         public Project AddProject(Project project)
@@ -54,6 +57,7 @@ namespace venus.Models.EFRepositories
             dbContext.Projects.Remove(project);
             dbContext.SaveChanges();
         }
+        
         public void Save()
         {
             dbContext.SaveChanges();

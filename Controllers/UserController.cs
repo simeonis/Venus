@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -7,8 +8,8 @@ using venus.Models;
 
 namespace venus.Controllers{
 
-    [Authorize]
-    [Route("api/account")]
+    [ApiController]
+    [Route("api/user")]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,14 +19,14 @@ namespace venus.Controllers{
             _userManager = userManager;
         }
         
-        [HttpGet("search{email}")]
+        [HttpGet("search")]
         public async Task<IActionResult> Search(string email)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
@@ -33,7 +34,7 @@ namespace venus.Controllers{
                 return new ContentResult() { Content = "No User Found", StatusCode = 404 };
             }
 
-            return Ok( user.UserName );
+            return Ok(user);
         }
     }
 }

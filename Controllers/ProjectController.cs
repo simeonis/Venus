@@ -41,7 +41,6 @@ namespace venus.Controllers
             }
 
             return Ok(projectRepository.GetProject(id));
-
         }
 
         [HttpPost]
@@ -87,31 +86,42 @@ namespace venus.Controllers
             //Add Security 
             //Check if cookie user is owner of proj 
             
+            Console.WriteLine("adduser" + userToProjDto.ProjId + " " + userToProjDto.UserEmail );
+
             var project = projectRepository.GetProject(userToProjDto.ProjId);
-            
+
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
             
-            if(project.UsersList.All(u => u.Email == userToProjDto.UserEmail))
+            // if (project.UsersList == null)
+            //     return new ContentResult() { Content = "No Users", StatusCode = 404 };
+            
+            if(project.UsersList.Any(user => user.Email == userToProjDto.UserEmail))
                 return new ContentResult() { Content = "User Already Exists", StatusCode = 403 };
-
+            
             var appUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
-
+            
             if (appUser == null)
                 return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
-                
+            
             project.UsersList.Add(appUser);
+            
+            Console.WriteLine("adduser" + project.UsersList[0]);
 
-            return Ok(new {message = "success"});
-        }
+            projectRepository.UpdateProject(project);
 
-        [HttpGet("get-members{projId:guid}")]
-        public ActionResult<IEnumerable<ApplicationUser>> GetMembers(Guid projId)
+            return Ok(appUser);
+        }   
+
+        [HttpGet("get-members")]
+        public ActionResult<IEnumerable<ApplicationUser>> GetMembers(string id)
         {
             //Add Security 
             //Check if cookie user is owner of proj 
+
+            var guid = Guid.Parse(id);
             
-            var project = projectRepository.GetProject(projId);
+            var project = projectRepository.GetProject(guid);
             
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
@@ -120,7 +130,6 @@ namespace venus.Controllers
                 return new ContentResult() { Content = "No Users In Project", StatusCode = 404 };
             
             return Ok(project.UsersList);
-            
         }
         
         [HttpDelete("remove-user")]
@@ -129,18 +138,24 @@ namespace venus.Controllers
             //Add Security 
             //Check if cookie user is owner of proj 
             
+            Console.WriteLine(userToProjDto.ProjId);
+            
             var project = projectRepository.GetProject(userToProjDto.ProjId);
             
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
-
+            
             var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
-
+            
             if (user == null)
                 return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
-          
+            
             project.UsersList.Remove(user);
+            
+            projectRepository.UpdateProject(project);
+            
             return Ok(project.UsersList);
+
         }
     }
 }

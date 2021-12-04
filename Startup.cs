@@ -40,7 +40,7 @@ namespace venus
 
             services.AddAuthentication();
 
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<VenusDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("MBSConnStr"));
             });

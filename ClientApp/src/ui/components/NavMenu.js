@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
 import {FaArrowLeft, FaArrowRight, FaMoon} from 'react-icons/fa';
 
-
 export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   const [collapsed, setCollapsed] = useState(true)
 
