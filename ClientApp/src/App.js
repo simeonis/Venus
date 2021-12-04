@@ -10,6 +10,8 @@ import AuthorizedRoutes from './routes/AuthorizedRoutes';
 
 import './ui/css/custom.css'
 import { AuthProvider } from './context/AuthContext';
+import { CreateProject } from './ui/pages/CreateProject';
+import { ModifyProject } from './ui/pages/ModifyProject';
 
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
                 <Route path="/" component={ApiAuthorizationRoutes} />
                 <Route path="/bugs" component={BugList} />
                 <Route path="/createbug" component={CreateBug} />
+                <Route path="/createproject" component={CreateProject} />
+                <Route path="/modifyproject" component={ModifyProject} />
             </Layout>
         </AuthProvider>
     );
