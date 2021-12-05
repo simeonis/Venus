@@ -2,7 +2,7 @@
 import { BugEnums } from "../../../constants/BugConstants"
 import { SyncLoader } from "react-spinners"
 
-export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, showLoading }) => {
+export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, showLoading, updateStatus }) => {
     const bugStatus = BugEnums.status
 
     const severityColor = (severity) => {
@@ -70,9 +70,13 @@ export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, s
                 </tr>
             </thead>
             {showLoading ?
-                <div className="loaderWrap">
-                    <SyncLoader size={25} color={"#252627"} />
-                </div>
+                <tbody>
+                    <tr>
+                        <td className='m-20 p-20 text-center align-middle' colSpan='100%'>
+                            <SyncLoader size={20} color="#AAA" />
+                        </td>
+                    </tr>
+                </tbody>
                 :
                 <tbody>
                     {
@@ -103,7 +107,7 @@ export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, s
                                     </span>
                                 </td>
                                 <td className="min">
-                                    <select className="form-control form-control-sm status" defaultValue={bug.status}>
+                                    <select className="form-control form-control-sm status" defaultValue={bug.status} onChange={(e) => updateStatus(bug.id, e.target.value)}>
                                         {
                                             Object.keys(bugStatus).map((key, i) =>
                                                 <option key={i} value={bugStatus[key]}>{bugStatus[key]}</option>

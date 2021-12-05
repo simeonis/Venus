@@ -21,7 +21,6 @@ export const BugList = () => {
     // Buttons
     const [canDelete, setCanDelete] = useState(false)
     const [canModify, setCanModify] = useState(false)
-    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         setTimeout(() => { if (loading) { setShowLoading(true) } }, 100)
@@ -33,14 +32,9 @@ export const BugList = () => {
         setUserBugList(filteredList)
     }, [generalBugList])
 
-    useEffect(() => {
-        console.log(selectedList)
-    }, [selectedList])
-
     // START Web API Calls
     // Get All
     const getBugs = () => {
-        console.log("Get called")
         axios.get(ApiUrls.bug)
             .then(response => {
                 if (response.status === 200) {
@@ -63,7 +57,6 @@ export const BugList = () => {
         if (delList.length > 0) {
             axios.delete(ApiUrls.bug, { data: delList })
                 .then(response => {
-                    console.log(response)
                     if (response.status === 200) {
                         getBugs() // Refresh UI
                     }
@@ -72,6 +65,24 @@ export const BugList = () => {
                     console.error('There was an error!', error.response);
                 })
         }
+    }
+
+    // Patch Status
+    const updateStatus = (id, status) => {
+        const args = [{ "op": "replace", "path": "/status", "value": `${status}` }]
+        axios.patch(`${ApiUrls.bug}/${id}`, args)
+            .then(response => {
+                if (response.status === 200) {
+                    const copy = generalBugList
+                    copy.find(bug => bug.id === id).status = status
+                    // Sync Lists By Refreshing their UI
+                    setGeneralBugList([])
+                    setGeneralBugList(copy)
+                }
+            })
+            .catch(error => {
+                console.error('There was an error!', error.response);
+            })
     }
     // END Web API Calls
 
@@ -88,10 +99,7 @@ export const BugList = () => {
         } else {
             let trueCount = 0
             setSelectedList(selectedList.map(bug => {
-
-                    if (bug.id === id) {
-                        bug.selected = !bug.selected
-                    }
+                    if (bug.id === id) bug.selected = !bug.selected
                     trueCount += bug.selected ? 1 : 0
                     return bug
                 }
@@ -108,8 +116,8 @@ export const BugList = () => {
                 <button className="center btn btn-square btn-secondary rounded-circle mx-5 text-white shadow" disabled={!canModify}><FaPen /></button>
                 <button className="center btn btn-square btn-danger rounded-circle mx-5 shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
             </div>
-            <div className="d-flex flex-column align-items-center mx-20 px-20">
-                <details class="collapse-panel w-full m-15">
+            <div className="d-flex flex-column align-items-start mx-20 px-20">
+                <details class="collapse-panel w-lg-full m-15" open>
                     <summary class="collapse-header">
                         My Bugs
                     </summary>
@@ -120,10 +128,11 @@ export const BugList = () => {
                             selectedAll={selectedAll}
                             selectedList={selectedList}
                             showLoading={showLoading}
+                            updateStatus={updateStatus}
                         />
                     </div>
                 </details>
-                <details class="collapse-panel w-full m-15">
+                <details class="collapse-panel w-lg-full m-15" open>
                     <summary class="collapse-header">
                         All Bugs
                     </summary>
@@ -134,6 +143,7 @@ export const BugList = () => {
                             selectedAll={selectedAll}
                             selectedList={selectedList}
                             showLoading={showLoading}
+                            updateStatus={updateStatus}
                         />
                     </div>
                 </details>
