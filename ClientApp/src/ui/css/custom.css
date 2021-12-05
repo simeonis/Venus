@@ -13,6 +13,67 @@ code {
   border-color: #1861ac;
 }
 
+.badge.badge {
+    color: #fff;
+    border: none;
+    padding: 0.6vh;
+    width: 12vh !important;
+    text-align: center;
+}
+
+.form-control {
+    line-height: normal;
+}
+
+.form-control.form-control-sm.status {
+    width: fit-content;
+}
+
+th.max, td.max {
+    width: auto;
+}
+
+th.min, td.min {
+    width: 0.1% !important;
+    white-space: nowrap;
+}
+
+.loaderWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.float-group {
+    position: fixed;
+    top: 4em;
+    right: 4em;
+    z-index: 10;
+}
+.card{
+    border-color: coral;
+    border-width: 1px;
+}
+.alert-fixed {
+    position: fixed;
+    top: 27px;
+    left: 321px;
+    width: 100%;
+    z-index: 9999;
+    border-radius: 0px
+}
 .blue{
   background-color: blue;
 }

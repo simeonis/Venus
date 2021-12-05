@@ -9,11 +9,11 @@ export const CreateBug = () => {
     const bugSeverity = BugEnums.severity
     const bugCategory = BugEnums.category
     const bugStatus = BugEnums.status
+    const bugAssignee = BugEnums.assignee
 
     // TO-DO
     // const [error, setError] = useState();
-    const [title, setTitle] = useState("")
-    const [details, setDetails] = useState("")
+    const [subject, setSubject] = useState("")
     const [severity, setSeverity] = useState(bugSeverity.Medium)
     const [category, setCategory] = useState(bugCategory.None)
 
@@ -40,14 +40,14 @@ export const CreateBug = () => {
 
         // TO-DO Error Check
         const bugDto = {
-            title: title,
-            details: details,
-            severity: severity,
             category: category,
-            status: bugStatus.Unassigned,
+            subject: subject,
+            creator: "John Doe",
+            severity: severity,
+            status: bugStatus.NotStarted,
+            assignee: bugAssignee.Unassigned,
             date: new Date().toJSON()
         }
-
         addBug(bugDto)
     }
 
@@ -57,15 +57,8 @@ export const CreateBug = () => {
             <form className="w-400 mw-full">
                 {/* <!-- Input --> */}
                 <div className="form-group">
-                    {/*<p className="text-danger">{emailError}</p>*/}
-                    <label className="required">Bug Title</label>
-                    <input type="text" className="form-control" placeholder="Title" required="required" onChange={(e) => setTitle(e.target.value)} />
-                </div>
-
-                <div className="form-group">
-                    {/*<p className="text-danger">{passwordError}</p>*/}
-                    <label className="required">Bug Details</label>
-                    <input type="text" className="form-control" placeholder="Details" onChange={(e) => setDetails(e.target.value)} />
+                    <label className="required">Bug Subject</label>
+                    <input type="text" className="form-control" placeholder="Subject" required="required" onChange={(e) => setSubject(e.target.value)} />
                 </div>
 
                 <div className="form-group">

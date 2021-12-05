@@ -7,32 +7,61 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 
 export const ModifyProject = () => {
 
+    //states used to get and set properties
     const projectColor = ProjectEnums.color
-
+    const [project, setProject] = useState({});
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
-    const [project, setProject] = useState({});
+    
 
 
     //setTitle(location.title)
     const history = useHistory()
     const location = useLocation();
-    console.log(location)
+    console.log("location" + location)
     console.log("hello")
     console.log(location.query)
     console.log(location.pathname)
 
+    //Switch for color in select menu
+    const projectColors = (color) => {
+        switch (color) {
+            case "Red":
+                return "#ff0000"
+            case "Blue":
+                return "#0000ff"
+            case "Green":
+                return "#009933"
+            case "Yellow":
+                return "#ffff00"
+            case "Orange":
+                return "#ff6600"
+            case "Purple":
+                return "#9900cc"
+            default:
+                return "#fff"
+        }
+    }
+
+    //API call to get project with specific ID to update
     const getProject = (projectId) => {
-        console.log("getting projects")
+        console.log("getting project")
         console.log(projectId)
         axios.get(ApiUrls.project+`/${projectId}`)
             .then(response => {
                 if (response !== null) {
                     console.log("response : " + JSON.stringify(response.data))
                     setProject(response.data)
-                    console.log(response.data)
+                    console.log("project is:" + project)
+                    
+                    setColor(color)
+                    setTitle(title)
+                    console.log("project title1" + project.title + " title: " + title)
+                    setTitle(project.title)
+                    console.log("project title2" + project.title + " title: " + title)
+                    setDescription(project.description)
                 }
             })
             .catch(error => {
@@ -42,26 +71,26 @@ export const ModifyProject = () => {
 
 
 
-
+    //API call to update the project in the DB via HttpPUT
     const updateProject = (projectUpdate) => {
         axios.put(ApiUrls.project, projectUpdate)
             .then(response => {
                 if (response !== null) {
                     console.log("RESP " + JSON.stringify(response.data))
-                    // Go back to bug list
+                    // Go back to homepage(auth)
                     history.push('/home')
                 }
             })
             .catch(error => {
-                // setError(error.response);
                 console.error('There was an error!', error.response);
             });
     }
 
+    //handles the submission to update from button click
     const handleSubmit = (e) => {
         e.preventDefault()
 
-
+        //creates a DTO to send to the API
         const projectDto = {
             id: project.id,
             title: title,
@@ -72,34 +101,39 @@ export const ModifyProject = () => {
         updateProject(projectDto)
     }
 
+    //hook to load projects and set project attributes for editting
     useEffect(() => {
         getProject(location.query)
+        //TO DO: sets the title and desc but will not add them to project until field is editted
+        setProject(project)
+        setTitle(title)
+        setColor(color)
+
         
     }, [])
 
     return (
-
         <div className="container">
             <button className="btn btn-primary m-10" onClick={() => history.goBack()}> Back</button>
-            <h1>Modify Project</h1>
-            <h2>{project.title}</h2>
-            <form method="post">
+            <h1 className="p-15">Modify Project</h1>
+            <h2 className="p-15">{project.title}</h2>
+            <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
                     
-                    <label>Project Title</label>
-                    <input className="form-control required" defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} />
+                    <label className="required">Project Title</label>
+                    <input className="form-control" required="required" defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label>Project Description</label>
-                    <input className="form-control required" defaultValue={project.title} type="text" onChange={(e) => setDescription(e.target.value)} />
+                    <label className="required">Project Description</label>
+                    <input className="form-control" required="required" defaultValue={project.description} type="text" onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label>Project Color</label>
-                    <select className="custom-select required" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
-                        <option selected="selected" disabled="disabled">Select a project color</option>
+                    <label className="required">Project Color</label>
+                    <select className="custom-select required m-10" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
+                       {/* <option selected="selected" disabled="disabled">value={project.color}</option>*/}
                         {
-                            Object.keys(projectColor).map(key =>
-                                <option value={key}>{key}</option>
+                            Object.keys(projectColor).map((key, i) =>
+                                <option key={i} style={{ color: projectColors(key) }} value={projectColor[key]}>{projectColor[key]}</option>
                             )
 
                         }
