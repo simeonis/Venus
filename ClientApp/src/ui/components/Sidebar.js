@@ -1,10 +1,33 @@
-﻿import React, {useContext} from "react"
+﻿import React, {useContext, useState, useEffect} from "react"
 import {AuthContext} from "../../context/AuthContext";
 import { Link } from 'react-router-dom';
+import axios from 'axios'
+import { ApiUrls } from "../../constants/ApiConstants";
 
 export const Sidebar = ({toggleSidebar}) =>{
     
     const { authenticated, logout } = useContext(AuthContext)
+
+    //const [projectList, setProjectList] = useState([]);
+
+    //API call to get list of projects for sidebar
+
+    /*const getProjects = () => {
+        console.log("getting projects")
+        axios.get(ApiUrls.project)
+            .then(response => {
+                if (response !== null) {
+                    console.log("response : " + JSON.stringify(response.data))
+                    setProjectList(response.data)
+                }
+            })
+            .catch(error => {
+                console.error('There was an error.', error.response)
+            })
+    }
+    useEffect(() => {
+        getProjects()
+    }, [])*/
     
     return(
         authenticated ?(
@@ -27,10 +50,14 @@ export const Sidebar = ({toggleSidebar}) =>{
 
                     <h5 className="sidebar-title">Projects</h5>
                     <div className="sidebar-divider" />
-                    <a href="#" className="sidebar-link">Add Project</a>
+                    <Link className="sidebar-link" to="/createproject">Add Project</Link>
+                    {/* Set up for project links on sidebard*/}
+                    {/*{
+                        projectList.map((project) => {
+                            return <a className="sidebar-link">{project.title}</a>
+                        })}*/}
                     <a href="#" className="sidebar-link">Existing Project</a>
                     <a href="#" className="sidebar-link">Existing Project</a>
-                    <Link className="sidebar-link" to="/createproject">Create Project</Link>
                     <br/>
                     <h5 className="sidebar-title">Account</h5>
                     <div className="sidebar-divider" />
