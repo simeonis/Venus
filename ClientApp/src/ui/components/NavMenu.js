@@ -47,6 +47,9 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
                 <li className="nav-item">
                     <Link className="nav-link " to="/createbug">Create Bug</Link>
                 </li>
+                <li className="nav-item">
+                    <Link className="nav-link " to="/modifybug">Modify Bug</Link>
+                </li>
               </ul>
               )
           }

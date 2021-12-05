@@ -4,6 +4,10 @@ import { ApiUrls } from '../../../constants/ApiConstants'
 import { FaPlus, FaTrash, FaPen } from 'react-icons/fa'
 import { BugTable } from '../../components/tables/BugTable'
 import { BugEnums } from "../../../constants/BugConstants"
+import { CreateBug } from './CreateBug';
+import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Modal } from '../../components/modal/Modal'
 
 export const BugList = () => {
     // Loading
@@ -112,16 +116,19 @@ export const BugList = () => {
     return (
         <div>
             <div className="d-flex justify-content-end m-15 float-group">
-                <button className="center btn btn-square btn-primary rounded-circle mx-5 shadow"><FaPlus /></button>
-                <button className="center btn btn-square btn-secondary rounded-circle mx-5 text-white shadow" disabled={!canModify}><FaPen /></button>
-                <button className="center btn btn-square btn-danger rounded-circle mx-5 shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
+                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to="/createbug"><FaPlus /></Link>
+                {
+                    canModify ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to="/modifybug"><FaPen /></Link>
+                        : <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white disabled" onClick={(e) => e.preventDefault()}><FaPen /></Link>
+                }
+                <button className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
             </div>
             <div className="d-flex flex-column align-items-start mx-20 px-20">
-                <details class="collapse-panel w-lg-full m-15" open>
-                    <summary class="collapse-header">
+                <details className="collapse-panel w-lg-full m-15" open>
+                    <summary className="collapse-header">
                         My Bugs
                     </summary>
-                    <div class="collapse-content">
+                    <div className="collapse-content">
                         <BugTable
                             bugList={userBugList}
                             handleCheckbox={handleCheckbox}
@@ -132,11 +139,11 @@ export const BugList = () => {
                         />
                     </div>
                 </details>
-                <details class="collapse-panel w-lg-full m-15" open>
-                    <summary class="collapse-header">
+                <details className="collapse-panel w-lg-full m-15" open>
+                    <summary className="collapse-header">
                         All Bugs
                     </summary>
-                    <div class="collapse-content">
+                    <div className="collapse-content">
                         <BugTable
                             bugList={generalBugList}
                             handleCheckbox={handleCheckbox}

@@ -62,6 +62,7 @@ export const CreateBug = () => {
                 </div>
 
                 <div className="form-group">
+                    <label className="required">Bug Severity</label>
                     <select className="form-control" onChange={(e) => setSeverity(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select bug severity</option>
                         {
@@ -73,6 +74,7 @@ export const CreateBug = () => {
                 </div>
 
                 <div className="form-group">
+                    <label className="required">Bug Category</label>
                     <select className="form-control" onChange={(e) => setCategory(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select bug category</option>
                         {
