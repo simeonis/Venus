@@ -28,9 +28,14 @@ namespace venus.Models.EFRepositories
             return Projects.First(p => p.ID == id);
         }
 
-        public IEnumerable<Project> GetProjects()
+        public IEnumerable<Project> GetProjects(string id)
         {
-            return Projects.ToList();
+            var p = Projects.Where(project =>
+                project.UsersList.Any(user =>
+                    user.Id == id)).ToList();
+            
+            Console.WriteLine("MYT COunt " + p.Count + " " + id);
+            return p;
         }
 
         public Project AddProject(ProjectDto projectDto)

@@ -1,7 +1,9 @@
 import React, {Component, useContext, useState} from 'react';
-import { NavMenu } from './NavMenu';
-import {Sidebar} from "./Sidebar";
-import {AuthContext} from "../../context/AuthContext";
+import { NavMenu } from '../NavMenu';
+import {Sidebar} from "../sidebar/Sidebar";
+import {AuthContext} from "../../../context/AuthContext";
+
+import "./layout.css"
 
 export const Layout = (props) => {
     const [sidebar, setSidebar] = useState(true)
@@ -37,13 +39,20 @@ export const Layout = (props) => {
     }
     
     return (
-      <div id="page-wrap" className={authenticated? "page-wrapper with-navbar with-sidebar" : "page-wrapper with-navbar"}>
-        <NavMenu toggleSidebar={toggleSidebar} sidebar={sidebar} toggleDarkMode={toggleDarkMode} />
-        <Sidebar toggleSidebar={toggleSidebar} />
-          
-        <div className="content-wrapper">
-          {props.children}
-        </div>
+      <div id="page-wrap" className={authenticated? "layout-sidebar" : "layout"}>
+          <div className="venus-header"> 
+              <NavMenu className="venus-header" toggleSidebar={toggleSidebar} sidebar={sidebar} toggleDarkMode={toggleDarkMode} />
+          </div>
+         
+          <div className="venus-sidebar">      
+              <Sidebar toggleSidebar={toggleSidebar} />
+          </div>
+      
+          <div className="venus-content">
+              <div>
+                  {props.children}
+              </div>
+          </div>
       </div>
     )
 }

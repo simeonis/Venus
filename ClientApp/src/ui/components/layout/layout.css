@@ -1,0 +1,35 @@
+﻿.layout{
+    grid-template-columns: 1fr;
+    
+}   
+
+.layout-sidebar{
+    display: grid;
+    grid-template-columns: clamp(150px, 25%, 200px) 1fr;
+    grid-template-rows: 5vh 95vh;
+}
+
+.venus-header{
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.venus-sidebar{
+    grid-column: 1;
+    grid-row: 1/3;
+}
+
+.venus-content{
+    grid-column: 2;
+    grid-row: 2;
+}
+
+@media(max-width: 630px) {
+    .venus-header,
+    .venus-content{
+        grid-column: 1/3;
+    }
+    .venus-sidebar {
+        display: none!important;
+    }
+}

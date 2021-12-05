@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using venus.Helpers;
 using venus.Models;
 using venus.Models.IRepositories;
 
@@ -26,10 +27,25 @@ namespace venus.Controllers
 
         //private static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1"), new Project("Project 2", "Description 2")};
         
-        [HttpGet]
-        public ActionResult<Project> Get()
+        [HttpGet("get-all")]
+        public ActionResult<Project> GetAll()
         {
-            return Ok(projectRepository.GetProjects());
+            
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = JwtService.Verify(jwt);
+                var userId = token.Issuer;
+                
+                return Ok(projectRepository.GetProjects(userId));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+            
         }
 
         [HttpGet("{id}")]

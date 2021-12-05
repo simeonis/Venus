@@ -1,9 +1,10 @@
-﻿import React, { useState } from 'react'
+﻿import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { ProjectEnums } from "../../constants/ProjectConstants"
 import { ApiUrls } from "../../constants/ApiConstants"
 import { Link } from 'react-router-dom';
+import {AuthContext} from "../../context/AuthContext";
 
 export const CreateProject = () => {
 
@@ -13,7 +14,27 @@ export const CreateProject = () => {
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
+    const {  user } = useContext(AuthContext)
+
     const history = useHistory()
+
+    const handleAddPeople = (id) => {
+
+        const userToProjDto = {
+            projId : id,
+            userEmail: user.email,
+        };
+
+        axios.post(ApiUrls.addUserToProject, userToProjDto)
+            .then(response => {
+                if (response !== null) {
+                }
+            })
+            .catch(error => {
+               
+           
+            });
+    }
 
     const addProject = (projectDto) => {
         console.log("hello add proj")
@@ -21,6 +42,9 @@ export const CreateProject = () => {
             .then(response => {
                 if (response !== null) {
                     console.log("RESP " + JSON.stringify(response.data))
+
+                    handleAddPeople(response.data.id)
+                    
                     // Go back to bug list
                     history.push('/')
                 }
