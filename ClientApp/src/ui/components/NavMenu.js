@@ -6,30 +6,25 @@ import {FaArrowLeft, FaArrowRight, FaMoon} from 'react-icons/fa';
 export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   const [collapsed, setCollapsed] = useState(true)
 
-  const { authenticated } = useContext(AuthContext);
+  const { authenticated, logout } = useContext(AuthContext);
   
   const toggleNavbar = () => {
-   
+        
   }
   
   return (
-    <header className="container-fluid">
+    <header className="w-full border-left">
       <nav className="navbar">
           {
-              authenticated? (
-                  <button onClick={() => toggleSidebar()}>
-                      {
-                          sidebar ? <FaArrowLeft /> :  <FaArrowRight /> 
-                      }
-                  </button>
-              ): null
+              // authenticated? (
+              //     //put drop down here
+              //     // <button onClick={() => toggleSidebar()}>
+              //     //     {
+              //     //         sidebar ? <FaArrowLeft /> :  <FaArrowRight /> 
+              //     //     }
+              //     // </button>
+              // ): null
           }
-         
-
-          <a href="#" className="navbar-brand">
-            {/* <img src="..." alt="..." /> */}
-            Venus
-          </a>
           
           {/* <!-- Navbar nav --> */}
           {
@@ -50,9 +45,17 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
               </ul>
               )
           }
-          <button onClick={() => toggleDarkMode()}>
-              <FaMoon />
-          </button>
+          <div className="w-full d-flex justify-content-end ">
+              <button onClick={() => toggleDarkMode()}>
+                  <FaMoon />
+              </button>
+              {
+                  authenticated?(
+                      <a href="#" className="sidebar-link" onClick={() =>logout()}>Logout</a>
+                  ):null
+              }
+          </div>
+         
       </nav>
     </header>
   );

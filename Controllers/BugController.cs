@@ -14,7 +14,7 @@ namespace venus.Controllers
     public class BugController : Controller
     {
         private readonly IBugRepository bugRepository;
-
+        
         public BugController(IBugRepository repository)
         {
             bugRepository = repository;

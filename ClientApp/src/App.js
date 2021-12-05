@@ -1,6 +1,6 @@
 import React  from 'react';
 import { Route } from 'react-router';
-import { Layout } from './ui/components/Layout';
+import { Layout } from './ui/components/layout/Layout';
 import { Home } from './ui/pages/Home';
 import { BugList } from './ui/pages/bug/BugList'
 import { CreateBug } from './ui/pages/bug/CreateBug';
