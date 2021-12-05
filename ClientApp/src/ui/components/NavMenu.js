@@ -1,16 +1,12 @@
 import React, {useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
-import {FaArrowLeft, FaArrowRight, FaMoon} from 'react-icons/fa';
+import { FaMoon} from 'react-icons/fa';
 
-export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
-  const [collapsed, setCollapsed] = useState(true)
+export const NavMenu = ({toggleDarkMode}) => {
 
   const { authenticated, logout } = useContext(AuthContext);
   
-  const toggleNavbar = () => {
-        
-  }
   
   return (
     <header className="w-full">
@@ -35,15 +31,6 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link " to="/signup">Signup</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link " to="/bugs">View Bugs</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link " to="/createbug">Create Bug</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link " to="/modifybug">Modify Bug</Link>
                 </li>
               </ul>
               )

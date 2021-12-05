@@ -106,7 +106,7 @@ const Home = () => {
                                     <div className=" col-3">
                                         <div className="row">
                                             <Link className="btn btn-primary m-10" to={{
-                                                pathname: `/projectdetails`,
+                                                pathname: `/project-details`,
                                                 query: project.id
                                             }}>Details</Link>
                                         </div>
@@ -120,8 +120,6 @@ const Home = () => {
                                             <input type="button" className="btn btn-danger m-10" onClick={(e) => { showAlert(project.id, project.title) }} value="Delete" />
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         })
