@@ -13,7 +13,7 @@ export const NavMenu = ({sidebar, toggleSidebar, toggleDarkMode}) => {
   }
   
   return (
-    <header className="w-full border-left">
+    <header className="w-full">
       <nav className="navbar">
           {
               // authenticated? (

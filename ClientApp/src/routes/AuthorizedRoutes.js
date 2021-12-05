@@ -2,7 +2,7 @@
 import {Switch, useRouteMatch } from 'react-router';
 import AuthorizeRoute from '../ui/components/AuthorizeRoute';
 import {ManageAccess} from '../ui/pages/manageAccess/ManageAccess'
-import Auth from '../ui/pages/Auth';
+import Home from '../ui/pages/Home';
 
 export default function AuthorizedRoutes() {
 
@@ -11,8 +11,8 @@ export default function AuthorizedRoutes() {
     return (
         <Fragment>
             <Switch>
-                <AuthorizeRoute exact path={`${path}`} component={Auth} redirectPath="/login" />
-                <AuthorizeRoute exact path={`${path}home`} component={Auth} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}`} component={Home} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}home`} component={Home} redirectPath="/login" />
                 <AuthorizeRoute exact path={`${path}manage`} component={ManageAccess} />
             </Switch>
         </Fragment>

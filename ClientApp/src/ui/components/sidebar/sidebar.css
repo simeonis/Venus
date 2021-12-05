@@ -1,3 +1,17 @@
 ﻿.brand-wrap{
     height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-sidebar{
+    margin: 2px;
+    border-radius: 20px;
+    background-color: #ecf0f1;
+    
+}
+
+.dark-mode .my-sidebar{
+    background-color:  #191c20;
 }

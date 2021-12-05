@@ -40,19 +40,19 @@ export const Layout = (props) => {
     
     return (
       <div id="page-wrap" className={authenticated? "layout-sidebar" : "layout"}>
-          {/*<div className="venus-header">header</div>*/}
-          <Sidebar className="venus-sidebar" toggleSidebar={toggleSidebar} />
-          <NavMenu className="venus-header" toggleSidebar={toggleSidebar} sidebar={sidebar} toggleDarkMode={toggleDarkMode} />
-          {/*<div className="venus-sidebar">sidebar</div>*/}
+          <div className="venus-header"> 
+              <NavMenu className="venus-header" toggleSidebar={toggleSidebar} sidebar={sidebar} toggleDarkMode={toggleDarkMode} />
+          </div>
+         
+          <div className="venus-sidebar">      
+              <Sidebar toggleSidebar={toggleSidebar} />
+          </div>
       
-          {/*<div className="venus-content">content</div>*/}
-          
-   
-        {/*<Sidebar className="venus-sidebar" toggleSidebar={toggleSidebar} />*/}
-        {/*  */}
-        <div className="venus-content border-left">
-          {props.children}
-        </div>
+          <div className="venus-content">
+              <div>
+                  {props.children}
+              </div>
+          </div>
       </div>
     )
 }

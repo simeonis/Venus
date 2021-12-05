@@ -117,7 +117,8 @@ namespace venus.Controllers
                 var userDto = new UserDto
                 {
                     Name = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    Projects = user.Projects
                 };
                 return Ok(userDto);
             }

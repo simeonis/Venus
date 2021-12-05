@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [projectList, setProjectList] = useState(null);
     const [authenticated, setAuthenticated] = useState(false)
     const [error, setError] = useState();
 
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
         console.log("In Use Effect " + authenticated)
         
         getUser()
+        getProjects()
         
         if (authenticated) {
             history.push('/home')
@@ -70,6 +72,21 @@ export const AuthProvider = ({ children }) => {
                 console.error('There was an error!', error.response);
             });
     }
+
+    //API request to get list of projects
+    const getProjects = () => {
+        console.log("getting projects")
+        axios.get(ApiUrls.getAllProjects)
+            .then(response => {
+                if (response !== null) {
+                    console.log("response : " + JSON.stringify(response.data))
+                    setProjectList(response.data)
+                }
+            })
+            .catch(error => {
+                console.error('There was an error.', error.response)
+            })
+    }
     
     const logout = () =>{
         axios.post(ApiUrls.logOut)
@@ -94,9 +111,11 @@ export const AuthProvider = ({ children }) => {
                 register,
                 getUser,
                 logout,
+                getProjects,
                 authenticated,
                 user,
-                error
+                projectList,
+                error,
             }}>
             {children}
         </AuthContext.Provider>

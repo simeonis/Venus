@@ -1,38 +1,17 @@
 ﻿import React, {useContext, useEffect, useState} from "react"
 import {AuthContext} from "../../../context/AuthContext";
 import { Link } from 'react-router-dom';
-import axios from "axios";
-import {ApiUrls} from "../../../constants/ApiConstants";
 import "./sidebar.css"
 
-export const Sidebar = ({toggleSidebar}) =>{
+export const Sidebar = () =>{
     
-    const { authenticated, user } = useContext(AuthContext)
-    const [projectList, setProjectList] = useState([])
-
-    const getProjects = () => {
-        console.log("getting projects")
-        axios.get(ApiUrls.project)
-            .then(response => {
-                if (response !== null) {
-                    console.log("response : " + JSON.stringify(response.data))
-                    setProjectList(response.data)
-                }
-            })
-            .catch(error => {
-                console.error('There was an error.', error.response)
-            })
-    }
-    
-    useEffect(()=>{
-        getProjects()
-    },[])
+    const { authenticated, projectList } = useContext(AuthContext)
     
     return(
        
         authenticated ?(
-            <div className=" h-full">
-                <div>
+            <div className="h-full">
+                <div className="my-sidebar h-full">
                     <div className="brand-wrap">
                         <a href="#" className="sidebar-brand">
                             {/*<img src="..." alt="..." />*/}
@@ -43,27 +22,22 @@ export const Sidebar = ({toggleSidebar}) =>{
                     <div className="sidebar-menu">
 
                         <div className="sidebar-divider" />
-
-                        {/*<div className="sidebar-content">*/}
-                        {/*    <input type="text" className="form-control" placeholder="Search">*/}
-                        {/*        <div*/}
-                        {/*            className="mt-10 font-size-12">*/}
-                        {/*            Press <kbd>/</kbd> to focus*/}
-                        {/*        </div>*/}
-                        {/*    </input>*/}
-                        {/*</div>*/}
-
+                        
                         <h5 className="sidebar-title">Projects</h5>
                         <div className="sidebar-divider" />
+                        <Link className="sidebar-link" to="/createproject">Add Project</Link>
+                        {/* Set up for project links on sidebar*/}
                         {
-                            projectList.map(p =>(
-                                <a href="#" className="sidebar-link">{p.title}</a>
-                            ))
+                            projectList !== null ?(
+                                projectList.map(project =>
+                                    <a className="sidebar-link">{project.title}</a>
+                                )
+                            ): null
+                        
                         }
-                        {/*<a href="#" className="sidebar-link">Existing Project</a>*/}
-                        {/*<a href="#" className="sidebar-link">Existing Project</a>*/}
-                        <Link className="sidebar-link" to="/createproject">Create Project</Link>
                         <br/>
+                        
+                        
                         <h5 className="sidebar-title">Account</h5>
                         <div className="sidebar-divider" />
 
