@@ -1,5 +1,5 @@
 import React, {Component, useContext, useState} from 'react';
-import { NavMenu } from '../NavMenu';
+import { NavMenu } from '../navbar/NavMenu';
 import {Sidebar} from "../sidebar/Sidebar";
 import {AuthContext} from "../../../context/AuthContext";
 
@@ -39,19 +39,22 @@ export const Layout = (props) => {
     }
     
     return (
-      <div id="page-wrap" className={authenticated? "layout-sidebar" : "layout"}>
+      <div id="page-wrap" className={authenticated? "layout-sidebar venus-page-wrap h-full overflow-hidden" : "layout venus-page-wrap h-full overflow-hidden"}>
           <div className="venus-header"> 
               <NavMenu className="venus-header" toggleSidebar={toggleSidebar} sidebar={sidebar} toggleDarkMode={toggleDarkMode} />
           </div>
-         
-          <div className="venus-sidebar">      
-              <Sidebar toggleSidebar={toggleSidebar} />
-          </div>
+
+          {
+              authenticated?(
+                  <div className="venus-sidebar h-full">
+                      <Sidebar toggleSidebar={toggleSidebar} />
+                  </div>
+              ):null
+          }
+        
       
-          <div className="venus-content">
-              <div>
+          <div className="h100 venus-content overflow-auto">
                   {props.children}
-              </div>
           </div>
       </div>
     )

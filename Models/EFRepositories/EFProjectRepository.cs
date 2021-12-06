@@ -16,10 +16,8 @@ namespace venus.Models.EFRepositories
             dbContext = ctx;
         }
         
-        public IEnumerable<Project> Projects => dbContext.Projects.Include(p => p.UsersList);
-
-        //not sure if this works
-        public IEnumerable<Bug> Bugs => dbContext.Projects.FirstOrDefault().Bugs;
+        public IEnumerable<Project> Projects => dbContext.Projects.Include(p => p.UsersList)
+                                                                  .Include(p => p.Bugs);
 
         public Project GetProject(Guid id)
         {
@@ -34,13 +32,12 @@ namespace venus.Models.EFRepositories
                 project.UsersList.Any(user =>
                     user.Id == id)).ToList();
             
-            Console.WriteLine("MYT COunt " + p.Count + " " + id);
             return p;
         }
 
-        public Project AddProject(ProjectDto projectDto)
+        public Project AddProject(Project project)
         {
-            Project project = new Project(projectDto);
+            // project = new Project(project);
             if(!dbContext.Projects.Where(p => p.ID.Equals(project.ID)).Any())
             {
                 var res = dbContext.Projects.Add(project);

@@ -6,8 +6,9 @@ import { BugTable } from '../../components/tables/BugTable'
 import { BugEnums } from "../../../constants/BugConstants"
 import { CreateBug } from './CreateBug';
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import { Modal } from '../../components/modal/Modal'
+import { useSearchParams } from 'react-router-dom'
 
 export const BugList = () => {
     // Loading
@@ -26,9 +27,12 @@ export const BugList = () => {
     const [canDelete, setCanDelete] = useState(false)
     const [canModify, setCanModify] = useState(false)
 
+    const location = useLocation();
+    
     useEffect(() => {
         setTimeout(() => { if (loading) { setShowLoading(true) } }, 100)
         getBugs()
+        console.log(location.query)
     }, [])
 
     useEffect(() => {

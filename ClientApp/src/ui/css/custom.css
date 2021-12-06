@@ -1,4 +1,21 @@
 /* Provide sufficient contrast against white background */
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body,
+#root{
+    height: 100%;
+    overflow: auto;
+}
+
+
 a {
   color: #0366d6;
 }
@@ -77,6 +94,18 @@ th.min, td.min {
 }
 .green{
   background-color: lawngreen;
+}
+
+.overflow-auto{
+    overflow: auto;
+}
+
+.overflow-hidden{
+    overflow: hidden;
+}
+
+.h100{
+    height: 100%;
 }
 
 .pieChart {

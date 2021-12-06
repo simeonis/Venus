@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace venus.Models
@@ -21,7 +22,7 @@ namespace venus.Models
         public string Description { get; set; }
         public List<Bug> Bugs { get; set; }
         public string Color { get; set; }
-
+        public Guid OwnerID { get; set; }
         public List<ApplicationUser> UsersList { get; set; }
 
        
@@ -33,15 +34,16 @@ namespace venus.Models
             this.Bugs = new List<Bug>();
             this.UsersList = new List<ApplicationUser>();
             this.Color = ProjectColor.Green.ToString();
+            OwnerID = Guid.Empty;
         }
 
-        public Project(ProjectDto projectDto)
+        public Project(string title, string description, string color, Guid ownerId)
         {
             ID = Guid.NewGuid();
-            Title = projectDto.Title;
-            Description = projectDto.Description;
-            Color = projectDto.Color;
-
+            Title = title;
+            Description = description;
+            Color = color;
+            OwnerID = ownerId;
         }
     }
 }

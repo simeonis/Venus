@@ -7,8 +7,6 @@ import { FaFolder } from 'react-icons/fa'
 import { IoIosCloseCircle } from 'react-icons/io'
 
 
-
-
 const Home = () => {
     //states used to get and set properties
     const { user, projectList, getUser, getProjects } = useContext(AuthContext);
@@ -70,14 +68,13 @@ const Home = () => {
     }, [])
 
     return (
-        <div>
+        <div className="overflow-hidden">
             <div className="p-20">
-                <h1>Your Projects (Auth!)</h1>
                 {
                     user ? <p>Welcome, {user.name}</p> : null
                 }
             </div>
-            <div className="container-fluid">
+            <div className="h100 overflow-hidden">
                 {alert && <div className="alert alert-danger row card col-6 offset-3 alert-fixed" id="deleteAlert">
                     <button className="close" data-dismiss="alert" type="button" aria-label="Close" onClick={(e) => { showAlert(e) }} ><IoIosCloseCircle />  </button>
 
@@ -95,7 +92,8 @@ const Home = () => {
                 {
                     projectList !== null ?(
                         projectList.map((project, index, array) => {
-                            return <div className="row">
+
+                            return <div className="row h100 overflow-hidden">
                                 <div className="row card col-6 offset-3" style={{ borderColor: projectColor(project.color) }}>
                                     <div className=" col-9" style={{ borderColor: projectColor(project.color) }}>
                                         <FaFolder className="fa-lg" />
