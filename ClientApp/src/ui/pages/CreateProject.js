@@ -44,13 +44,10 @@ export const CreateProject = () => {
                     console.log("RESP ADD PROJECT " + JSON.stringify(response.data))
 
                     handleAddPeople(response.data.id)
-                    
-                    // Go back to bug list
-                    history.push('/')
+                    history.push('/home')
                 }
             })
             .catch(error => {
-                // setError(error.response);
                 console.error('There was an error!', error.response);
             });
     }
@@ -87,30 +84,30 @@ export const CreateProject = () => {
         addProject(projectDto)
     }
     return (
-        <div className="container justify-content-center">
-            <button className="btn btn-primary m-10" onClick={() => history.goBack()}>Back</button>
+        <div className="container d-flex flex-column align-items-center">
 
             <h1>Create a Project</h1>
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
                     <label className="required">Project Title</label>
-                    <input className="form-control" type="text" required="required" required onChange={(e) => setTitle(e.target.value)}/>
+                    <input className="form-control" maxLength={25}  type="text" required="required" required onChange={(e) => setTitle(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label className="required">Project Description</label>
-                    <input className="form-control" type="text" required="required" onChange={(e) => setDescription(e.target.value)}/>
+                    <input className="form-control" maxLength={80} type="text" required="required" onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label className="required">Project Color</label>
-                    <select className="custom-select" required="required" onChange={(e) => setColor(e.target.value)}>
+                    <span id="select-span">
+                    <select className="custom-select select-project" required="required" onChange={(e) => setColor(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select a Project Color</option>
                         {
                             Object.keys(projectColor).map(key =>
                                 <option style={{ color: projectColors(key) }} value={key}>{key}</option>
                             )
-
                         }
-                    </select>
+                        </select>
+                        </span>
                 </div>
 
                 <div className="text-center panel-body">

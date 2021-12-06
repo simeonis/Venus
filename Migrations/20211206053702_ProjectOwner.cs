@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace venus.Migrations
 {
-    public partial class ProjOwner : Migration
+    public partial class ProjectOwner : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

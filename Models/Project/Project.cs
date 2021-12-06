@@ -22,7 +22,6 @@ namespace venus.Models
         public string Description { get; set; }
         public List<Bug> Bugs { get; set; }
         public string Color { get; set; }
-
         public Guid OwnerID { get; set; }
         public List<ApplicationUser> UsersList { get; set; }
 
