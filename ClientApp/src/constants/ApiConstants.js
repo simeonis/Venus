@@ -9,7 +9,9 @@ export const ApiUrls = {
     addUserToProject: `${baseUrl}/project/add-user`,
     removeUserFromProject: `${baseUrl}/project/remove-user`,
     bug: `${baseUrl}/bug`,
+    projectBug: `${baseUrl}/bug/project`,
     project: `${baseUrl}/project`,
     getAllProjects: `${baseUrl}/project/get-all`,
-    searchUser:  `${baseUrl}/user/search`,
+    searchUser: `${baseUrl}/user/search`,
+    getUsername: `${baseUrl}/user/username`
 }

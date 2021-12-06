@@ -107,11 +107,10 @@ const Home = () => {
     }
     const divClick = (projectID) => {
         history.push({
-            pathname: "/project-dashboard",
+            pathname: `/project-dashboard?id=${projectID}`,
             query: projectID
         })
     }
-
 
     //submission handler for delete project functionality
     const handleSubmit = (e) => {
