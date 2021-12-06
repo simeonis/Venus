@@ -24,20 +24,14 @@ namespace venus.Controllers
             _userManager = userManager;
         }
 
-
-        //private static List<Project> projectList = new List<Project> { new Project("Project 1", "Description1"), new Project("Project 2", "Description 2")};
-        
         [HttpGet("get-all")]
         public ActionResult<Project> GetAll()
         {
-            
             try
             {
-                var jwt = Request.Cookies["jwt"];
-                var token = JwtService.Verify(jwt);
-                var userId = token.Issuer;
+                var userId = GetUserId();
                 
-                return Ok(projectRepository.GetProjects(userId));
+                return Ok(projectRepository.GetProjects(userId.ToString()));
             }
             catch (Exception e)
             {
@@ -60,11 +54,29 @@ namespace venus.Controllers
         }
 
         [HttpPost]
-        public Project Post([FromBody] ProjectDto project) =>
+        public ActionResult<Project> Post([FromBody] ProjectDto projectDto)
+        {
+            try
+            {
+                var userId = GetUserId();
+
+                if (userId == null)
+                    return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+           
+                var project = new Project(projectDto.Title, projectDto.Description, projectDto.Color, userId.Value);
+            
+                projectRepository.AddProject(project);
         
-            projectRepository.AddProject(project);
-
-
+                return Ok(project);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+        }
+        
         [HttpPut]
         public Project Put([FromBody] Project project) =>
             projectRepository.UpdateProject(project);
@@ -164,6 +176,44 @@ namespace venus.Controllers
             projectRepository.UpdateProject(project);
             
             return Ok(project.UsersList);
+
+        }
+
+        private Guid? GetUserId()
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = JwtService.Verify(jwt);
+                var userId = token.Issuer;
+
+                return Guid.Parse(userId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return null;
+        }
+
+        private bool isProjOwner(Guid proj_id,Guid user_id)
+        {
+            var proj = projectRepository.GetProject(proj_id);
+
+            try
+            {
+                if (proj.OwnerID == user_id)
+                {
+                    return true;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return false;
 
         }
     }

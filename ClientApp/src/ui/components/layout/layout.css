@@ -1,4 +1,7 @@
-﻿.layout{
+﻿.venus-page-wrap{
+    overflow: auto;
+}
+.layout{
     grid-template-columns: 1fr;
     
 }   
@@ -7,6 +10,7 @@
     display: grid;
     grid-template-columns: clamp(150px, 25%, 200px) 1fr;
     grid-template-rows: 5vh 95vh;
+    height: 100%;
 }
 
 .venus-header{
@@ -17,11 +21,14 @@
 .venus-sidebar{
     grid-column: 1;
     grid-row: 1/3;
+    height: 100%;
+
 }
 
 .venus-content{
     grid-column: 2;
     grid-row: 2;
+    height: 100%;
 }
 
 @media(max-width: 630px) {
