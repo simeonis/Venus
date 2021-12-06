@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
 import { Link } from 'react-router-dom';
-import { FaFolder } from 'react-icons/fa'
+import {FaFolder, FaFolderPlus} from 'react-icons/fa'
 import { IoIosCloseCircle } from 'react-icons/io'
 
 
@@ -73,6 +73,9 @@ const Home = () => {
                 {
                     user ? <p>Welcome, {user.name}</p> : null
                 }
+            </div>
+            <div className="d-flex justify-content-end m-15 float-group-bottom">
+                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white btn-lg cust-lg-btn" to="/createproject"><FaFolderPlus size={50}  /></Link>
             </div>
             <div className="h100 overflow-hidden">
                 {alert && <div className="alert alert-danger row card col-6 offset-3 alert-fixed" id="deleteAlert">

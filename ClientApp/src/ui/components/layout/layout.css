@@ -3,12 +3,11 @@
 }
 .layout{
     grid-template-columns: 1fr;
-    
 }   
 
 .layout-sidebar{
     display: grid;
-    grid-template-columns: clamp(150px, 25%, 200px) 1fr;
+    grid-template-columns: clamp(250px, 40%, 300px) 1fr;
     grid-template-rows: 5vh 95vh;
     height: 100%;
 }

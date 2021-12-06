@@ -3,6 +3,8 @@ import {AuthContext} from "../../../context/AuthContext";
 import { Link } from 'react-router-dom';
 import "./sidebar.css"
 
+import {GiVenusFlytrap} from 'react-icons/gi';
+
 export const Sidebar = () =>{
     
     const { authenticated, projectList } = useContext(AuthContext)
@@ -10,12 +12,12 @@ export const Sidebar = () =>{
     return(
         authenticated ?(
             <div className="h-full">
-                <div className="my-sidebar h-full">
+                <div className="my-sidebar h-full shadow">
                     <div className="brand-wrap">
-                        <a href="#" className="sidebar-brand">
-                            {/*<img src="..." alt="..." />*/}
+                        <Link to="/home" className="sidebar-brand">
+                            <GiVenusFlytrap className="mr-5" color={"#46954a"} />
                             Venus
-                        </a>
+                        </Link>
                     </div>
                    
                     <div className="sidebar-menu">
@@ -24,7 +26,6 @@ export const Sidebar = () =>{
                         
                         <h5 className="sidebar-title">Projects</h5>
                         <div className="sidebar-divider" />
-                        <Link className="sidebar-link" to="/createproject">Add Project</Link>
                         {/* Set up for project links on sidebar*/}
                         {
                             projectList !== null ?(

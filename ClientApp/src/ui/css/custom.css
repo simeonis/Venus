@@ -73,6 +73,12 @@ th.min, td.min {
     right: 4em;
     z-index: 10;
 }
+.float-group-bottom {
+    position: fixed;
+    top: 50em;
+    right: 4em;
+    z-index: 10;
+}
 .card{
     border-color: coral;
     border-width: 1px;
@@ -106,4 +112,9 @@ th.min, td.min {
 
 .h100{
     height: 100%;
+}
+
+.cust-lg-btn{
+    height: 5em!important;
+    width: 5em!important;
 }
