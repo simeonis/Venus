@@ -1,4 +1,4 @@
-﻿import React, { useContext, useEffect, useState } from 'react'
+﻿import React, { useContext, useEffect, useState, useRef } from 'react'
 import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
@@ -190,7 +190,6 @@ const Home = () => {
                                                 onClick={(e) => { e.stopPropagation(); }}
                                             ><FaPen/>
                                                 
-
                                             </Link>                                    
                                             <button style={{ zIndex: 0 }} className="btn btn-danger m-10 text-white" onClick={(e) => { e.stopPropagation(); showAlert(project.id, project.title) }} ><FaTrash/></button>
                                         </div>
