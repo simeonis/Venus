@@ -95,7 +95,6 @@ const Home = () => {
                 {
                     projectList !== null ?(
                         projectList.map((project, index, array) => {
-
                             return <div className="row">
                                 <div className="row card col-6 offset-3" style={{ borderColor: projectColor(project.color) }}>
                                     <div className=" col-9" style={{ borderColor: projectColor(project.color) }}>
@@ -106,7 +105,7 @@ const Home = () => {
                                     <div className=" col-3">
                                         <div className="row">
                                             <Link className="btn btn-primary m-10" to={{
-                                                pathname: `/project-details`,
+                                                pathname: `/project-dashboard`,
                                                 query: project.id
                                             }}>Details</Link>
                                         </div>

@@ -78,3 +78,18 @@ th.min, td.min {
 .green{
   background-color: lawngreen;
 }
+
+.pieChart {
+    margin-top: -75px;
+    margin-bottom: -75px;
+}
+
+.card {
+    background-color: #ECF0F1;
+    border: none;
+}
+
+.card.user {
+    background-color: #007FAD;
+    color: #fff;
+}

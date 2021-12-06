@@ -108,7 +108,6 @@ export const CreateProject = () => {
                             Object.keys(projectColor).map(key =>
                                 <option style={{ color: projectColors(key) }} value={key}>{key}</option>
                             )
-
                         }
                     </select>
                 </div>
