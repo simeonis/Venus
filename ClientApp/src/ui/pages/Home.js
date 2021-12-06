@@ -106,8 +106,11 @@ const Home = () => {
         setAlert(!alert)
 
     }
-    const divClick = (event, projectID) => {
-        history.push("/modifyproject", projectID)
+    const divClick = (projectID) => {
+        history.push({
+            pathname: "/project-dashboard",
+            query: projectID
+        })
     }
 
 
