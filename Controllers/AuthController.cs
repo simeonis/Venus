@@ -31,16 +31,13 @@ namespace venus.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            
+            if(dto.Password != dto.PasswordConfirm)
+                return new ContentResult() { Content = "Password Do Not Match", StatusCode = 403 };
 
-            Console.WriteLine("Register");
-
-            var user = new ApplicationUser() { UserName = dto.Email, Email = dto.Email };
-
-            IdentityResult result = await _userManager.CreateAsync(user, dto.Password);
+            var user = new ApplicationUser() { UserName = dto.UserName, Email = dto.Email, Dev = dto.Dev, Specialization = dto.Specialization, Platform = dto.Platform};
+            
+            var result = await _userManager.CreateAsync(user, dto.Password);
 
             if (!result.Succeeded)
             {
@@ -73,7 +70,7 @@ namespace venus.Controllers
                 return new ContentResult() { Content = "Bad Password", StatusCode = 403 };
             }
 
-            var result = await _signInManager.PasswordSignInAsync(dto.Email, dto.Password, dto.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, dto.Password, dto.RememberMe, true);
 
             if (!result.Succeeded)
             {
@@ -88,7 +85,7 @@ namespace venus.Controllers
 
             var userDto = new UserDto
             {
-                Name = user.UserName
+                UserName = user.UserName
             };
 
             
@@ -127,9 +124,9 @@ namespace venus.Controllers
 
                 var userDto = new UserDto
                 {
-                    Name = user.UserName,
+                    UserName = user.UserName,
                     Email = user.Email,
-                    Projects = user.Projects
+                    Projects = user.Projects,
                 };
                 return Ok(userDto);
             }

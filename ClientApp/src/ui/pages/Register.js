@@ -5,20 +5,25 @@ import {AuthContext} from "../../context/AuthContext";
 
 export const Register  = () => {
 
-    const [name, setName] = useState("")
+    const [userName, setuserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [passwordConfirm, setPasswordConfirm] = useState("")
     const [response, setResponse] = useState("")
     const [nameError, setNameError] = useState("")
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
+    const [devChecked, setDevChecked] = useState(false)
+    const [specialization, setSpecialization] = useState("")
+    const [platform, setPlatform] = useState("")
+    
 
     const { register, error } = useContext(AuthContext);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
 
-        if(name === ""){
+        if(userName === ""){
             setNameError("Name cannot be empty")
         }
         if(email === ""){
@@ -28,13 +33,22 @@ export const Register  = () => {
         if(password === ""){
             setPasswordError("Password cannot be empty")
         }
+        if(passwordConfirm === ""){
+            setPasswordError("Password Confirm cannot be empty")
+        }
         else{
 
             const userDto = { 
-                name: name, 
+                userName: userName, 
                 email : email, 
-                password: password
+                password: password,
+                passwordConfirm: passwordConfirm,
+                dev: devChecked,
+                specialization: specialization,
+                platform: platform
             };
+            
+            console.log("User Dto " + JSON.stringify(userDto))
 
             register(userDto);
         }
@@ -48,8 +62,8 @@ export const Register  = () => {
                 {/* <!-- name --> */}
                 <div className="form-group">
                     <p className="text-danger">{nameError}</p>
-                    <label htmlFor="full-name" className="required">Full name</label>
-                    <input type="text" className="form-control" id="full-name" placeholder="Full name" required="required" onChange={(e) => setName(e.target.value)} />
+                    <label htmlFor="user-name" className="required">User Name</label>
+                    <input type="text" className="form-control" id="user-name" placeholder="user name" required="required" onChange={(e) => setuserName(e.target.value)} />
                 </div>
 
                 {/* <!-- Email --> */}
@@ -66,27 +80,16 @@ export const Register  = () => {
                     <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)}  />
                 </div>
 
-                {/* <!-- Radio --> */}
+                {/* <!-- Password --> */}
                 <div className="form-group">
-                    <label htmlFor="gender-male" className="required">Gender</label>
-                    <div className="custom-radio">
-                    <input type="radio" name="gender" id="gender-male" value="male" required="required" />
-                    <label htmlFor="gender-male">Male</label>
-                    </div>
-                    <div className="custom-radio">
-                    <input type="radio" name="gender" id="gender-female" value="female" required="required" />
-                    <label htmlFor="gender-female">Female</label>
-                    </div>
-                    <div className="custom-radio">
-                    <input type="radio" name="gender" id="gender-other" value="other" required="required" />
-                    <label htmlFor="gender-other">Other</label>
-                    </div>
+                    <label htmlFor="password-confirm" className="required">Password Confirm</label>
+                    <input type="password" className="form-control" id="password-confirm" placeholder="Password Confirm" required="required" onChange={(e) => setPasswordConfirm(e.target.value)}  />
                 </div>
 
               {/* <!-- Switch --> */}
               <div className="form-group">
                     <div className="custom-switch">
-                    <input type="checkbox" id="am-developer" />
+                    <input type="checkbox" id="am-developer" onChange={(e)=>setDevChecked(e.target.checked)} />
                     <label htmlFor="am-developer">Developer</label>
                     </div>
                 </div>
@@ -94,7 +97,8 @@ export const Register  = () => {
                 {/* <!-- Select --> */}
                 <div className="form-group">
                     <label htmlFor="area-of-specialization" className="required">Area of specialization</label>
-                    <select className="form-control" defaultValue="" id="area-of-specialization" required="required">
+                    <select className="form-control" defaultValue="" id="area-of-specialization" required="required"
+                            onChange={(e) => setSpecialization(e.target.value)}>
                         <option value="" disabled="disabled">Select your area of specialization</option>
                         <option value="front-end">Front-end</option>
                         <option value="back-end">Back-end</option>
@@ -105,21 +109,14 @@ export const Register  = () => {
                 {/* <!-- Multi-select --> */}
                 <div className="form-group">
                     <label htmlFor="languages" className="required">Platform</label>
-                    <select className="form-control" id="languages"  required="required" >
-                        <option value="javascript">Windows</option>
-                        <option value="python">Mac</option>
-                        <option value="php">Linux</option>
+                    <select className="form-control" id="languages"  required="required"
+                            onChange={(e) => setPlatform(e.target.value)}>
+                        <option value="windows">Windows</option>
+                        <option value="mac">Mac</option>
+                        <option value="linux">Linux</option>
                     </select>
                 </div>
                 
-                {/* <!-- Checkbox --> */}
-                <div className="form-group">
-                    <div className="custom-checkbox">
-                    <input type="checkbox" id="agree-to-terms" />
-                    <label htmlFor="agree-to-terms">I agree to all the <a href="#" className="hyperlink">terms and conditions</a></label>
-                    </div>
-                </div>
-
                 {/* <!-- Submit button --> */}
                 <button className="btn btn-primary" onClick={(e) => handleSubmit(e)} >Submit</button>
             </form>

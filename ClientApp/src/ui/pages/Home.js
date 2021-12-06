@@ -124,16 +124,16 @@ const Home = () => {
     useEffect(() => {
         getUser();
         getProjects()
-    }, [projectList])
+    }, [])
 
     return (
         <div className="overflow-hidden">
-            <div className="d-flex justify-content-end m-15 float-group">
-                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to="/createbug"><FaPlus /></Link>
+            <div className="d-flex justify-content-end m-15 float-group-bottom">
+                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white cust-lg-btn" to="/createbug"><FaPlus size={50} /></Link>
             </div>
             <div className="p-20">
                 {
-                    user ? <h3>Welcome, {user.name}</h3> : null
+                    user ? <h3>Welcome, {user.userName}</h3> : null
                 }
             </div>
             <div className="h100 overflow-hidden grid-container">
