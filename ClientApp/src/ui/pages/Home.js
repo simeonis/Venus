@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
 import { Link } from 'react-router-dom';
-import { FaFolder } from 'react-icons/fa'
+import {FaFolder, FaPlus} from 'react-icons/fa'
 import { IoIosCloseCircle } from 'react-icons/io'
 
 
@@ -69,6 +69,9 @@ const Home = () => {
 
     return (
         <div className="overflow-hidden">
+            <div className="d-flex justify-content-end m-15 float-group">
+                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to="/createbug"><FaPlus /></Link>
+            </div>
             <div className="p-20">
                 {
                     user ? <p>Welcome, {user.name}</p> : null
