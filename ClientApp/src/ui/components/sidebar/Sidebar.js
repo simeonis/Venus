@@ -8,7 +8,6 @@ export const Sidebar = () =>{
     const { authenticated, projectList } = useContext(AuthContext)
     
     return(
-       
         authenticated ?(
             <div className="h-full">
                 <div className="my-sidebar h-full">
@@ -30,26 +29,27 @@ export const Sidebar = () =>{
                         {
                             projectList !== null ?(
                                 projectList.map(project =>
-                                    <a className="sidebar-link">{project.title}</a>
+                                    <Link 
+                                        className="sidebar-link"
+                                        to={{
+                                            pathname: `/project-details?id=${project.id}`,
+                                            query: project.id
+                                        }}
+                                    >{project.title}</Link>
                                 )
                             ): null
-                        
                         }
                         <br/>
-                        
-                        
-                        <h5 className="sidebar-title">Account</h5>
-                        <div className="sidebar-divider" />
 
                         {/*Update this is an actual Project*/}
-                        <Link
-                            className="sidebar-link"
-                            to={{
-                                pathname: '/manage',
-                                state: {
-                                    project: {projId: "a3f885d7-e6bd-478d-9bc9-aa979fae575e"}
-                                }
-                            }}>Manage</Link>
+                        {/*<Link*/}
+                        {/*    className="sidebar-link"*/}
+                        {/*    to={{*/}
+                        {/*        pathname: '/manage',*/}
+                        {/*        state: {*/}
+                        {/*            project: {projId: "a3f885d7-e6bd-478d-9bc9-aa979fae575e"}*/}
+                        {/*        }*/}
+                        {/*    }}>Manage</Link>*/}
 
                     </div>
                 </div>

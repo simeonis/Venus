@@ -25,7 +25,7 @@ export const CreateBug = () => {
                 if (response !== null) {
                     console.log("RESP " + JSON.stringify(response.data))
                     // Go back to bug list
-                    history.push('/bugs')
+                    history.push('/project-details')
                 }
             })
             .catch(error => {

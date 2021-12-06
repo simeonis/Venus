@@ -14,7 +14,7 @@ export const CreateProject = () => {
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
-    const {  user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     const history = useHistory()
 
@@ -41,7 +41,7 @@ export const CreateProject = () => {
         axios.post(ApiUrls.project, projectDto)
             .then(response => {
                 if (response !== null) {
-                    console.log("RESP " + JSON.stringify(response.data))
+                    console.log("RESP ADD PROJECT " + JSON.stringify(response.data))
 
                     handleAddPeople(response.data.id)
                     history.push('/home')
@@ -79,7 +79,7 @@ export const CreateProject = () => {
         const projectDto = {
             title: title,
             description: description,
-            color: color
+            color: color,
         }
         addProject(projectDto)
     }
@@ -105,7 +105,6 @@ export const CreateProject = () => {
                             Object.keys(projectColor).map(key =>
                                 <option style={{ color: projectColors(key) }} value={key}>{key}</option>
                             )
-
                         }
                         </select>
                         </span>

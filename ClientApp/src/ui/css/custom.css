@@ -1,4 +1,21 @@
 /* Provide sufficient contrast against white background */
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body,
+#root{
+    height: 100%;
+    overflow: auto;
+}
+
+
 a {
   color: #0366d6;
 }
@@ -80,6 +97,32 @@ th.min, td.min {
   background-color: lawngreen;
 }
 
+.overflow-auto{
+    overflow: auto;
+}
+
+.overflow-hidden{
+    overflow: hidden;
+}
+
+.h100{
+    height: 100%;
+}
+
+.pieChart {
+    margin-top: -75px;
+    margin-bottom: -75px;
+}
+
+.card {
+    background-color: #ECF0F1;
+    border: none;
+}
+
+.card.user {
+    background-color: #007FAD;
+    color: #fff;
+}
 
 .grid-container {
     display: grid;

@@ -1,7 +1,8 @@
 ﻿.brand-wrap{
     height: 5vh;
+    padding-top: 5vh;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
 }
 

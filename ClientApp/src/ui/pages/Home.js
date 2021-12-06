@@ -7,9 +7,6 @@ import { FaFolder, FaPlus, FaTrash, FaPen } from 'react-icons/fa'
 import { IoIosCloseCircle } from 'react-icons/io'
 
 
-
-
-
 const Home = () => {
     //states used to get and set properties
     const { user, projectList, getUser, getProjects } = useContext(AuthContext);
@@ -128,13 +125,13 @@ const Home = () => {
     }, [projectList])
 
     return (
-        <div>
-            <div className="p-20" onLoad={() => { window.location.reload() }}>
+        <div className="overflow-hidden">
+            <div className="p-20">
                 {
                     user ? <h3>Welcome, {user.name}</h3> : null
                 }
             </div>
-            <div className="grid-container">
+            <div className="h100 overflow-hidden grid-container">
                 {alert && <div className="alert alert-danger row card col-6 offset-3 alert-fixed" id="deleteAlert">
                     <button className="close" data-dismiss="alert" type="button" aria-label="Close" onClick={(e) => { showAlert(e) }} ><IoIosCloseCircle />  </button>
 
