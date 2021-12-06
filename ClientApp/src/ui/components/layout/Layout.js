@@ -1,4 +1,4 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {Component, useContext, useEffect, useState} from 'react';
 import { NavMenu } from '../navbar/NavMenu';
 import {Sidebar} from "../sidebar/Sidebar";
 import {AuthContext} from "../../../context/AuthContext";
@@ -24,16 +24,44 @@ export const Layout = (props) => {
         }
     }
     
+
+    // useEffect(() => {
+    //     const currentTheme = localStorage.getItem("theme");
+    //     let pWrap = document.getElementById("page-wrap");
+    //    
+    //     console.log("zcurrentTheme " + currentTheme)
+    //    
+    //     if(currentTheme === "dark"){
+    //         pWrap.classList.add("dark-mode");
+    //        
+    //         console.log("zdark")
+    //
+    //         localStorage.setItem("theme", "dark");
+    //
+    //         setDarkMode(true)
+    //     }
+    //     else{
+    //         pWrap.classList.remove("dark-mode")
+    //         localStorage.setItem("theme", "light");
+    //         setDarkMode(false)
+    //     }
+    //
+    // },[])
+    
+    
     const toggleDarkMode = () =>{
         let pWrap = document.getElementById("page-wrap");
 
         if(!darkMode){
             pWrap.classList.add("dark-mode");
 
+            localStorage.setItem("theme", "dark");
+
             setDarkMode(true)
         }
         else{
             pWrap.classList.remove("dark-mode")
+            localStorage.setItem("theme", "light");
             setDarkMode(false)
         }
     }

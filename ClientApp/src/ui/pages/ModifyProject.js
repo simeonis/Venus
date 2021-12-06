@@ -14,16 +14,14 @@ export const ModifyProject = () => {
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
-    
+
 
 
     //setTitle(location.title)
     const history = useHistory()
     const location = useLocation();
     console.log("location" + location)
-    console.log("hello")
     console.log(location.query)
-    console.log(location.pathname)
 
     //Switch for color in select menu
     const projectColors = (color) => {
@@ -49,13 +47,13 @@ export const ModifyProject = () => {
     const getProject = (projectId) => {
         console.log("getting project")
         console.log(projectId)
-        axios.get(ApiUrls.project+`/${projectId}`)
+        axios.get(ApiUrls.project + `/${projectId}`)
             .then(response => {
                 if (response !== null) {
                     console.log("response : " + JSON.stringify(response.data))
                     setProject(response.data)
                     console.log("project is:" + project)
-                    
+
                     setColor(color)
                     setTitle(title)
                     console.log("project title1" + project.title + " title: " + title)
@@ -109,17 +107,16 @@ export const ModifyProject = () => {
         setTitle(title)
         setColor(color)
 
-        
+
     }, [])
 
     return (
-        <div className="container">
-            <button className="btn btn-primary m-10" onClick={() => history.goBack()}> Back</button>
+        <div className="container d-flex flex-column align-items-center">
             <h1 className="p-15">Modify Project</h1>
             <h2 className="p-15">{project.title}</h2>
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
-                    
+
                     <label className="required">Project Title</label>
                     <input className="form-control" required="required" defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} />
                 </div>
@@ -129,23 +126,23 @@ export const ModifyProject = () => {
                 </div>
                 <div className="form-group">
                     <label className="required">Project Color</label>
-                    <select className="custom-select required m-10" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
-                       {/* <option selected="selected" disabled="disabled">value={project.color}</option>*/}
+                    <select className="custom-select select-project" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
+                        {/* <option selected="selected" disabled="disabled">value={project.color}</option>*/}
                         {
                             Object.keys(projectColor).map((key, i) =>
                                 <option key={i} style={{ color: projectColors(key) }} value={projectColor[key]}>{projectColor[key]}</option>
                             )
 
                         }
-                    </select>
+                        </select>
                 </div>
 
                 <div className="text-center panel-body">
-                    
+
                     <button type="submit" className="btn btn-primary m-10" onClick={(e) => handleSubmit(e)}> Update Project</button>
                 </div>
             </form>
-            
+
         </div>
     )
 }

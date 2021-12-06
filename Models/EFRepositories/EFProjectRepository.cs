@@ -22,7 +22,6 @@ namespace venus.Models.EFRepositories
         public Project GetProject(Guid id)
         {
             Console.WriteLine(id);
-            
             return Projects.First(p => p.ID == id);
         }
 

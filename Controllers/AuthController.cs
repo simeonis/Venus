@@ -93,12 +93,23 @@ namespace venus.Controllers
 
             
             var jwt = JwtService.Generate(user.Id);
-            
-            Response.Cookies.Append("jwt", jwt, new CookieOptions
+
+            if (dto.RememberMe)
             {
-                HttpOnly = true
-            });
-            
+                Response.Cookies.Append("jwt", jwt, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = DateTime.Now.AddDays(30)
+                });
+            }
+            else
+            {
+                Response.Cookies.Append("jwt", jwt, new CookieOptions
+                {
+                    HttpOnly = true,
+                });
+            }
+
             return Ok(new { message="success" });
         }
 

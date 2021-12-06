@@ -36,5 +36,23 @@ namespace venus.Controllers{
 
             return Ok(user);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                return new ContentResult() { Content = "No User Found", StatusCode = 404 };
+            }
+
+            return Ok(user);
+        }
     }
 }
