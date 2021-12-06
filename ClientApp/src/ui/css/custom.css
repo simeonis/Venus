@@ -58,8 +58,9 @@ th.min, td.min {
 }
 .card{
     border-color: coral;
-    border-width: 1px;
+
 }
+
 .alert-fixed {
     position: fixed;
     top: 27px;
@@ -77,4 +78,27 @@ th.min, td.min {
 }
 .green{
   background-color: lawngreen;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+    padding: 10px;
+}
+.grid-container > div {
+        padding: 20px 0;
+        cursor: pointer
+}
+.select-project {
+    margin-right: 35px;
+    width: 40%;
+    text-align: center;
+}
+#select-span {
+    align-items:end;
+}
+.project-card{
+    border-width: 10px;
 }
