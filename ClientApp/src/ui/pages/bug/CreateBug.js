@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { BugEnums } from "../../../constants/BugConstants"
 import { ApiUrls } from "../../../constants/ApiConstants"
@@ -18,8 +18,10 @@ export const CreateBug = () => {
     const [category, setCategory] = useState(bugCategory.None)
 
     const history = useHistory()
+    const location = useLocation()
 
     const addBug = (bugDto) => {
+        console.log(bugDto)
         axios.post(ApiUrls.bug, bugDto)
             .then(response => {
                 if (response !== null) {
@@ -46,7 +48,8 @@ export const CreateBug = () => {
             severity: severity,
             status: bugStatus.NotStarted,
             assignee: bugAssignee.Unassigned,
-            date: new Date().toJSON()
+            date: new Date().toJSON(),
+            projectID: location.query
         }
         addBug(bugDto)
     }

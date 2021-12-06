@@ -18,7 +18,7 @@ namespace venus.Controllers{
         {
             _userManager = userManager;
         }
-        
+
         [HttpGet("search")]
         public async Task<IActionResult> Search(string email)
         {
@@ -37,12 +37,12 @@ namespace venus.Controllers{
             return Ok(user);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("username/{id}")]
+        public async Task<IActionResult> Get(Guid? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
 
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -52,7 +52,7 @@ namespace venus.Controllers{
                 return new ContentResult() { Content = "No User Found", StatusCode = 404 };
             }
 
-            return Ok(user);
+            return Ok(user.UserName);
         }
     }
 }

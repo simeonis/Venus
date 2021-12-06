@@ -17,6 +17,8 @@ namespace venus.Models
         public string Status { get; set; }
         public string Assignee { get; set; }
         public DateTime Date { get; set; }
+        public Guid ProjectID { get; set; }
+
 
         public Bug()
         {
@@ -28,6 +30,7 @@ namespace venus.Models
             Status = BugStatus.NotStarted.ToString();
             Assignee = BugAssignee.Assigned.ToString();
             Date = DateTime.Now;
+            ProjectID = Guid.NewGuid();
         }
 
         public Bug(BugDto bugDto)
@@ -40,6 +43,7 @@ namespace venus.Models
             Status = bugDto.Status;
             Assignee = bugDto.Assignee;
             Date = bugDto.Date;
+            ProjectID = bugDto.ProjectID;
         }
     }
 }

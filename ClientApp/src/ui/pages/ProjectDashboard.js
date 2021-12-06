@@ -1,13 +1,15 @@
 ﻿import React, { useState, useContext, useEffect } from 'react'
 import { AuthContext } from "../../context/AuthContext";
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Chart from "react-google-charts";
 import { BugEnums } from "../../constants/BugConstants"
 import { FaBuffer, FaBug, FaChartPie, FaCheck, FaCrown, FaExclamationTriangle, FaTachometerAlt } from 'react-icons/fa'
 import { IoPulseSharp } from 'react-icons/io5'
+import { ApiUrls } from "../../constants/ApiConstants";
+import axios from 'axios';
 
 export const ProjectDashboard = () => {
-    const { projectList } = useContext(AuthContext)
+    const { projectList, getProjects } = useContext(AuthContext)
     const location = useLocation()
 
     const [project, setProject] = useState({})
@@ -23,11 +25,31 @@ export const ProjectDashboard = () => {
     const bugSeverity = BugEnums.severity
 
     useEffect(() => {
-        setProject(projectList.find(proj => proj.id === location.query))
-        // getBugs
+        // Refresh list of projects
+        getProjects()
+        // Find project based on id
+        const currProj = projectList.find(proj => proj.id === location.query)
+        console.log(currProj)
+        setProject(currProj)
+        // Find the project owner's username
+        getOwner(currProj.ownerID)
+        // Get bugList and calculate summary
+        calculateSummary(currProj.bugs)
     }, [])
 
-    const getBugs = () => {
+    const getOwner = (id) => {
+        axios.get(ApiUrls.getUsername + `/${id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    setOwner(response.data)
+                }
+            })
+            .catch(error => {
+                console.error('There was an error!', error.response);
+            });
+    }
+
+    const calculateSummary = (bugs) => {
         // 1. get all bugs
         // 2. count each status
         // 3. setPieData
