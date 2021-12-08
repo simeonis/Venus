@@ -10,8 +10,8 @@ export const ModifyProject = () => {
     //states used to get and set properties
     const projectColor = ProjectEnums.color
     const [project, setProject] = useState({});
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
+    const [title, setTitle] = useState(project.title)
+    const [description, setDescription] = useState(project.description)
     const [color, setColor] = useState(projectColor.Red)
 
 
@@ -53,13 +53,6 @@ export const ModifyProject = () => {
                     console.log("response : " + JSON.stringify(response.data))
                     setProject(response.data)
                     console.log("project is:" + project)
-
-                    setColor(color)
-                    setTitle(title)
-                    console.log("project title1" + project.title + " title: " + title)
-                    setTitle(project.title)
-                    console.log("project title2" + project.title + " title: " + title)
-                    setDescription(project.description)
                 }
             })
             .catch(error => {
@@ -101,11 +94,13 @@ export const ModifyProject = () => {
 
     //hook to load projects and set project attributes for editting
     useEffect(() => {
-        getProject(location.query)
+        getProject(location.query.pId)
         //TO DO: sets the title and desc but will not add them to project until field is editted
         setProject(project)
-        setTitle(title)
-        setColor(color)
+        setTitle(location.query.pTitle)
+        setDescription(location.query.pDesc)
+        setColor(location.query.pColor)
+        //setColor(color)
 
 
     }, [])
@@ -113,16 +108,16 @@ export const ModifyProject = () => {
     return (
         <div className="container d-flex flex-column align-items-center">
             <h1 className="p-15">Modify Project</h1>
-            <h2 className="p-15">{project.title}</h2>
+           {/* <h2 className="p-15">{project.title}</h2>*/}
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
 
                     <label className="required">Project Title</label>
-                    <input className="form-control" required="required" defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} />
+                    <input className="form-control" required="required" maxLength={25} defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} onLoad={(e) => { setTitle(title) }} />
                 </div>
                 <div className="form-group">
                     <label className="required">Project Description</label>
-                    <input className="form-control" required="required" defaultValue={project.description} type="text" onChange={(e) => setDescription(e.target.value)} />
+                    <input className="form-control" maxLength={65} required="required" defaultValue={project.description} type="text" onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label className="required">Project Color</label>

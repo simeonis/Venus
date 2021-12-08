@@ -1,20 +1,29 @@
-﻿import React, { useContext, useEffect, useState, useRef } from 'react'
+﻿import React, { useContext, useEffect, useState, useRef, componentWillMount } from 'react'
 import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
 import { Link, useHistory } from 'react-router-dom';
-import { FaFolder, FaPlus, FaTrash, FaPen, FaFolderPlus } from 'react-icons/fa'
-import { IoIosCloseCircle } from 'react-icons/io'
+import { FaRegFolder, FaFolder, FaTrash, FaPen } from 'react-icons/fa'
+/*import { IconContext } from 'react-icons'
+import { FolderIcon } from '@mui/icons-material';*/
 
 
 const Home = () => {
     //states used to get and set properties
     const { user, projectList, getUser, getProjects } = useContext(AuthContext);
-    // const [projectList, setProjectList] = useState([]);
     const [alert, setAlert] = useState(false);
     const [id, setId] = useState("")
     const [title, setTitle] = useState("")
+    const [openFolder, setOpenFolder] = useState(false);
+    const [closeFolder, setCloseFolder] = useState(false);
+    const [refState, setRefState] = useState({})
+
+    const [show, setShow] = useState(false);
+
+    //[]
     const elementsRef = useRef([]);
+    const openFolderRef = useRef([]);
+    const closeFolderRef = useRef([]);
     const history = useHistory()
 
 
@@ -38,6 +47,8 @@ const Home = () => {
         }
     }
 
+
+
     //API request to delete the project selected
     const deleteProject = (id) => {
         axios.delete(ApiUrls.project + `/${id}`)
@@ -46,6 +57,7 @@ const Home = () => {
                     setAlert(!alert)
                     getProjects()
                     console.log("response : " + JSON.stringify(response.data))
+
                 }
             })
 
@@ -53,50 +65,49 @@ const Home = () => {
 
 
     const cardStyles = (projColor) => ({
-        borderWidth: 1,
+        outline: `solid 1px transparent`,
         borderColor: projColor,
+        borderWidth: "1px"
+
 
     });
 
 
-    const highlightProj = (ind, color) => {
-        /* var currentColor = ""
-        switch (color) {
-            case "#ff0000":
-                currentColor = "rgba(255, 0, 0, 0.8)";
-            case "#0000ff":
-                currentColor = "rgba(0, 0, 255, 0.8)";
-            case "#009933":
-                currentColor = "rgba(0, 153, 51, 0.8)";
-            case "#ffff00":
-                currentColor = "rgba(255, 255, 0, 0.8)";
-            case "#ff6600":
-                currentColor = "rgba(153, 0, 204, 0.8)";
-            case "#9900cc": 
-                currentColor = "rgba(255, 102, 0, 0.8)";
-            default:
-                currentColor = "#fff"
-     
-        }*/
-        if (elementsRef.current[ind] != null) {
-            elementsRef.current[ind].style.borderColor = "black"
-            elementsRef.current[ind].style.backgroundColor = `${color}`
-        } 
+    const highlightProj = (ind, color, id) => {
+        if (elementsRef.current[ind] != null && openFolderRef.current[ind] != null && closeFolderRef.current[ind] != null) {
+            if (elementsRef.current[ind] != null) {
+                elementsRef.current[ind].style.outline = `solid 3px ${color}`
+                //elementsRef.current[ind].style.backgroundColor = `${color}`
+            }
+            if (openFolderRef.current[ind] != null) {
+                openFolderRef.current[ind].style.display = "inline"
+            }
+            if (closeFolderRef.current[ind] != null) {
+                closeFolderRef.current[ind].style.display = "none"
+            }
+        } else {
+            //if null reload?
+
+        }
+
+
+
 
     }
     const unHighlightProj = (ind, color) => {
         if (elementsRef.current[ind] != null) {
-            elementsRef.current[ind].style.borderColor = `${color}`
-            elementsRef.current[ind].style.backgroundColor = "initial"
+            elementsRef.current[ind].style.outline = `${color}`
+            //setCloseFolder(false)
+            //setOpenFolder(true)
+        }
+        if (closeFolderRef.current[ind] != null) {
+            closeFolderRef.current[ind].style.display = "inline"
+        }
+        if (openFolderRef.current[ind] != null) {
+            openFolderRef.current[ind].style.display = "none"
         }
 
     }
-
-
-    /* const changeId = (title, id) => {
-         var proj = document.getElementById(id);
-         proj.id = title;
-     }*/
 
     //function to show/hide the delete alert
     const showAlert = (ind, title) => {
@@ -112,97 +123,131 @@ const Home = () => {
         })
     }
 
+    const handleRefresh = () => {
+        setRefState({})
+    }
 
     //submission handler for delete project functionality
     const handleSubmit = (e) => {
         e.preventDefault()
         deleteProject(id)
-        //window.location.reload();
+        //window.location.reload(false);
     }
+
+    const countProjects = () => {
+        var countProj;
+        for (var proj in projectList) {
+            countProj++
+        }
+        return countProj
+
+
+    }
+
 
     //Hook to load user and projects after rendering
     useEffect(() => {
         getUser();
-        getProjects()
-    }, [projectList])
+        getProjects();
+        let timer = setTimeout(() => setShow(true), 500)
 
-    return (
-        <div className="overflow-hidden">
-            <div className="p-20">
+
+        return () => {
+            //getUser();
+            //getProjects();
+            clearTimeout(timer)
+        }
+
+
+
+
+
+    }, [])
+
+
+
+
+    return show ? (
+        <div className="overflow-hidden" >
+            {alert && <div className="alert alert-default row col-4  alert-fixed" id="deleteAlert" >
+                <div className="col-9">
+                    <h6>Are you sure you want to delete the project: {title}</h6>
+                </div>
+                <div className="col-3">
+                    <div className="row">
+                        <button className="btn btn-primary m-5" onClick={(e) => { showAlert(e) }}>Cancel</button>
+                    </div>
+                    <div className="row">
+                        <button className="btn btn-danger m-5 del" onClick={(e) => {
+                            e.stopPropagation();
+                            deleteProject(id)
+                        }}>Delete</button>
+                    </div>
+                </div>
+            </div>}
+            <div className="">
                 {
                     user ? <h3>Welcome, {user.name}</h3> : null
                 }
+
             </div>
-            <div className="h100 overflow-hidden grid-container">
-                {alert && <div className="alert alert-danger row card col-6 offset-3 alert-fixed" id="deleteAlert">
-                    <button className="close" data-dismiss="alert" type="button" aria-label="Close" onClick={(e) => { showAlert(e) }} ><IoIosCloseCircle />  </button>
 
-                    <div className="col-9">
-                        <h6>Are you sure you want to delete the project {title}</h6>
-                    </div>
-                    <div className="col-3">
-                        <div className="row">
-                            <button className="btn btn-primary m-5" onClick={(e) => {  showAlert(e) }}>No Cancel</button>
-                        </div>
-                        <div className="row">
-                            <button className="btn btn-danger m-5 del" onClick={(e) => {
-                                e.stopPropagation();
-                                deleteProject(id)
-                            }}>Yes Delete</button>
-                        </div>
-                    </div>
-                </div>}
+
+            <div className="h100 overflow-hidden grid-container ">
                 {
-                    projectList !== null ? (
-                        projectList.map((project, index, array) => {
-                            var newId = ("a" + project.id).slice(0, 7)
-                            /* var count = index % 2;
-                            if (count == 0) {
-                                count = 1
-                            } else {
-                                count = 2
-                            }*/
+/*                    (projectList !== null || countProjects == 0) ? (
+*/                        projectList.map((project, index, array) => {
+                    return <div size={1000} className="folder-card" style={{ color: projectColor(project.color) }}
+                        style={{ zIndex: 0 }}
+                        ref={el => (elementsRef.current = [...elementsRef.current, el])}
+                        style={cardStyles(projectColor(project.color))}
+                        onMouseEnter={() =>
+                            highlightProj(index, projectColor(project.color), project.id)
+                        }
+                        onMouseLeave={() =>
+                            unHighlightProj(index, projectColor(project.color))
+                        }
+                        onClick={() =>
+                            divClick(project.id)}>
+                        <div className="row">
+                            <div className="col-10 p-10">
 
-                            return <div className="card item project-card"
-                                style={{ zIndex: 1 }}
-                                ref={el => (elementsRef.current = [...elementsRef.current, el])}
-                                id={{ newId }} style={cardStyles(projectColor(project.color))}
-                                onMouseEnter={() =>
-                                    highlightProj(index, projectColor(project.color))
-                                }
-                                onMouseLeave={() =>
-                                    unHighlightProj(index, projectColor(project.color))
-                                }
-                                onClick={() =>
-                                    divClick(project.id)}>
-                                <div className="row">
-                                    <div className="col-9 p-10" style={{ borderColor: projectColor(project.color) }}>
-                                        <FaFolder className="" size={40} />
-                                        <h3 className="font-weight-bold">{project.title}</h3>
-                                        <h7>{project.description}</h7>
-                                    </div>
-                                    <div className="col-3 text-right">
-                                        <div className="row">
-                                            <Link className="btn btn-secondary m-10 text-white" to={{
-                                                pathname: `/modifyproject`,
-                                                query: project.id,
-                                            }} style={{ zIndex: 0 }}
-                                                onClick={(e) => { e.stopPropagation(); }}
-                                            ><FaPen/>
-                                                
-                                            </Link>                                    
-                                            <button style={{ zIndex: 0 }} className="btn btn-danger m-10 text-white" onClick={(e) => { e.stopPropagation(); showAlert(project.id, project.title) }} ><FaTrash/></button>
-                                        </div>
-                                    </div>
+                                <h4 className="font-weight-bold">
+                                    <span ref={el => (openFolderRef.current = [...openFolderRef.current, el])} className="folder-open">
+                                        < FaRegFolder className="folder-icon" size={75} />
+                                    </span>
+                                    <span ref={el => (closeFolderRef.current = [...closeFolderRef.current, el])} className="folder-close">
+                                        < FaFolder className="folder-icon" size={75} />
+                                    </span>
+                                    {project.title}</h4>
+                                <h7>{project.description}</h7>
+                            </div>
+                            <div className="col-2">
+                                <div className="row folder-buttons">
+                                    <Link className="btn btn-secondary m-10 text-white" to={{
+                                        pathname: `/modifyproject`,
+                                        query: {
+                                            pId: project.id,
+                                            pTitle: project.title,
+                                            pDesc: project.description,
+                                            pColor: project.color
+                                        },
+                                    }} style={{ zIndex: 1 }}
+                                        onClick={(e) => { e.stopPropagation(); }}
+                                    ><FaPen />
+
+                                    </Link>
+                                    <button style={{ zIndex: 1 }} className="btn btn-danger m-10 text-white" onClick={(e) => { e.stopPropagation(); showAlert(project.id, project.title) }} ><FaTrash /></button>
                                 </div>
                             </div>
-                        })
-                    ) : null
-
+                        </div>
+                    </div>
+                })
+                    /*) : <div><h4>No projects available.</h4></div>*/
                 }
             </div>
         </div>
-    )
+    ) : (<div>Loading...</div>);
 }
 
 export default Home
