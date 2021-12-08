@@ -34,7 +34,7 @@ export const Sidebar = () =>{
                                     <Link 
                                         className="sidebar-link"
                                         to={{
-                                            pathname: `/project-details?id=${project.id}`,
+                                            pathname: `/project-dashboard?id=${project.id}`,
                                             query: project.id
                                         }}
                                     >{project.title}</Link>

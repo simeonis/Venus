@@ -31,6 +31,17 @@ namespace venus.Controllers
             return Ok(bugRepository.GetBug(id.Value));
         }
 
+        [HttpGet("project/{id}")]
+        public ActionResult<Bug> GetProjectBugs(Guid? id)
+        {
+            if (id == null)
+            {
+                return BadRequest("Invalid Project-ID");
+            }
+
+            return Ok(bugRepository.GetBugs(id.Value));
+        }
+
         [HttpGet]
         public ActionResult<Bug> Get()
         {

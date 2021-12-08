@@ -27,7 +27,7 @@ export const BugList = () => {
     const [canDelete, setCanDelete] = useState(false)
     const [canModify, setCanModify] = useState(false)
 
-    const location = useLocation();
+    const location = useLocation()
     
     useEffect(() => {
         setTimeout(() => { if (loading) { setShowLoading(true) } }, 100)
@@ -43,7 +43,7 @@ export const BugList = () => {
     // START Web API Calls
     // Get All
     const getBugs = () => {
-        axios.get(ApiUrls.bug)
+        axios.get(ApiUrls.projectBug + `/${location.query}`)
             .then(response => {
                 if (response.status === 200) {
                     setGeneralBugList(response.data)
@@ -120,10 +120,13 @@ export const BugList = () => {
     return (
         <div>
             <div className="d-flex justify-content-end m-15 float-group">
-                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to="/createbug"><FaPlus /></Link>
+                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to={{
+                    pathname: `/createbug`,
+                    query: project.id
+                }}><FaPlus /></Link>
                 {
                     canModify ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to="/modifybug"><FaPen /></Link>
-                        : <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white disabled" onClick={(e) => e.preventDefault()}><FaPen /></Link>
+                        : <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white disabled" to="" onClick={(e) => e.preventDefault()}><FaPen /></Link>
                 }
                 <button className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
             </div>

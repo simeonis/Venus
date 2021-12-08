@@ -118,13 +118,9 @@ const Home = () => {
     }
     const divClick = (projectID) => {
         history.push({
-            pathname: "/project-dashboard",
+            pathname: `/project-dashboard?id=${projectID}`,
             query: projectID
         })
-    }
-
-    const handleRefresh = () => {
-        setRefState({})
     }
 
     //submission handler for delete project functionality
