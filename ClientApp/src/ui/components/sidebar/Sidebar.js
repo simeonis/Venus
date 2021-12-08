@@ -25,6 +25,7 @@ export const Sidebar = () =>{
                         <div className="sidebar-divider" />
                         
                         <h5 className="sidebar-title">Projects</h5>
+                        
                         <div className="sidebar-divider" />
                         {/* Set up for project links on sidebar*/}
                         {
