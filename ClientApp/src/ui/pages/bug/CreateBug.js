@@ -1,8 +1,9 @@
-﻿import React, { useState } from 'react'
+﻿import React, {useContext, useState} from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { BugEnums } from "../../../constants/BugConstants"
 import { ApiUrls } from "../../../constants/ApiConstants"
+import {AuthContext} from "../../../context/AuthContext";
 
 export const CreateBug = () => {
     // Enums
@@ -19,6 +20,8 @@ export const CreateBug = () => {
 
     const history = useHistory()
     const location = useLocation()
+    
+    const {user} = useContext(AuthContext)
 
     const addBug = (bugDto) => {
         console.log(bugDto)
@@ -27,7 +30,10 @@ export const CreateBug = () => {
                 if (response !== null) {
                     console.log("RESP " + JSON.stringify(response.data))
                     // Go back to bug list
-                    history.push('/project-details')
+                    history.push({
+                        pathname: '/project-bugs',
+                        query: location.query
+                    })
                 }
             })
             .catch(error => {
@@ -44,7 +50,7 @@ export const CreateBug = () => {
         const bugDto = {
             category: category,
             subject: subject,
-            creator: "John Doe",
+            creator: user.userName,
             severity: severity,
             status: bugStatus.NotStarted,
             assignee: bugAssignee.Unassigned,

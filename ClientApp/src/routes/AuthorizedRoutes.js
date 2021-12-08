@@ -23,11 +23,11 @@ export default function AuthorizedRoutes() {
                 <AuthorizeRoute exact path={`${path}modifybug`} component={ModifyBug} redirectPath="/login" />
                 
                 <AuthorizeRoute exact path={`${path}createproject`} component={CreateProject} redirectPath="/login" />
-                <AuthorizeRoute exact path={`${path}project-dashboard:id`} component={ProjectDashboard} redirectPath="/login" />
-                <AuthorizeRoute exact path={`${path}project-bug:id`} component={BugList} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}project-dashboard`} component={ProjectDashboard} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}project-bugs`} component={BugList} redirectPath="/login" />
                 <AuthorizeRoute exact path={`${path}modifyproject`} component={ModifyProject} redirectPath="/login" />
 
-                <AuthorizeRoute exact path={`${path}manage`} component={ManageAccess} redirectPath="/login" />
+                <AuthorizeRoute exact path={`${path}project-users`} component={ManageAccess} redirectPath="/login" />
                 
             </Switch>
         </Fragment>

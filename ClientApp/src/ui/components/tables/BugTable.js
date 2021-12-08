@@ -57,7 +57,7 @@ export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, s
                     <th className="min">
                         <div className="custom-checkbox">
                             <input type="checkbox" id="all" value="" checked={selectedAll} onChange={(e) => handleCheckbox(e, null)} />
-                            <label htmlFor="all"></label>
+                            <label htmlFor="all" />
                         </div>
                     </th>
                     <th className="min">Category</th>

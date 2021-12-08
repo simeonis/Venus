@@ -1,4 +1,4 @@
-﻿import React, { useContext, useEffect, useState, useRef } from 'react'
+﻿import React, { useContext, useEffect, useState, useRef  } from 'react'
 import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
@@ -107,7 +107,7 @@ const Home = () => {
     }
     const divClick = (projectID) => {
         history.push({
-            pathname: `/project-dashboard?id=${projectID}`,
+            pathname: `/project-dashboard`,
             query: projectID
         })
     }
@@ -121,6 +121,7 @@ const Home = () => {
 
     //Hook to load user and projects after rendering
     useEffect(() => {
+        console.log("HOME USE EFFECT CALLED")
         getUser();
         getProjects()
     }, [])
@@ -128,7 +129,7 @@ const Home = () => {
     return (
         <div className="overflow-hidden">
             <div className="d-flex justify-content-end m-15 float-group-bottom">
-                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white cust-lg-btn" to="/createbug"><FaPlus size={50} /></Link>
+                <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white cust-lg-btn" to="/createproject"><FaPlus size={50} /></Link>
             </div>
             <div className="p-20">
                 {

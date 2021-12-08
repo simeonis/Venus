@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react'
+﻿import React, {useContext, useEffect, useState} from 'react'
 import axios from 'axios'
 import { ApiUrls } from '../../../constants/ApiConstants'
 import { FaPlus, FaTrash, FaPen } from 'react-icons/fa'
@@ -9,6 +9,7 @@ import { Route } from 'react-router';
 import {Link, useLocation} from 'react-router-dom';
 import { Modal } from '../../components/modal/Modal'
 import { useSearchParams } from 'react-router-dom'
+import {AuthContext} from "../../../context/AuthContext";
 
 export const BugList = () => {
     // Loading
@@ -29,14 +30,15 @@ export const BugList = () => {
 
     const location = useLocation()
     
+    const {user} = useContext(AuthContext)
+    
     useEffect(() => {
         setTimeout(() => { if (loading) { setShowLoading(true) } }, 100)
         getBugs()
-        console.log(location.query)
     }, [])
 
     useEffect(() => {
-        const filteredList = generalBugList.map(bug => bug.severity === BugEnums.severity.High ? bug : null).filter(item => item)
+        const filteredList = generalBugList.map(bug => bug.creator === user.userName ? bug : null).filter(item => item)
         setUserBugList(filteredList)
     }, [generalBugList])
 
@@ -122,7 +124,7 @@ export const BugList = () => {
             <div className="d-flex justify-content-end m-15 float-group">
                 <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to={{
                     pathname: `/createbug`,
-                    query: project.id
+                    query: location.query
                 }}><FaPlus /></Link>
                 {
                     canModify ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to="/modifybug"><FaPen /></Link>
@@ -130,7 +132,7 @@ export const BugList = () => {
                 }
                 <button className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
             </div>
-            <div className="d-flex flex-column align-items-start mx-20 px-20">
+            <div className="d-flex flex-column align-items-start">
                 <details className="collapse-panel w-lg-full m-15" open>
                     <summary className="collapse-header">
                         My Bugs

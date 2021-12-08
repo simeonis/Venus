@@ -14,7 +14,7 @@ export const CreateProject = () => {
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
-    const { user } = useContext(AuthContext)
+    const { user, getProjects } = useContext(AuthContext)
 
     const history = useHistory()
 
@@ -28,6 +28,7 @@ export const CreateProject = () => {
         axios.post(ApiUrls.addUserToProject, userToProjDto)
             .then(response => {
                 if (response !== null) {
+                    getProjects()
                 }
             })
             .catch(error => {
@@ -44,6 +45,7 @@ export const CreateProject = () => {
                     console.log("RESP ADD PROJECT " + JSON.stringify(response.data))
 
                     handleAddPeople(response.data.id)
+                    
                     history.push('/home')
                 }
             })

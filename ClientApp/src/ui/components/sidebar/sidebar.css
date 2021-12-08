@@ -10,7 +10,7 @@
     margin: 16px;
     border-radius: 20px;
     background-color: #ecf0f1;
-    
+    height: 97vh!important;
 }
 
 .dark-mode .my-sidebar{
