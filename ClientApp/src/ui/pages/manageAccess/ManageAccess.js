@@ -1,4 +1,4 @@
-﻿import React, {useState, useEffect} from "react"
+﻿import React, {useState, useEffect, useContext} from "react"
 import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import { ApiUrls } from "../../../constants/ApiConstants";
@@ -6,6 +6,7 @@ import "./manageAccess.css"
 import { FaTimes, FaPlusCircle } from 'react-icons/fa';
 
 import {Modal} from "../../components/modal/Modal"
+import {AuthContext} from "../../../context/AuthContext";
 
 export const ManageAccess = () =>{
     
@@ -14,15 +15,16 @@ export const ManageAccess = () =>{
     const [user, setUser] = useState()
     const [error, setError] = useState([])
     const [email, setEmail] = useState("")
+    const[project, setProject] = useState({})
 
     const location = useLocation()
-
-    const { project } = location.state
+    
+    const { getProjects, projectList} = useContext(AuthContext)
     
     const handleAddPeople = () => {
 
         const userToProjDto = {
-            projId : project.projId,
+            projId : project.id,
             userEmail: user.email,
         };
 
@@ -49,7 +51,7 @@ export const ManageAccess = () =>{
     const handleRemovePeople = (email) => {
         
         const userToProjDto = {
-            projId : project.projId,
+            projId : project.id,
             userEmail: email,
         };
         
@@ -66,8 +68,8 @@ export const ManageAccess = () =>{
             });
     }
     
-    const getMembers = () =>{
-        axios.get(ApiUrls.getProjectMembers, { params: { id: project.projId } })
+    const getMembers = (id) =>{
+        axios.get(ApiUrls.getProjectMembers, { params: { id: id } })
             .then(response => {
                 if (response !== null) {
                     setMembers([...response.data])
@@ -93,9 +95,16 @@ export const ManageAccess = () =>{
                 setError(error.response)
             });
     }
-
-    useEffect(()=>{
-        getMembers()
+    
+    useEffect(() => {
+        // Refresh list of projects
+        getProjects()
+        // Find project based on id
+        const currProj = projectList.find(proj => proj.id === location.query)
+        setProject(currProj)
+        // // Find the project owner's username
+        // getOwner(currProj.ownerID)
+        getMembers(currProj.id)
     }, [])
     
     

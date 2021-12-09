@@ -86,7 +86,7 @@ export const CreateProject = () => {
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
                     <label className="required">Project Title</label>
-                    <input className="form-control" maxLength={25}  type="text" required="required" required onChange={(e) => setTitle(e.target.value)}/>
+                    <input className="form-control" maxLength={25}  type="text" required="required" onChange={(e) => setTitle(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label className="required">Project Description</label>

@@ -29,9 +29,9 @@ export const ProjectDashboard = () => {
         getProjects()
         // Find project based on id
         const currProj = projectList.find(proj => proj.id === location.query)
-        console.log(currProj)
         setProject(currProj)
         // Find the project owner's username
+        console.log("CURR PROJ" + JSON.stringify(currProj))
         getOwner(currProj.ownerID)
         // Get bugList and calculate summary
         calculateSummary(currProj.bugs)
@@ -109,11 +109,11 @@ export const ProjectDashboard = () => {
                         <div className="col">
                             <div className="card h-full">
                                 <h3 className="card-title mb-20">Project Specifications</h3>
-                                <details class="collapse-panel">
-                                    <summary class="collapse-header">
+                                <details className="collapse-panel">
+                                    <summary className="collapse-header">
                                         Category
                                     </summary>
-                                    <div class="collapse-content p-0">
+                                    <div className="collapse-content p-0">
                                         {
                                             Object.keys(bugCategory).map((key, i) =>
                                                 <div className="m-0 p-10 d-flex justify-content-start">
@@ -124,11 +124,11 @@ export const ProjectDashboard = () => {
                                         }
                                     </div>
                                 </details>
-                                <details class="collapse-panel my-20">
-                                    <summary class="collapse-header">
+                                <details className="collapse-panel my-20">
+                                    <summary className="collapse-header">
                                         Status
                                     </summary>
-                                    <div class="collapse-content p-0">
+                                    <div className="collapse-content p-0">
                                         {
                                             Object.keys(bugStatus).map((key, i) =>
                                                 <div className="m-0 p-10 d-flex justify-content-start">
@@ -139,11 +139,11 @@ export const ProjectDashboard = () => {
                                         }
                                     </div>
                                 </details>
-                                <details class="collapse-panel">
-                                    <summary class="collapse-header">
+                                <details className="collapse-panel">
+                                    <summary className="collapse-header">
                                         Severity
                                     </summary>
-                                    <div class="collapse-content p-0">
+                                    <div className="collapse-content p-0">
                                         {
                                             Object.keys(bugSeverity).map((key, i) =>
                                                 <div className="m-0 p-10 d-flex justify-content-start">
