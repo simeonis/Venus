@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { ProjectEnums } from "../../constants/ProjectConstants"
 import { ApiUrls } from "../../constants/ApiConstants"
-import {AuthContext} from "../../context/AuthContext";
 
 export const CreateProject = () => {
 
@@ -13,34 +12,13 @@ export const CreateProject = () => {
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
-    const { user, getProjects } = useContext(AuthContext)
-
     const history = useHistory()
-
-    const handleAddPeople = (id) => {
-
-        const userToProjDto = {
-            projId : id,
-            userEmail: user.email,
-        };
-
-        axios.post(ApiUrls.addUserToProject, userToProjDto)
-            .then(response => {
-                if (response !== null) {
-                    getProjects()
-                    history.push("/home")
-                }
-            })
-            .catch(error => {
-                console.error('There was an error!', error.response);
-            });
-    }
 
     const addProject = (project) => {
         axios.post(ApiUrls.project, project)
             .then(response => {
                 if (response !== null) {
-                    handleAddPeople(response.data.id)
+                    history.push("/home")
                 }
             })
             .catch(error => {

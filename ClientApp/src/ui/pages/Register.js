@@ -54,8 +54,6 @@ export const Register  = () => {
                 specialization: specialization,
                 platform: platform
             };
-            
-            console.log("User Dto " + JSON.stringify(userDto))
 
             register(userDto);
             
@@ -66,13 +64,12 @@ export const Register  = () => {
     return (
       <div className="container d-flex flex-column align-items-center ">
             <h1>Sign Up</h1>
-            {/* <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% --> */}
             <form  className="w-400 mw-full">
                 {/* <!-- name --> */}
                 <div className="form-group">
                     <p className="text-danger">{nameError}</p>
-                    <label htmlFor="user-name" className="required">User Name</label>
-                    <input type="text" className="form-control" id="user-name" placeholder="user name" required="required" onChange={(e) => setuserName(e.target.value)} />
+                    <label htmlFor="user-name" className="required">Username</label>
+                    <input type="text" className="form-control" id="user-name" placeholder="Username" required="required" onChange={(e) => setuserName(e.target.value)} />
                 </div>
 
                 {/* <!-- Email --> */}
@@ -94,16 +91,14 @@ export const Register  = () => {
                     <label htmlFor="password-confirm" className="required">Password Confirm</label>
                     <input type="password" className="form-control" id="password-confirm" placeholder="Password Confirm" required="required" onChange={(e) => setPasswordConfirm(e.target.value)}  />
                 </div>
-
-              {/* <!-- Switch --> */}
+                
               <div className="form-group">
                     <div className="custom-switch">
                     <input type="checkbox" id="am-developer" onChange={(e)=>setDevChecked(e.target.checked)} />
                     <label htmlFor="am-developer">Developer</label>
                     </div>
                 </div>
-
-                {/* <!-- Select --> */}
+                
                 <div className="form-group">
                     <label htmlFor="area-of-specialization" className="required">Area of specialization</label>
                     <select className="form-control" defaultValue="" id="area-of-specialization" required="required"
@@ -114,8 +109,7 @@ export const Register  = () => {
                         <option value="full-stack">Full-stack</option>
                     </select>
                 </div>
-
-                {/* <!-- Multi-select --> */}
+                
                 <div className="form-group">
                     <label htmlFor="languages" className="required">Platform</label>
                     <select className="form-control" id="languages"  required="required"

@@ -15,12 +15,12 @@ namespace venus.Controllers
     [Route("api/project")]
     public class ProjectController : Controller
     {
-        private readonly IProjectRepository projectRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ProjectController(IProjectRepository repo, UserManager<ApplicationUser> userManager) 
         {
-            projectRepository = repo;
+            _projectRepository = repo;
             _userManager = userManager;
         }
 
@@ -31,7 +31,7 @@ namespace venus.Controllers
             {
                 var userId = GetUserId();
                 
-                return Ok(projectRepository.GetProjects(userId.ToString()));
+                return Ok(_projectRepository.GetProjects(userId.ToString()));
             }
             catch (Exception e)
             {
@@ -45,16 +45,35 @@ namespace venus.Controllers
         [HttpGet("{id}")]
         public ActionResult<Project> Get(Guid id)
         {
+            
             if(id == Guid.Empty)
             {
                 return BadRequest("ID was not found");
             }
-
-            return Ok(projectRepository.GetProject(id));
+            
+            var proj = _projectRepository.GetProject(id);
+            
+            if(proj == null)
+                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+            
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && IsInProject(proj, userId.Value))
+                {
+                    return Ok(proj);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
         [HttpPost]
-        public ActionResult<Project> Post([FromBody] ProjectDto projectDto)
+        public async Task<IActionResult> Post([FromBody] ProjectDto projectDto)
         {
             try
             {
@@ -64,8 +83,15 @@ namespace venus.Controllers
                     return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
            
                 var project = new Project(projectDto.Title, projectDto.Description, projectDto.Color, userId.Value);
+                
+                var appUser = await _userManager.FindByIdAsync(userId.ToString());
             
-                projectRepository.AddProject(project);
+                if (appUser == null)
+                    return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
+
+                project.UsersList = new List<ApplicationUser> { appUser };
+
+                _projectRepository.AddProject(project);
         
                 return Ok(project);
             }
@@ -74,109 +100,184 @@ namespace venus.Controllers
                 Console.WriteLine(e);
             }
             
-            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+            return new ContentResult() { Content = "Token Error", StatusCode = 403 };
         }
-        
+
         [HttpPut]
-        public Project Put([FromBody] Project project) =>
-            projectRepository.UpdateProject(project);
-        
+        public ActionResult<Project> Put([FromBody] Project project)
+        {
+
+            var preExistingProj = _projectRepository.GetProject(project.ID);
+
+            if (preExistingProj == null)
+                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && !IsInProject(preExistingProj, userId.Value))
+                {
+                    return new ContentResult() { Content = "Not in Project", StatusCode = 404 };
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new ContentResult() { Content = "Token Error", StatusCode = 404 };
+            }
+            
+            _projectRepository.UpdateProject(project);
+            return Ok();
+        }
 
         [HttpDelete("{id}")]
-        public void Delete(Guid id) => 
-            projectRepository.DeleteProject(id);
+        public ActionResult Delete(Guid id) {
 
+            var project = _projectRepository.GetProject(id);
+
+            if (project == null)
+                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+            
+            try
+            {
+                var userId = GetUserId();
+                if (userId == null || !IsProjOwner(project, userId.Value))
+                {
+                    return new ContentResult() { Content = "Not Project Owner", StatusCode = 404 };
+                }
+                
+                _projectRepository.DeleteProject(id);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return new ContentResult() { Content = "Token Error", StatusCode = 404 };
+
+        }
 
         [HttpPatch("{id}")]
         public StatusCodeResult Patch(Guid id, [FromBody] JsonPatchDocument<Project> patch)
         {
             var project = (Project)((OkObjectResult)Get(id).Result).Value;
-            if(project != null)
-            {
-                patch.ApplyTo(project);
-                projectRepository.Save();
-                return Ok();
-            }
-            return NotFound();
+            
+            if (project == null)
+                return NotFound();
 
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && IsInProject(project, userId.Value))
+                {
+                    patch.ApplyTo(project);
+                    _projectRepository.Save();
+                    return Ok();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return new NotFoundResult();
         }
 
         [HttpPost("add-user" )]
         public async Task<IActionResult> AddUserToProject([FromBody] UserToProjDto userToProjDto)
         {
-            //Add Security 
-            //Check if cookie user is owner of proj 
-            
-            Console.WriteLine("adduser" + userToProjDto.ProjId + " " + userToProjDto.UserEmail );
-
-            var project = projectRepository.GetProject(userToProjDto.ProjId);
+            var project = _projectRepository.GetProject(userToProjDto.ProjId);
 
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && IsProjOwner(project, userId.Value))
+                {
+                    if(project.UsersList.Any(user => user.Email == userToProjDto.UserEmail))
+                        return new ContentResult() { Content = "User Already Exists", StatusCode = 403 };
             
-            // if (project.UsersList == null)
-            //     return new ContentResult() { Content = "No Users", StatusCode = 404 };
+                    var appUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
             
-            if(project.UsersList.Any(user => user.Email == userToProjDto.UserEmail))
-                return new ContentResult() { Content = "User Already Exists", StatusCode = 403 };
+                    if (appUser == null)
+                        return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
             
-            var appUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
-            
-            if (appUser == null)
-                return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
-            
-            project.UsersList.Add(appUser);
-            
-            Console.WriteLine("adduser" + project.UsersList[0]);
+                    project.UsersList.Add(appUser);
 
-            projectRepository.UpdateProject(project);
+                    _projectRepository.UpdateProject(project);
 
-            return Ok(appUser);
+                    return Ok(appUser);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new ContentResult() { Content = "Token Error", StatusCode = 404 };
         }   
 
         [HttpGet("get-members")]
         public ActionResult<IEnumerable<ApplicationUser>> GetMembers(string id)
         {
-            //Add Security 
-            //Check if cookie user is owner of proj 
-
+            
             var guid = Guid.Parse(id);
             
-            var project = projectRepository.GetProject(guid);
+            var project = _projectRepository.GetProject(guid);
             
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && IsInProject(project, userId.Value))
+                {
+                    if(project.UsersList.Count <=0)
+                        return new ContentResult() { Content = "No Users In Project", StatusCode = 404 };
             
-            if(project.UsersList.Count <=0)
-                return new ContentResult() { Content = "No Users In Project", StatusCode = 404 };
-            
-            return Ok(project.UsersList);
+                    return Ok(project.UsersList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new ContentResult() { Content = "Token Error", StatusCode = 404 };
         }
         
         [HttpDelete("remove-user")]
         public ActionResult<List<ApplicationUser>> RemoveUserFromProject([FromBody] UserToProjDto userToProjDto)
         {
-            //Add Security 
-            //Check if cookie user is owner of proj 
-            
-            Console.WriteLine(userToProjDto.ProjId);
-            
-            var project = projectRepository.GetProject(userToProjDto.ProjId);
+            var project = _projectRepository.GetProject(userToProjDto.ProjId);
             
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
             
-            var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && IsProjOwner(project, userId.Value))
+                {
+                    var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
             
-            if (user == null)
-                return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
+                    if (user == null)
+                        return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
             
-            project.UsersList.Remove(user);
+                    project.UsersList.Remove(user);
             
-            projectRepository.UpdateProject(project);
+                    _projectRepository.UpdateProject(project);
             
-            return Ok(project.UsersList);
-
+                    return Ok(project.UsersList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new ContentResult() { Content = "Token Error", StatusCode = 404 };
         }
 
         private Guid? GetUserId()
@@ -197,13 +298,11 @@ namespace venus.Controllers
             return null;
         }
 
-        private bool isProjOwner(Guid proj_id,Guid user_id)
+        private static bool IsProjOwner(Project project,Guid userId)
         {
-            var proj = projectRepository.GetProject(proj_id);
-
             try
             {
-                if (proj.OwnerID == user_id)
+                if (project.OwnerID == userId)
                 {
                     return true;
                 }
@@ -215,6 +314,11 @@ namespace venus.Controllers
             
             return false;
 
+        }
+        
+        private bool IsInProject(Project project,Guid userId)
+        {
+            return project.UsersList.Exists(u => u.Id == userId.ToString());
         }
     }
 }

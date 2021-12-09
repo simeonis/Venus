@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import { ApiUrls } from "../../../constants/ApiConstants";
 import "./manageAccess.css"
-import { FaTimes, FaPlusCircle } from 'react-icons/fa';
+import { FaTimes, FaPlusCircle, FaCrown } from 'react-icons/fa';
 
 import {Modal} from "../../components/modal/Modal"
 import {AuthContext} from "../../../context/AuthContext";
@@ -62,7 +62,6 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                //setError(error.response);
                 setError(error)
             });
     }
@@ -156,24 +155,36 @@ export const ManageAccess = () =>{
                                 members.length > 0 ?
                                     (
                                         members.map(member =>(
-                                            <div className="d-flex justify-content-start align-items-center  w-full shadow-lg user-card">
-                                                <div className="d-flex p-5">
-                                                    <div className="d-flex flex-column p-5">
+                                            <div className="d-flex justify-content-start align-items-center  w-full shadow-lg user-card mt-10">
+                                                <div className="d-flex p-5 align-items-end">
+                                                    <div className="d-flex flex-column p-5 ">
+                                                        {
+                                                            member.id === project.ownerID ?(
+                                                                <FaCrown color={'#ffd22a'}  />
+
+                                                            ) 
+                                                            : null
+                                                        }
                                                         <h3 className="font-size-16 p-0 m-0 text-decoration-underline font-weight-semi-bold">UserName</h3>
                                                         <h3 className="font-size-16 p-0 m-0">{member.userName}</h3>
                                                     </div>
-                                                    <div className="d-flex flex-column p-5">
+                                                    <div className="d-flex flex-column p-5 h-full">
+                                                      
                                                         <h3 className="font-size-16 p-0 m-0 text-decoration-underline font-weight-semi-bold">Email</h3>
                                                         <h3 className="font-size-16 p-0 m-0">{member.email}</h3>
+                                                      
                                                     </div>
                                                 </div>
 
-                                                {/*{*/}
-                                                {/*    member.id == */}
-                                                {/*}*/}
-                                                <div className="d-flex w-full justify-content-end">
-                                                    <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemovePeople(member.email)} />
-                                                </div>
+                                                {
+                                                    member.id !== project.ownerID ?(
+                                                        <div className="d-flex w-full justify-content-end">
+                                                            <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemovePeople(member.email)} />
+                                                        </div>
+                                                    ) 
+                                                    : null
+                                                }
+                               
                                             </div>
                                         ))
 
