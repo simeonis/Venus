@@ -8,17 +8,13 @@ import {AuthContext} from "../../context/AuthContext";
 export const CreateProject = () => {
 
     const projectColor = ProjectEnums.color
-
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
-
     const { user, getProjects } = useContext(AuthContext)
-
     const history = useHistory()
 
     const handleAddPeople = (id) => {
-
         const userToProjDto = {
             projId : id,
             userEmail: user.email,

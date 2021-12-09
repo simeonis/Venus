@@ -101,7 +101,7 @@ namespace venus.Controllers
 
         }
 
-        [HttpPost("add-user" )]
+        [HttpPost("add-user")]
         public async Task<IActionResult> AddUserToProject([FromBody] UserToProjDto userToProjDto)
         {
             //Add Security 
@@ -113,9 +113,6 @@ namespace venus.Controllers
 
             if (project == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
-            
-            // if (project.UsersList == null)
-            //     return new ContentResult() { Content = "No Users", StatusCode = 404 };
             
             if(project.UsersList.Any(user => user.Email == userToProjDto.UserEmail))
                 return new ContentResult() { Content = "User Already Exists", StatusCode = 403 };

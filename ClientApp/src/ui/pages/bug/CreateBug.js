@@ -10,7 +10,6 @@ export const CreateBug = () => {
     const bugSeverity = BugEnums.severity
     const bugCategory = BugEnums.category
     const bugStatus = BugEnums.status
-    const bugAssignee = BugEnums.assignee
 
     // TO-DO
     // const [error, setError] = useState();
@@ -53,7 +52,6 @@ export const CreateBug = () => {
             creator: user.userName,
             severity: severity,
             status: bugStatus.NotStarted,
-            assignee: bugAssignee.Unassigned,
             date: new Date().toJSON(),
             projectID: location.query
         }

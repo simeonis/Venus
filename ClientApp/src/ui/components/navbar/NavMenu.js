@@ -44,11 +44,8 @@ export const NavMenu = ({toggleDarkMode}) => {
           }
           </div>
           
-          <div className="w-full d-flex justify-content-end align-items-center mr-10">
-              
-              
-              
-                  <FaMoon onClick={() => toggleDarkMode()}/>
+              <div className="w-full d-flex justify-content-end align-items-center mr-10">
+                  <FaMoon className="fake-btn" onClick={() => toggleDarkMode()} />
          
               {
                   authenticated?(

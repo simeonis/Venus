@@ -120,7 +120,7 @@ export const BugList = () => {
     }
 
     return (
-        <div>
+        <div className="fit-page">
             <div className="d-flex justify-content-end m-15 float-group">
                 <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to={{
                     pathname: `/createbug`,

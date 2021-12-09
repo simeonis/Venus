@@ -39,16 +39,9 @@ namespace venus.Models.EFRepositories
             // Unique ID
             if (!context.Bugs.Where(b => b.ID.Equals(bug.ID)).Any())
             {
-/*                var project = projects.Where(p => p.ID == bug.ProjectID);
-                if (project.Any())
-                {*/
-                    var result = context.Bugs.Add(bug);
-/*                    context.Projects.Where(p => p == project).First().Bugs.Add(bug);*/
-                    context.SaveChanges();
-                    return result.Entity;
-/*                }
-
-                return null;*/
+                var result = context.Bugs.Add(bug);
+                context.SaveChanges();
+                return result.Entity;
             }
 
             // ID already exist

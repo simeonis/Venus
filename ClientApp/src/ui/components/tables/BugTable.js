@@ -65,7 +65,6 @@ export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, s
                     <th className="min">Creator</th>
                     <th className="min">Severity</th>
                     <th className="min">Status</th>
-                    <th className="min">Assignee</th>
                     <th className="min">Created</th>
                 </tr>
             </thead>
@@ -115,7 +114,6 @@ export const BugTable = ({ bugList, handleCheckbox, selectedAll, selectedList, s
                                         }
                                     </select>
                                 </td>
-                                <td className="min">{bug.assignee}</td>
                                 <td className="min">{dateFormatter(bug.date)}</td>
                             </tr>
                         )

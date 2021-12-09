@@ -14,8 +14,6 @@ export const AuthProvider = ({ children }) => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log("In Use Effect " + authenticated)
-        
         getUser()
         getProjects()
         
@@ -26,13 +24,9 @@ export const AuthProvider = ({ children }) => {
     }, [authenticated])
 
     const login = (loginDto) => {
-
-        console.log("login " + JSON.stringify(loginDto))
-
         axios.post(ApiUrls.login, loginDto)
             .then(response => {
                 if (response !== null) {
-                    console.log("RESP " + JSON.stringify(response))
                     setAuthenticated(true)
                 }
 
@@ -45,9 +39,6 @@ export const AuthProvider = ({ children }) => {
     }
 
     const register = (userDto) => {
-
-        console.log("Register " + JSON.stringify(userDto))
-
         axios.post(ApiUrls.register, userDto)
             .then()
             .catch(error => {
@@ -60,7 +51,6 @@ export const AuthProvider = ({ children }) => {
         axios.post(ApiUrls.getUser)
             .then(response => {
                 if (response !== null) {
-                    console.log("User " + JSON.stringify(response))
                     setUser(response.data)
                     setAuthenticated(true)
                 }
@@ -74,11 +64,9 @@ export const AuthProvider = ({ children }) => {
 
     //API request to get list of projects
     const getProjects = () => {
-        console.log("getting projects")
         axios.get(ApiUrls.getAllProjects)
             .then(response => {
                 if (response !== null) {
-                    console.log("response : " + JSON.stringify(response.data))
                     setProjectList(response.data)
                 }
             })
@@ -91,7 +79,6 @@ export const AuthProvider = ({ children }) => {
         axios.post(ApiUrls.logOut)
             .then(response => {
                 if (response !== null) {
-                    console.log("Logout response " + JSON.stringify(response))
                     setUser(null)
                     setAuthenticated(false)
                 }

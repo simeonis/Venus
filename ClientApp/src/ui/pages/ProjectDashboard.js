@@ -30,11 +30,11 @@ export const ProjectDashboard = () => {
         // Find project based on id
         const currProj = projectList.find(proj => proj.id === location.query)
         setProject(currProj)
+        // Get project bugs
+        getBugs(currProj.id)
+        //calculateSummary(currProj.bugs)
         // Find the project owner's username
-        console.log("CURR PROJ" + JSON.stringify(currProj))
         getOwner(currProj.ownerID)
-        // Get bugList and calculate summary
-        calculateSummary(currProj.bugs)
     }, [])
 
     const getOwner = (id) => {
@@ -49,11 +49,38 @@ export const ProjectDashboard = () => {
             });
     }
 
+    // Get All
+    const getBugs = (id) => {
+        axios.get(ApiUrls.projectBug + `/${id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    calculateSummary(response.data)
+                }
+            })
+            .catch(error => {
+                console.error('There was an error!', error.response);
+            })
+    }
+
+
     const calculateSummary = (bugs) => {
-        // 1. get all bugs
-        // 2. count each status
-        // 3. setPieData
-        // 4. !setPieEmpty
+        let statusCount = {}
+        for (const key in bugStatus) { statusCount[bugStatus[key]] = 0 }
+        bugs.map(bug => statusCount[bug.status] += 1)
+
+        let data = [['Bug Status', 'Amount']]
+        for (const key in statusCount) {
+            data.push([key, statusCount[key]])
+        }
+
+        // Set all useState variables
+        setTotalBugs(bugs.length)
+        setOpenBugs(statusCount[bugStatus.InProgress])
+        setClosedBugs(statusCount[bugStatus.Completed])
+        if (bugs.length > 0) {
+            setPieData(data)
+            setPieEmpty(false)
+        }
     }
 
     const pieOptions = {
@@ -97,7 +124,7 @@ export const ProjectDashboard = () => {
                         <div className="col">
                             <div className="card">
                                 <h3 className="card-title mb-0">{project.title}</h3>
-                                <p className="mt-0">{project.description}</p>
+                                <p className="mt-0 mb-20">{project.description}</p>
                                 <div className="card user m-0 p-10 d-flex justify-content-start">
                                     <FaCrown className="m-5" color={'#ffd22a'}/>
                                     <span className="ml-5 text-center">{owner}</span>
