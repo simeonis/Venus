@@ -58,7 +58,6 @@ export const ManageAccess = () =>{
         axios.delete(ApiUrls.removeUserFromProject,{ data: userToProjDto })
             .then(response => {
                 if (response !== null) {
-                    console.log("RES in DELETE " + JSON.stringify( response.data))
                     setMembers([...response.data])
                 }
             })
@@ -76,7 +75,6 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                //setError(error.response);
                 setError(error)
             });
     }
@@ -170,6 +168,9 @@ export const ManageAccess = () =>{
                                                     </div>
                                                 </div>
 
+                                                {/*{*/}
+                                                {/*    member.id == */}
+                                                {/*}*/}
                                                 <div className="d-flex w-full justify-content-end">
                                                     <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemovePeople(member.email)} />
                                                 </div>
