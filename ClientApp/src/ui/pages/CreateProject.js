@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { ProjectEnums } from "../../constants/ProjectConstants"
 import { ApiUrls } from "../../constants/ApiConstants"
-import { Link } from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
 
 export const CreateProject = () => {
@@ -13,7 +12,6 @@ export const CreateProject = () => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
-    const [nav, setNav] = useState(false)
 
     const { user, getProjects } = useContext(AuthContext)
 
@@ -30,26 +28,19 @@ export const CreateProject = () => {
             .then(response => {
                 if (response !== null) {
                     getProjects()
+                    history.push("/home")
                 }
             })
             .catch(error => {
-               
-           
+                console.error('There was an error!', error.response);
             });
     }
 
     const addProject = (project) => {
-        console.log("hello add proj")
         axios.post(ApiUrls.project, project)
             .then(response => {
                 if (response !== null) {
-                    console.log("RESP ADD PROJECT " + JSON.stringify(response.data))
-
                     handleAddPeople(response.data.id)
-
-                    //history.push("/")
-                   // history.replace("/home")
-                    
                 }
             })
             .catch(error => {
@@ -116,13 +107,9 @@ export const CreateProject = () => {
                 </div>
 
                 <div className="text-center panel-body">
-                    <Link className="btn btn-primary m-10" to={{
-                        pathname: `/home`
-                    }}
-                        onClick={(e) => handleSubmit(e)} >
+                    <button className="btn btn-primary m-10" onClick={(e) => handleSubmit(e)} >
                         Create Project
-                    </Link>
-                {/*    <button type="submit" className="btn btn-primary m-10" onClick={(e) => handleSubmit(e)}> Create Project</button>*/}
+                    </button>
                 </div>
             </form>
         </div>

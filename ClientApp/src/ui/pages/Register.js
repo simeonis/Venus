@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {AuthContext} from "../../context/AuthContext";
-
+import { useHistory } from 'react-router-dom';
 
 
 export const Register  = () => {
@@ -17,11 +17,14 @@ export const Register  = () => {
     const [specialization, setSpecialization] = useState("")
     const [platform, setPlatform] = useState("")
     
+    const history = useHistory()
 
     const { register, error } = useContext(AuthContext);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
+        
+        console.log("Password confirm " + passwordConfirm)
 
         if(userName === ""){
             setNameError("Name cannot be empty")
@@ -35,6 +38,10 @@ export const Register  = () => {
         }
         if(passwordConfirm === ""){
             setPasswordError("Password Confirm cannot be empty")
+        }
+        if(passwordConfirm !== password)
+        {
+            setPasswordError("Passwords must match")
         }
         else{
 
@@ -51,6 +58,8 @@ export const Register  = () => {
             console.log("User Dto " + JSON.stringify(userDto))
 
             register(userDto);
+            
+            history.push("/login")
         }
     }
 

@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
 import { Link, useHistory } from 'react-router-dom';
-import { FaRegFolder, FaFolder, FaTrash, FaPen } from 'react-icons/fa'
+import {FaRegFolder, FaFolder, FaTrash, FaPen, FaPlus} from 'react-icons/fa'
 /*import { IconContext } from 'react-icons'
 import { FolderIcon } from '@mui/icons-material';*/
 
@@ -19,8 +19,7 @@ const Home = () => {
     const [refState, setRefState] = useState({})
 
     const [show, setShow] = useState(false);
-
-    //[]
+    
     const elementsRef = useRef([]);
     const openFolderRef = useRef([]);
     const closeFolderRef = useRef([]);
@@ -57,7 +56,6 @@ const Home = () => {
                     console.log("response : " + JSON.stringify(response.data))
                 }
             })
-
     }
 
 
@@ -67,9 +65,7 @@ const Home = () => {
         borderWidth: "1px"
 
     });
-
-
-
+    
     const highlightProj = (ind, color, id) => {
         if (elementsRef.current[ind] != null && openFolderRef.current[ind] != null && closeFolderRef.current[ind] != null) {
             if (elementsRef.current[ind] != null) {
@@ -86,10 +82,7 @@ const Home = () => {
             //if null reload?
 
         }
-
-
-
-
+        
     }
     const unHighlightProj = (ind, color) => {
         if (elementsRef.current[ind] != null) {
@@ -115,7 +108,7 @@ const Home = () => {
     }
     const divClick = (projectID) => {
         history.push({
-            pathname: `/project-dashboard?id=${projectID}`,
+            pathname: `/project-dashboard`,
             query: projectID
         })
     }
@@ -142,25 +135,13 @@ const Home = () => {
     useEffect(() => {
         getUser();
         getProjects();
-        let timer = setTimeout(() => setShow(true), 500)
-
-
-        return () => {
-            //getUser();
-            //getProjects();
-            clearTimeout(timer)
-        }
-
-
-
-
-
     }, [])
 
 
 
 
-    return show ? (
+    return (
+   
         <div className="overflow-hidden" >
             {alert && <div className="alert alert-default row col-4  alert-fixed" id="deleteAlert" >
                 <div className="col-9">
@@ -180,18 +161,21 @@ const Home = () => {
             </div>}
             <div className="">
                 {
-                    user ? <h3>Welcome, {user.name}</h3> : null
+                    user ? <h3>Welcome, {user.userName}</h3> : null
                 }
 
             </div>
-
-
+            
             <div className="h100 overflow-hidden grid-container ">
+                <div className="d-flex justify-content-end m-15 float-group-bottom">
+                    <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white cust-lg-btn" to="/createproject"><FaPlus size={50} /></Link>
+                </div>
                 {
-/*                    (projectList !== null || countProjects == 0) ? (
-*/                        projectList.map((project, index, array) => {
-                    return <div size={1000} className="folder-card" style={{ color: projectColor(project.color) }}
-                        style={{ zIndex: 0 }}
+                    projectList.length === 0 ? (
+                        <div><h4>No projects available.</h4></div>
+                        ) :(
+                    projectList.map((project, index) => {
+                    return <div size={1000} className="folder-card" style={{ color: projectColor(project.color), zIndex: 0}}
                         ref={el => (elementsRef.current = [...elementsRef.current, el])}
                         style={cardStyles(projectColor(project.color))}
                         onMouseEnter={() =>
@@ -235,12 +219,11 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                })
-                    /*) : <div><h4>No projects available.</h4></div>*/
+                }))
                 }
             </div>
         </div>
-    ) : (<div>Loading...</div>);
+    )
 }
 
 export default Home

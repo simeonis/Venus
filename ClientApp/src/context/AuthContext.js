@@ -7,7 +7,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [projectList, setProjectList] = useState(null);
+    const [projectList, setProjectList] = useState([]);
     const [authenticated, setAuthenticated] = useState(false)
     const [error, setError] = useState();
 
@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
             .then(response => {
                 if (response !== null) {
                     console.log("RESP " + JSON.stringify(response))
-                    //setUser(response)
                     setAuthenticated(true)
                 }
 
