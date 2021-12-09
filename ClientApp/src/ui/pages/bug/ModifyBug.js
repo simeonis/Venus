@@ -1,83 +1,70 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { BugEnums } from "../../../constants/BugConstants"
 import { ApiUrls } from "../../../constants/ApiConstants"
-
-// Needed to Patch Bug
-/*[
-    {
-        "op": "replace",
-        "path": "/title",
-        "value": "Bug #1"
-    },
-    {
-        "op": "replace",
-        "path": "/details",
-        "value": "abc"
-    }
-]*/
 
 export const ModifyBug = () => {
     // Enums
     const bugSeverity = BugEnums.severity
     const bugCategory = BugEnums.category
-    const bugStatus = BugEnums.status
-    const bugAssignee = BugEnums.assignee
 
     // TO-DO
     // const [error, setError] = useState();
+    const [bug, setBug] = useState({})
     const [subject, setSubject] = useState("")
     const [severity, setSeverity] = useState(bugSeverity.Medium)
     const [category, setCategory] = useState(bugCategory.None)
 
     const history = useHistory()
+    const location = useLocation()
 
-    const addBug = (bugDto) => {
-        axios.post(ApiUrls.bug, bugDto)
+    useEffect(() => {
+        const bug = location.state
+        setBug(bug)
+        setSubject(bug.subject)
+        setSeverity(bug.severity)
+        setCategory(bug.category)
+    }, [])
+
+    const modifyBug = () => {
+        const args = [
+            { "op": "replace", "path": "/subject", "value": `${subject}` },
+            { "op": "replace", "path": "/severity", "value": `${severity}` },
+            { "op": "replace", "path": "/category", "value": `${category}` }
+        ]
+        axios.patch(`${ApiUrls.bug}/${bug.id}`, args)
             .then(response => {
-                if (response !== null) {
-                    console.log("RESP " + JSON.stringify(response.data))
-                    // Go back to bug list
-                    history.push('/bugs')
+                if (response.status === 200) {
+                    history.push({
+                        pathname: '/project-bugs',
+                        query: bug.projectID
+                    })
                 }
             })
             .catch(error => {
-                // setError(error.response);
                 console.error('There was an error!', error.response);
-            });
+            })
     }
 
     const handleSubmit = (e) => {
         // Prevents From from submitting
         e.preventDefault()
-
-        // TO-DO Error Check
-        const bugDto = {
-            category: category,
-            subject: subject,
-            creator: "John Doe",
-            severity: severity,
-            status: bugStatus.NotStarted,
-            assignee: bugAssignee.Unassigned,
-            date: new Date().toJSON()
-        }
-        addBug(bugDto)
+        modifyBug()
     }
 
     return (
         <div className="container d-flex flex-column align-items-center">
             <h1>Modify Bug</h1>
             <form className="w-400 mw-full">
-                {/* <!-- Input --> */}
                 <div className="form-group">
                     <label>Bug Subject</label>
-                    <input type="text" className="form-control" placeholder="Subject" required="required" onChange={(e) => setSubject(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Subject" required="required" value={subject} onChange={(e) => setSubject(e.target.value)} />
                 </div>
 
                 <div className="form-group">
                     <label>Bug Severity</label>
-                    <select className="form-control" onChange={(e) => setSeverity(e.target.value)}>
+                    <select className="form-control" value={severity} onChange={(e) => setSeverity(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select bug severity</option>
                         {
                             Object.keys(bugSeverity).map(key =>
@@ -89,7 +76,7 @@ export const ModifyBug = () => {
 
                 <div className="form-group">
                     <label>Bug Category</label>
-                    <select className="form-control" onChange={(e) => setCategory(e.target.value)}>
+                    <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select bug category</option>
                         {
                             Object.keys(bugCategory).map(key =>
@@ -99,8 +86,7 @@ export const ModifyBug = () => {
                     </select>
                 </div>
 
-                {/* <!-- Submit button --> */}
-                <input className="btn btn-primary" type="submit" value="Create" onClick={(e) => handleSubmit(e)} />
+                <input className="btn btn-primary" type="submit" value="Modify" onClick={(e) => handleSubmit(e)} />
             </form>
         </div>
     )

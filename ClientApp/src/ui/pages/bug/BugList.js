@@ -127,7 +127,8 @@ export const BugList = () => {
                     query: location.query
                 }}><FaPlus /></Link>
                 {
-                    canModify ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to="/modifybug"><FaPen /></Link>
+                    canModify
+                        ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to={{ pathname: `/modifybug`, state: findSelectedBugs()[0] }}><FaPen /></Link>
                         : <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white disabled" to="" onClick={(e) => e.preventDefault()}><FaPen /></Link>
                 }
                 <button className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>

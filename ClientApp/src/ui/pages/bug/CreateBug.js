@@ -92,7 +92,6 @@ export const CreateBug = () => {
                     </select>
                 </div>
 
-                {/* <!-- Submit button --> */}
                 <input className="btn btn-primary" type="submit" value="Create" onClick={(e) => handleSubmit(e)} />
             </form>
         </div>
