@@ -246,3 +246,18 @@ th.min, td.min {
     top: 0;
     right: 0;
 }
+
+.line-wrap{
+    width: 100%;
+    text-align: center;
+    border-bottom: 0.6px solid #000;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+
+}
+
+.line-wrap span {
+    background:#fff;
+    padding:0 10px;
+    font-size: 1.2rem;
+}

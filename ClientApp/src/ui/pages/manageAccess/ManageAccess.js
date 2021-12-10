@@ -161,7 +161,6 @@ export const ManageAccess = () =>{
                                                         {
                                                             member.id === project.ownerID ?(
                                                                 <FaCrown color={'#ffd22a'}  />
-
                                                             ) 
                                                             : null
                                                         }

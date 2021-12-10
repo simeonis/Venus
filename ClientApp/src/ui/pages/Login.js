@@ -25,7 +25,6 @@ export const Login = () => {
             const loginDto = { 
                 email : email, 
                 password: password,
-                rememberMe: rememberMe
             };
 
             login(loginDto)
@@ -51,17 +50,13 @@ export const Login = () => {
                     <label htmlFor="password" className="required">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)} />
                 </div>
-
-                {/* <!-- Switch --> */}
-                <div className="form-group">
-                    <div className="custom-switch">
-                    <input type="checkbox" id="remember-me" onChange={(e) => setRememberMe(e.target.checked)} />
-                    <label htmlFor="remember-me">Remember me</label>
-                    </div>
-                </div>
-
+                
                 {/* <!-- Submit button --> */}
-                <input className="btn btn-primary" type="submit" value="Login" onClick={(e) =>handleSubmit(e)} />
+                <div className="d-flex align-items-center justify-content-center flex-column">
+                    <input className="btn btn-primary w-half" type="submit" value="Login" onClick={(e) =>handleSubmit(e)} />
+                    <h2 className="line-wrap pt-5 "><span>Or</span></h2>
+
+                </div>
                 <p>Don't have an account: <Link to="signup">Sign Up</Link></p>
 
             </form>

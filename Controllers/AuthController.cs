@@ -35,7 +35,7 @@ namespace venus.Controllers
             if(dto.Password != dto.PasswordConfirm)
                 return new ContentResult() { Content = "Password Do Not Match", StatusCode = 403 };
 
-            var user = new ApplicationUser() { UserName = dto.UserName, Email = dto.Email, Dev = dto.Dev, Specialization = dto.Specialization, Platform = dto.Platform};
+            var user = new ApplicationUser() { UserName = dto.UserName, Email = dto.Email};
             
             var result = await _userManager.CreateAsync(user, dto.Password);
 
@@ -70,7 +70,7 @@ namespace venus.Controllers
                 return new ContentResult() { Content = "Bad Password", StatusCode = 403 };
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, dto.Password, dto.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, dto.Password, false, true);
 
             if (!result.Succeeded)
             {
@@ -85,22 +85,13 @@ namespace venus.Controllers
 
             var jwt = JwtService.Generate(user.Id);
 
-            if (dto.RememberMe)
+        
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
-                Response.Cookies.Append("jwt", jwt, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Expires = DateTime.Now.AddDays(30)
-                });
-            }
-            else
-            {
-                Response.Cookies.Append("jwt", jwt, new CookieOptions
-                {
-                    HttpOnly = true,
-                });
-            }
-
+                HttpOnly = true,
+                Expires = DateTime.Now.AddDays(30)
+            });
+            
             return Ok(new { message="success" });
         }
 
