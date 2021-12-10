@@ -8,28 +8,26 @@ namespace venus.Models.EFRepositories
 {
     public class EFBugRepository : IBugRepository
     {
-        private VenusDbContext context;
-        private IEnumerable<Project> projects;
+        private readonly VenusDbContext _context;
 
         public EFBugRepository(VenusDbContext context)
         {
-            this.context = context;
-            projects = context.Projects.Include(p => p.Bugs);
+            this._context = context;
         }
 
         public Bug GetBug(Guid bugID)
         {
-            return context.Bugs.FirstOrDefault(b => b.ID.Equals(bugID));
+            return _context.Bugs.FirstOrDefault(b => b.ID.Equals(bugID));
         }
 
         public IEnumerable<Bug> GetBugs(Guid projectID)
         {
-            return context.Bugs.Where(b => b.ProjectID == projectID).ToList();
+            return _context.Bugs.Where(b => b.ProjectID == projectID).ToList();
         }
 
         public IEnumerable<Bug> GetBugs()
         {
-            return context.Bugs.ToList();
+            return _context.Bugs.ToList();
         }
 
         public Bug AddBug(BugDto bugDto)
@@ -37,14 +35,14 @@ namespace venus.Models.EFRepositories
             Bug bug = new Bug(bugDto);
 
             // Unique ID
-            if (!context.Bugs.Where(b => b.ID.Equals(bug.ID)).Any())
+            if (!_context.Bugs.Where(b => b.ID.Equals(bug.ID)).Any())
             {
 /*                var project = projects.Where(p => p.ID == bug.ProjectID);
                 if (project.Any())
                 {*/
-                    var result = context.Bugs.Add(bug);
+                    var result = _context.Bugs.Add(bug);
 /*                    context.Projects.Where(p => p == project).First().Bugs.Add(bug);*/
-                    context.SaveChanges();
+                    _context.SaveChanges();
                     return result.Entity;
 /*                }
 
@@ -57,11 +55,11 @@ namespace venus.Models.EFRepositories
 
         public bool DeleteBug(Guid bugID)
         {
-            var bugs = context.Bugs.Where(b => b.ID.Equals(bugID));
+            var bugs = _context.Bugs.Where(b => b.ID.Equals(bugID));
             if (bugs.Any())
             {
-                context.Bugs.Remove(bugs.First());
-                context.SaveChanges();
+                _context.Bugs.Remove(bugs.First());
+                _context.SaveChanges();
                 return true;
             }
             
@@ -70,7 +68,7 @@ namespace venus.Models.EFRepositories
 
         public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
     }
 }

@@ -16,8 +16,6 @@ export const Register  = () => {
     const [devChecked, setDevChecked] = useState(false)
     const [specialization, setSpecialization] = useState("")
     const [platform, setPlatform] = useState("")
-    
-    const history = useHistory()
 
     const { register, error } = useContext(AuthContext);
 
@@ -26,25 +24,55 @@ export const Register  = () => {
         
         console.log("Password confirm " + passwordConfirm)
 
+        const passwordRegex =  /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/gm
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        
+        var fail = false;
+        
         if(userName === ""){
-            setNameError("Name cannot be empty")
-        }
-        if(email === ""){
-            setEmailError("Email cannot be empty")
-
-        }
-        if(password === ""){
-            setPasswordError("Password cannot be empty")
-        }
-        if(passwordConfirm === ""){
-            setPasswordError("Password Confirm cannot be empty")
-        }
-        if(passwordConfirm !== password)
-        {
-            setPasswordError("Passwords must match")
+            setNameError("Username cannot be empty")
+            fail = true
         }
         else{
-
+            setNameError("")
+        }
+        
+        if(email === ""){
+            setEmailError("Email cannot be empty")
+            fail = true
+        }
+        else if(!emailRegex.test(email)){
+            setEmailError("Must enter a valid Email")
+            fail = true
+        }
+        else{
+            setEmailError("")
+        }
+        if(password === ""){
+            console.log("Password Empty!")
+            setPasswordError("Password cannot be empty")
+            fail = true
+        }
+        else if(!passwordRegex.test(password)){
+            console.log("Password Empty!")
+            setPasswordError("Password must be 8 characters long with One Upper and lower character, one number and a special character")
+            fail = true
+        }
+        else if(passwordConfirm !== password)
+        {
+            setPasswordError("Passwords must match")
+            fail = true
+        }
+        else{
+            console.log("Yeetaaaaa")
+            setPasswordError("")
+        }
+        
+        if(!fail){
+  
+            
+            console.log("zIn ELSE")
+            
             const userDto = { 
                 userName: userName, 
                 email : email, 
@@ -54,10 +82,8 @@ export const Register  = () => {
                 specialization: specialization,
                 platform: platform
             };
-
-            register(userDto);
             
-            history.push("/login")
+            register(userDto);
         }
     }
 
@@ -66,6 +92,7 @@ export const Register  = () => {
             <h1>Sign Up</h1>
             <form  className="w-400 mw-full">
                 {/* <!-- name --> */}
+                <p className="text-danger">{error}</p>
                 <div className="form-group">
                     <p className="text-danger">{nameError}</p>
                     <label htmlFor="user-name" className="required">Username</label>
@@ -111,8 +138,8 @@ export const Register  = () => {
                 </div>
                 
                 <div className="form-group">
-                    <label htmlFor="languages" className="required">Platform</label>
-                    <select className="form-control" id="languages"  required="required"
+                    <label htmlFor="platform" className="required">Platform</label>
+                    <select className="form-control" id="platform"  required="required" value="windows">
                             onChange={(e) => setPlatform(e.target.value)}>
                         <option value="windows">Windows</option>
                         <option value="mac">Mac</option>

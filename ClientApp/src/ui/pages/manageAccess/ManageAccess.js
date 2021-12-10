@@ -13,9 +13,10 @@ export const ManageAccess = () =>{
     const [modal, setModal] = useState(false)
     const [members, setMembers] = useState([])
     const [user, setUser] = useState()
-    const [error, setError] = useState([])
+    const [addError, setAddAddError] = useState("")
+    const [deleteError, setDeleteError] = useState("")
     const [email, setEmail] = useState("")
-    const[project, setProject] = useState({})
+    const [project, setProject] = useState({})
 
     const location = useLocation()
     
@@ -37,7 +38,8 @@ export const ManageAccess = () =>{
             })
             .catch(error => {
                 //setError(error.response);
-                setError(error)
+                console.log("ERROR " + JSON.stringify(error.response.data) )
+                setAddAddError(error.response.data)
             });
     }
 
@@ -62,7 +64,8 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                setError(error)
+                console.log("ERROR " + JSON.stringify(error.response.data) )
+                setDeleteError(error.response.data)
             });
     }
     
@@ -74,13 +77,12 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                setError(error)
+                setAddAddError(error)
             });
     }
     
     const searchUser = (e) =>{
         e.preventDefault()
-        console.log("email " + email)
         
         axios.get(ApiUrls.searchUser, { params: { email: email } })
             .then(response => {
@@ -89,21 +91,17 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                setError(error.response)
+                setAddAddError(error.response)
             });
     }
     
     useEffect(() => {
         // Refresh list of projects
         getProjects()
-        // Find project based on id
         const currProj = projectList.find(proj => proj.id === location.query)
         setProject(currProj)
-        // // Find the project owner's username
-        // getOwner(currProj.ownerID)
         getMembers(currProj.id)
     }, [])
-    
     
     return(
         <div className="m-15">
@@ -112,6 +110,7 @@ export const ManageAccess = () =>{
                     <Modal hideModal={hideModal}>
                         <div className="w-500 h-150">
                             <form className="modal-form w-full">
+                                <p className="text-danger">{addError}</p>
                                 <div className="d-flex justify-content-between w-full">
                                     <input className="form-control" placeholder="Email" onChange={(e) => setEmail(e.target.value)}  />
                                     <button className="btn btn-primary" onClick={(e) => searchUser(e)}>Search</button>
@@ -151,11 +150,12 @@ export const ManageAccess = () =>{
                             <input type="text" className="form-control w-full" placeholder="Search"  />
                         </form>
                         <div className="pt-15 w-full p-10">
+                            <p className="text-danger">{deleteError}</p>
                             {
                                 members.length > 0 ?
                                     (
-                                        members.map(member =>(
-                                            <div className="d-flex justify-content-start align-items-center  w-full shadow-lg user-card mt-10">
+                                        members.map((member, idx) =>(
+                                            <div key={idx} className="d-flex justify-content-start align-items-center  w-full shadow-lg user-card mt-10">
                                                 <div className="d-flex p-5 align-items-end">
                                                     <div className="d-flex flex-column p-5 ">
                                                         {
@@ -177,7 +177,7 @@ export const ManageAccess = () =>{
                                                 </div>
 
                                                 {
-                                                    member.id !== project.ownerID ?(
+                                                    member.id !== project.ownerID ? (
                                                         <div className="d-flex w-full justify-content-end">
                                                             <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemovePeople(member.email)} />
                                                         </div>

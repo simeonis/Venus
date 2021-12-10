@@ -14,8 +14,6 @@ export const AuthProvider = ({ children }) => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log("In Use Effect " + authenticated)
-        
         getUser()
         getProjects()
         
@@ -26,33 +24,26 @@ export const AuthProvider = ({ children }) => {
     }, [authenticated])
 
     const login = (loginDto) => {
-
-        console.log("login " + JSON.stringify(loginDto))
-
+        
         axios.post(ApiUrls.login, loginDto)
             .then(response => {
                 if (response !== null) {
-                    console.log("RESP " + JSON.stringify(response))
                     setAuthenticated(true)
                 }
-
             })
             .catch(error => {
                 setError(error.response);
                 setAuthenticated(false)
-                console.error('There was an error!', error.response);
             });
     }
 
     const register = (userDto) => {
-
-        console.log("Register " + JSON.stringify(userDto))
-
         axios.post(ApiUrls.register, userDto)
-            .then()
+            .then(() =>{
+                history.push("/login")
+            })
             .catch(error => {
-                setError(error);
-                console.error('There was an error!', error);
+                setError(error.response.data);
             });
     }
 
@@ -60,30 +51,25 @@ export const AuthProvider = ({ children }) => {
         axios.post(ApiUrls.getUser)
             .then(response => {
                 if (response !== null) {
-                    console.log("User " + JSON.stringify(response))
                     setUser(response.data)
                     setAuthenticated(true)
                 }
             })
             .catch(error => {
-                //setError(error.response);
                 setAuthenticated(false)
-                console.error('There was an error!', error.response);
             });
     }
 
     //API request to get list of projects
     const getProjects = () => {
-        console.log("getting projects")
         axios.get(ApiUrls.getAllProjects)
             .then(response => {
                 if (response !== null) {
-                    console.log("response : " + JSON.stringify(response.data))
                     setProjectList(response.data)
                 }
             })
             .catch(error => {
-                console.error('There was an error.', error.response)
+                //should handle
             })
     }
     
@@ -91,7 +77,6 @@ export const AuthProvider = ({ children }) => {
         axios.post(ApiUrls.logOut)
             .then(response => {
                 if (response !== null) {
-                    console.log("Logout response " + JSON.stringify(response))
                     setUser(null)
                     setAuthenticated(false)
                 }
@@ -99,7 +84,6 @@ export const AuthProvider = ({ children }) => {
             .catch(error => {
                 setError(error.response);
                 setAuthenticated(false)
-                console.error('There was an error!', error.response);
             });
     }
 

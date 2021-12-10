@@ -17,7 +17,11 @@ const Home = () => {
     const [openFolder, setOpenFolder] = useState(false);
     const [closeFolder, setCloseFolder] = useState(false);
     const [refState, setRefState] = useState({})
-
+    
+    //SETH! Just for merge
+    const [errorDelete, setErrorDelete] = useState("")
+    //-------------------------
+    
     const [show, setShow] = useState(false);
     
     const elementsRef = useRef([]);
@@ -55,6 +59,9 @@ const Home = () => {
                     getProjects()
                     console.log("response : " + JSON.stringify(response.data))
                 }
+            })
+            .catch(error =>{
+                setErrorDelete(error.response.data);
             })
     }
 
@@ -145,6 +152,8 @@ const Home = () => {
         <div className="overflow-hidden" >
             {alert && <div className="alert alert-default row col-4  alert-fixed" id="deleteAlert" >
                 <div className="col-9">
+                    {/*Seth ADDED HERE*/}
+                    <p className="text-danger">{errorDelete}</p>
                     <h6>Are you sure you want to delete the project: {title}</h6>
                 </div>
                 <div className="col-3">

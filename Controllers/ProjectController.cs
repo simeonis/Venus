@@ -195,22 +195,24 @@ namespace venus.Controllers
             try
             {
                 var userId = GetUserId();
-                if (userId != null && IsProjOwner(project, userId.Value))
+                if (userId != null && !IsProjOwner(project, userId.Value))
                 {
-                    if(project.UsersList.Any(user => user.Email == userToProjDto.UserEmail))
-                        return new ContentResult() { Content = "User Already Exists", StatusCode = 403 };
-            
-                    var appUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
-            
-                    if (appUser == null)
-                        return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
-            
-                    project.UsersList.Add(appUser);
-
-                    _projectRepository.UpdateProject(project);
-
-                    return Ok(appUser);
+                    return new ContentResult() { Content = "User not Owner", StatusCode = 404 };
                 }
+                
+                if(project.UsersList.Any(user => user.Email == userToProjDto.UserEmail))
+                    return new ContentResult() { Content = "User Already Exists", StatusCode = 403 };
+            
+                var appUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
+            
+                if (appUser == null)
+                    return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
+            
+                project.UsersList.Add(appUser);
+
+                _projectRepository.UpdateProject(project);
+
+                return Ok(appUser);
             }
             catch (Exception e)
             {
@@ -259,19 +261,21 @@ namespace venus.Controllers
             try
             {
                 var userId = GetUserId();
-                if (userId != null && IsProjOwner(project, userId.Value))
+                if (userId != null && !IsProjOwner(project, userId.Value))
                 {
-                    var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
-            
-                    if (user == null)
-                        return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
-            
-                    project.UsersList.Remove(user);
-            
-                    _projectRepository.UpdateProject(project);
-            
-                    return Ok(project.UsersList);
+                    return new ContentResult() { Content = "User Not Owner", StatusCode = 404 };
                 }
+                
+                var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
+            
+                if (user == null)
+                    return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
+            
+                project.UsersList.Remove(user);
+            
+                _projectRepository.UpdateProject(project);
+            
+                return Ok(project.UsersList);
             }
             catch (Exception e)
             {
