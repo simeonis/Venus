@@ -28,6 +28,7 @@
     grid-column: 2;
     grid-row: 2;
     height: 100%;
+    position: relative;
 }
 
 @media(max-width: 630px) {

@@ -105,7 +105,6 @@ namespace venus.Controllers
         [HttpPut]
         public ActionResult<Project> Put([FromBody] Project project)
         {
-
             var preExistingProj = _projectRepository.GetProject(project.ID);
 
             if (preExistingProj == null)
@@ -124,7 +123,7 @@ namespace venus.Controllers
                 Console.WriteLine(e);
                 return new ContentResult() { Content = "Token Error", StatusCode = 404 };
             }
-            
+
             _projectRepository.UpdateProject(project);
             return Ok();
         }

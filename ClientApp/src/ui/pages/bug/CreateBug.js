@@ -71,6 +71,10 @@ export const CreateBug = () => {
     return (
         <div className="container d-flex flex-column align-items-center">
             <h1>Create Bug</h1>
+            <button className="btn btn-primary float-group-tr" onClick={(e) => history.push({
+                pathname: '/project-bugs',
+                query: location.query
+            })}>Back</button>
             <form className="w-400 mw-full">
                 <div className="form-group">
                     <label className="required">Bug Subject</label>
@@ -102,7 +106,9 @@ export const CreateBug = () => {
                     </select>
                 </div>
 
-                <input className="btn btn-primary" type="submit" value="Create" disabled={!validSubject()} onClick={(e) => handleSubmit(e)} />
+                <div className="text-center panel-body">
+                    <input className="btn btn-primary w-half" type="submit" value="Create" disabled={!validSubject()} onClick={(e) => handleSubmit(e)} />
+                </div>
             </form>
         </div>
     )

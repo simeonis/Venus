@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef  } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
@@ -18,6 +18,10 @@ const Home = () => {
     const openFolderRef = useRef([]);
     const closeFolderRef = useRef([]);
     const history = useHistory()
+
+    useEffect(() => {
+        getProjects()
+    }, [])
 
     //switch to show colors in dropdown menu
     const projectColor = (color) => {
@@ -124,12 +128,12 @@ const Home = () => {
                     </div>
                 </div>
             </div>}
-            <div className="m-20 mb-0 p-10">
+            <div className="m-0 mb-20 p-0">
                 {
-                    user ? <h3>Welcome, {user.userName}</h3> : null
+                    user ? <h3 className="mb-0">Welcome, {user.userName}</h3> : null
                 }
             </div>
-            <div className="h100 overflow-hidden grid-container m-20 mt-0 p-10">
+            <div className="overflow-hidden grid-container mb-20 mt-0 ml-0">
                 <div className="d-flex justify-content-end m-15 float-group-bottom">
                     <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white cust-lg-btn" to="/createproject"><FaPlus size={30} /></Link>
                 </div>
@@ -138,7 +142,7 @@ const Home = () => {
                         <h4>No projects available</h4>
                     ) : (
                             projectList.map((project, index) => {
-                                return <div key={index} size={1000} className={"card folder-card shadow " + cardClass(project.color)}
+                                return <div key={index} size={1000} className={"m-0 card folder-card shadow " + cardClass(project.color)}
                                 ref={el => (elementsRef.current = [...elementsRef.current, el])}
                         onMouseEnter={() =>
                             highlightProj(index, projectColor(project.color), project.id)

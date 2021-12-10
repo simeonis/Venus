@@ -1,7 +1,7 @@
 ﻿import React, {useContext, useEffect, useState} from 'react'
 import axios from 'axios'
 import { ApiUrls } from '../../../constants/ApiConstants'
-import { FaPlus, FaTrash, FaPen } from 'react-icons/fa'
+import { FaPlus, FaTrash, FaPen, FaRedo } from 'react-icons/fa'
 import { BugTable } from '../../components/tables/BugTable'
 import { BugEnums } from "../../../constants/BugConstants"
 import { CreateBug } from './CreateBug';
@@ -122,6 +122,14 @@ export const BugList = () => {
         }
     }
 
+    const refresh = () => {
+        setGeneralBugList([])
+        setShowLoading(loading = true)
+        setTimeout(() => {
+            getBugs()
+        }, 1000)
+    }
+
     return (
         <div className="fit-page">
             <div className="d-flex justify-content-end m-15 float-group">
@@ -135,6 +143,7 @@ export const BugList = () => {
                         : <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white disabled" to="" onClick={(e) => e.preventDefault()}><FaPen /></Link>
                 }
                 <button className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
+                <button className="center btn btn-square btn-success rounded-circle mx-5 text-white shadow" onClick={(e) => refresh()}><FaRedo /></button>
             </div>
             <div className="d-flex flex-column align-items-start">
                 <details className="collapse-panel w-lg-full m-15" open>

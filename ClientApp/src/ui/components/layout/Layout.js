@@ -55,8 +55,8 @@ export const Layout = (props) => {
               ):null
           }
         
-      
-          <div className="h100 venus-content overflow-auto">
+
+            <div className="venus-content overflow-auto">
                   {props.children}
           </div>
       </div>

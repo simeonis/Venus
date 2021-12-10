@@ -26,8 +26,6 @@ export const CreateProject = () => {
             });
     }
 
-    //sumbission handler for adding a project
-    //creates a project with the states set from the text fields to be added to the DB
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -40,8 +38,8 @@ export const CreateProject = () => {
     }
     return (
         <div className="container d-flex flex-column align-items-center">
-
             <h1 className="p-15">Create a Project</h1>
+            <button className="btn btn-primary float-group-tr" onClick={(e) => history.push({pathname: '/home'})}>Back</button>
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
                     <label className="required">Project Title</label>
@@ -65,7 +63,7 @@ export const CreateProject = () => {
                 </div>
 
                 <div className="text-center panel-body">
-                    <button className="btn btn-primary m-10" onClick={(e) => handleSubmit(e)} >
+                    <button className="btn btn-primary w-half" onClick={(e) => handleSubmit(e)} >
                         Create Project
                     </button>
                 </div>
