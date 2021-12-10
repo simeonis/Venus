@@ -236,7 +236,7 @@ th.min, td.min {
     width: 97%;
 }
 
-.fake-btn {
+.fake-btn:hover {
     cursor: pointer;
 }
 

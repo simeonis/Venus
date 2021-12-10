@@ -224,15 +224,16 @@ namespace venus.Controllers
         public ActionResult<IEnumerable<ApplicationUser>> GetMembers(string id)
         {
             
-            var guid = Guid.Parse(id);
-            
-            var project = _projectRepository.GetProject(guid);
-            
-            if (project == null)
-                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
 
             try
             {
+                var guid = Guid.Parse(id);
+            
+                var project = _projectRepository.GetProject(guid);
+            
+                if (project == null)
+                    return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+                
                 var userId = GetUserId();
                 if (userId != null && IsInProject(project, userId.Value))
                 {

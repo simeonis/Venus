@@ -5,7 +5,6 @@ import { AuthContext } from '../../context/AuthContext';
 export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
@@ -40,22 +39,21 @@ export const Login = () => {
                 }
                 {/* <!-- Input --> */}
                 <div className="form-group">
-                    <p className="text-danger">{emailError}</p>
                     <label htmlFor="email" className="required">Email</label>
                     <input type="text" className="form-control" id="email" placeholder="Email" required="required" onChange={(e) => setEmail(e.target.value)} />
+                    <p className="text-danger">{emailError}</p>
                 </div>
 
                 <div className="form-group">
-                    <p className="text-danger">{passwordError}</p>
                     <label htmlFor="password" className="required">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)} />
+                    <p className="text-danger">{passwordError}</p>
                 </div>
                 
                 {/* <!-- Submit button --> */}
                 <div className="d-flex align-items-center justify-content-center flex-column">
                     <input className="btn btn-primary w-half" type="submit" value="Login" onClick={(e) =>handleSubmit(e)} />
                     <h2 className="line-wrap pt-5 "><span>Or</span></h2>
-
                 </div>
                 <p>Don't have an account: <Link to="signup">Sign Up</Link></p>
 

@@ -1,8 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 
-
-
 export const Register  = () => {
     const [userName, setuserName] = useState("")
     const [email, setEmail] = useState("")
@@ -79,23 +77,23 @@ export const Register  = () => {
                 {/* <!-- Username --> */}
                 <p className="text-danger">{error}</p>
                 <div className="form-group">
-                    <p className="text-danger">{nameError}</p>
                     <label htmlFor="user-name" className="required">Username</label>
                     <input type="text" className="form-control" id="user-name" placeholder="Username" required="required" onChange={(e) => setuserName(e.target.value)} />
+                    <p className="text-danger">{nameError}</p>
                 </div>
 
                 {/* <!-- Email --> */}
                 <div className="form-group">
-                    <p className="text-danger">{emailError}</p>
                     <label htmlFor="email" className="required">Email</label>
                     <input type="text" className="form-control" id="email" placeholder="Email" required="required" onChange={(e) => setEmail(e.target.value)}  />
+                    <p className="text-danger">{emailError}</p>
                 </div>
 
                 {/* <!-- Password --> */}
                 <div className="form-group">
-                    <p className="text-danger">{passwordError}</p>
                     <label htmlFor="password" className="required">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)}  />
+                    <p className="text-danger">{passwordError}</p>
                 </div>
 
                 {/* <!-- Password --> */}

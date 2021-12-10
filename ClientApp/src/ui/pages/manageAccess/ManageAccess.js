@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import { ApiUrls } from "../../../constants/ApiConstants";
 import "./manageAccess.css"
-import { FaTimes, FaPlusCircle, FaCrown } from 'react-icons/fa';
+import { FaTimes, FaPlusCircle, FaCrown, FaWindowClose } from 'react-icons/fa';
 
 import {Modal} from "../../components/modal/Modal"
 import {AuthContext} from "../../../context/AuthContext";
@@ -37,8 +37,6 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                //setError(error.response);
-                console.log("ERROR " + JSON.stringify(error.response.data) )
                 setAddAddError(error.response.data)
             });
     }
@@ -91,8 +89,12 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                setAddAddError(error.response)
+                setAddAddError(error.response.data)
             });
+    }
+    
+    const handleClose = () =>{
+        setUser(null)
     }
     
     useEffect(() => {
@@ -105,49 +107,40 @@ export const ManageAccess = () =>{
     
     return(
         <div className="m-15">
-            {
-                modal ? (
-                    <Modal hideModal={hideModal}>
-                        <div className="w-500 h-150">
-                            <form className="modal-form w-full">
-                                <p className="text-danger">{addError}</p>
-                                <div className="d-flex justify-content-between w-full">
-                                    <input className="form-control" placeholder="Email" onChange={(e) => setEmail(e.target.value)}  />
-                                    <button className="btn btn-primary" onClick={(e) => searchUser(e)}>Search</button>
-                                </div>
-                            </form>
-                            <div className="user-dropdown pt-5">
-                                {
-                                    user ? (
-                                        <div className="d-flex my-5 shadow user-found-row">
-                                            <div className="w-full">
-                                                <p className="ml-5">{user.userName}</p>
-                                            </div>
-                                            <div className="w-full d-flex justify-content-end align-items-center p-5">
-                                                <FaPlusCircle className="text-primary " onClick={() => handleAddPeople()} />
-                                            </div>
-                                        </div>
-                                    ): null
-                                }
-                            </div>
-                        </div>
-                    </Modal>
-                ) : null
-            }
             <div className="manList d-flex align-items-center justify-content-center flex-column mw-550">
                 <div className="intern-wrap">
                     <div className="d-flex">
                         <div className="title p-0 m-0">
                             <h3>Manage Access</h3>
                         </div>
-                        <div className="d-flex justify-content-end align-items-center  w-full">
-                            <button className="btn btn-success" onClick={() => showModal()}>Add People</button>
-                        </div>
                     </div>
                     
                     <div className="w-full border mt-5">
-                        <form className="mt-5 w-full p-10 border-bottom">
-                            <input type="text" className="form-control w-full" placeholder="Search"  />
+                        <form className="mt-5 w-full p-10 border-bottom my-search-form d-flex flex-column">
+                            <div className="d-flex">
+                                <input className="form-control mr-10" placeholder="Email" onChange={(e) => setEmail(e.target.value)}  />
+                                <button className="btn btn-success" onClick={(e) => searchUser(e)}>Search</button>
+                            </div>
+                            <p className="text-danger">{addError}</p>
+                            
+                                {
+                                    user ? (
+                                        <div className="user-dropdown shadow-lg">
+                                            <div className="shadow user-found-row h-full w-full">
+                                                <div className="d-flex h-50 w-full">
+                                                    <div className="w-full h-full d-flex align-items-center">
+                                                        <p className="10 font-size-16">{user.userName}</p>
+                                                        <FaPlusCircle className="text-primary ml-10 " onClick={() => handleAddPeople()} />
+                                                    </div>
+                                                    <div className="w-full h-full d-flex justify-content-end align-items-center p-2">
+                                                        <FaWindowClose className="text-primary mr-10 " onClick={() => handleClose()} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ): null
+                                }
+                       
                         </form>
                         <div className="pt-15 w-full p-10">
                             <p className="text-danger">{deleteError}</p>
