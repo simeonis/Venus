@@ -45,7 +45,6 @@ namespace venus.Controllers
         [HttpGet("{id}")]
         public ActionResult<Project> Get(Guid id)
         {
-            
             if(id == Guid.Empty)
             {
                 return BadRequest("ID was not found");
@@ -185,7 +184,7 @@ namespace venus.Controllers
             return new NotFoundResult();
         }
 
-        [HttpPost("add-user" )]
+        [HttpPost("add-user")]
         public async Task<IActionResult> AddUserToProject([FromBody] UserToProjDto userToProjDto)
         {
             var project = _projectRepository.GetProject(userToProjDto.ProjId);

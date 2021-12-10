@@ -14,9 +14,6 @@ export const ModifyProject = () => {
     const [description, setDescription] = useState(project.description)
     const [color, setColor] = useState(projectColor.Red)
 
-
-
-
     //setTitle(location.title)
     const history = useHistory()
     const location = useLocation();
@@ -95,14 +92,10 @@ export const ModifyProject = () => {
     //hook to load projects and set project attributes for editting
     useEffect(() => {
         getProject(location.query.pId)
-        //TO DO: sets the title and desc but will not add them to project until field is editted
         setProject(project)
         setTitle(location.query.pTitle)
         setDescription(location.query.pDesc)
         setColor(location.query.pColor)
-        //setColor(color)
-
-
     }, [])
 
     return (
@@ -121,11 +114,10 @@ export const ModifyProject = () => {
                 </div>
                 <div className="form-group">
                     <label className="required">Project Color</label>
-                    <select className="custom-select select-project" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
-                        {/* <option selected="selected" disabled="disabled">value={project.color}</option>*/}
+                    <select className="form-control" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
                         {
                             Object.keys(projectColor).map((key, i) =>
-                                <option key={i} style={{ color: projectColors(key) }} value={projectColor[key]}>{projectColor[key]}</option>
+                                <option key={i} value={projectColor[key]}>{projectColor[key]}</option>
                             )
 
                         }

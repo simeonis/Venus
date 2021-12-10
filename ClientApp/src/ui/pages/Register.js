@@ -1,15 +1,13 @@
 import React, {useState, useContext} from 'react';
 import {AuthContext} from "../../context/AuthContext";
-import { useHistory } from 'react-router-dom';
+
 
 
 export const Register  = () => {
-
     const [userName, setuserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
-    const [response, setResponse] = useState("")
     const [nameError, setNameError] = useState("")
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
@@ -49,7 +47,6 @@ export const Register  = () => {
             setEmailError("")
         }
         if(password === ""){
-            console.log("Password Empty!")
             setPasswordError("Password cannot be empty")
             fail = true
         }
@@ -64,15 +61,10 @@ export const Register  = () => {
             fail = true
         }
         else{
-            console.log("Yeetaaaaa")
             setPasswordError("")
         }
         
         if(!fail){
-  
-            
-            console.log("zIn ELSE")
-            
             const userDto = { 
                 userName: userName, 
                 email : email, 
@@ -82,7 +74,6 @@ export const Register  = () => {
                 specialization: specialization,
                 platform: platform
             };
-            
             register(userDto);
         }
     }
@@ -91,7 +82,7 @@ export const Register  = () => {
       <div className="container d-flex flex-column align-items-center ">
             <h1>Sign Up</h1>
             <form  className="w-400 mw-full">
-                {/* <!-- name --> */}
+                {/* <!-- Username --> */}
                 <p className="text-danger">{error}</p>
                 <div className="form-group">
                     <p className="text-danger">{nameError}</p>

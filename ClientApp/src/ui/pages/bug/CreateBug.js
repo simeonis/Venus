@@ -1,4 +1,4 @@
-﻿import React, {useContext, useState} from 'react'
+﻿import React, {useContext, useState, useEffect} from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { BugEnums } from "../../../constants/BugConstants"
@@ -10,18 +10,28 @@ export const CreateBug = () => {
     const bugSeverity = BugEnums.severity
     const bugCategory = BugEnums.category
     const bugStatus = BugEnums.status
-    const bugAssignee = BugEnums.assignee
 
-    // TO-DO
-    // const [error, setError] = useState();
+    // I/O
     const [subject, setSubject] = useState("")
+    const [subjectError, setSubjectError] = useState("")
     const [severity, setSeverity] = useState(bugSeverity.Medium)
     const [category, setCategory] = useState(bugCategory.None)
 
+    // Navigation
     const history = useHistory()
     const location = useLocation()
-    
-    const {user} = useContext(AuthContext)
+
+    // Utilities
+    const { user } = useContext(AuthContext)
+
+    // Live Error Checking of "Subject" field
+    useEffect(() => {
+        setSubjectError(validSubject() ? "" : "Field cannot be empty")
+    }, [subject])
+
+    const validSubject = () => {
+        return subject.length > 0 && subject.length <= 50
+    }
 
     const addBug = (bugDto) => {
         console.log(bugDto)
@@ -46,14 +56,12 @@ export const CreateBug = () => {
         // Prevents From from submitting
         e.preventDefault()
 
-        // TO-DO Error Check
         const bugDto = {
             category: category,
             subject: subject,
             creator: user.userName,
             severity: severity,
             status: bugStatus.NotStarted,
-            assignee: bugAssignee.Unassigned,
             date: new Date().toJSON(),
             projectID: location.query
         }
@@ -64,10 +72,10 @@ export const CreateBug = () => {
         <div className="container d-flex flex-column align-items-center">
             <h1>Create Bug</h1>
             <form className="w-400 mw-full">
-                {/* <!-- Input --> */}
                 <div className="form-group">
                     <label className="required">Bug Subject</label>
-                    <input type="text" className="form-control" placeholder="Subject" required="required" onChange={(e) => setSubject(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Subject" required="required" minLength="0" maxLength="50" onChange={(e) => setSubject(e.target.value)} />
+                    {!validSubject() ? < p className="text-danger font-size-12">{subjectError}</p> : null}
                 </div>
 
                 <div className="form-group">
@@ -75,8 +83,8 @@ export const CreateBug = () => {
                     <select className="form-control" onChange={(e) => setSeverity(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select bug severity</option>
                         {
-                            Object.keys(bugSeverity).map(key =>
-                                <option value={key}>{key}</option>
+                            Object.keys(bugSeverity).map((key, i) =>
+                                <option key={i} value={key}>{key}</option>
                             )
                         }
                     </select>
@@ -87,15 +95,14 @@ export const CreateBug = () => {
                     <select className="form-control" onChange={(e) => setCategory(e.target.value)}>
                         <option selected="selected" disabled="disabled">Select bug category</option>
                         {
-                            Object.keys(bugCategory).map(key =>
-                                <option value={key}>{key}</option>
+                            Object.keys(bugCategory).map((key, i) =>
+                                <option key={i} value={key}>{key}</option>
                             )
                         }
                     </select>
                 </div>
 
-                {/* <!-- Submit button --> */}
-                <input className="btn btn-primary" type="submit" value="Create" onClick={(e) => handleSubmit(e)} />
+                <input className="btn btn-primary" type="submit" value="Create" disabled={!validSubject()} onClick={(e) => handleSubmit(e)} />
             </form>
         </div>
     )

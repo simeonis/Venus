@@ -1,4 +1,4 @@
-﻿import React, {useContext, useEffect, useState} from "react"
+﻿import React, {useContext} from "react"
 import {AuthContext} from "../../../context/AuthContext";
 import { Link } from 'react-router-dom';
 import "./sidebar.css"
@@ -29,9 +29,10 @@ export const Sidebar = () =>{
                         <div className="sidebar-divider" />
                         {
                             projectList !== null ?(
-                                projectList.map(project =>
-                                    <Link 
-                                        className="sidebar-link"
+                                projectList.map((project, i) =>
+                                    <Link
+                                        key={i}
+                                        className="sidebar-link text-truncate"
                                         to={{
                                             pathname: `/project-dashboard`,
                                             query: project.id

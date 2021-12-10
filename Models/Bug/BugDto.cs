@@ -13,7 +13,6 @@ namespace venus.Models
         public string Creator { get; set; }
         public string Severity { get; set; }
         public string Status { get; set; }
-        public string Assignee { get; set; }
         public DateTime Date { get; set; }
         public Guid ProjectID { get; set; }
     }
