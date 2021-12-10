@@ -32,7 +32,7 @@ namespace venus.Models
             Date = DateTime.Now;
             ProjectID = Guid.NewGuid();
         }
-
+       
         public Bug(BugDto bugDto)
         {
             ID = Guid.NewGuid();

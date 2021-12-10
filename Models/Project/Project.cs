@@ -44,6 +44,7 @@ namespace venus.Models
             Description = description;
             Color = color;
             OwnerID = ownerId;
+            Bugs = new List<Bug>();
         }
     }
 }
