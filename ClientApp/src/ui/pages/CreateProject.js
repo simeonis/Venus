@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { ProjectEnums } from "../../constants/ProjectConstants"
 import { ApiUrls } from "../../constants/ApiConstants"
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export const CreateProject = () => {
 
@@ -44,25 +44,6 @@ export const CreateProject = () => {
             });
     }
 
-    const projectColors = (color) => {
-        switch (color) {
-            case "Red":
-                return "#ff0000"
-            case "Blue":
-                return "#0000ff"
-            case "Green":
-                return "#009933"
-            case "Yellow":
-                return "#ffff00"
-            case "Orange":
-                return "#ff6600"
-            case "Purple":
-                return "#9900cc"
-            default:
-                return "#fff"
-        }
-    }
-
     //sumbission handler for adding a project
     //creates a project with the states set from the text fields to be added to the DB
     const handleSubmit = (e) => {
@@ -91,11 +72,10 @@ export const CreateProject = () => {
                 <div className="form-group">
                     <label className="required">Project Color</label>
                     <span id="select-span">
-                    <select className="custom-select select-project" required="required" onChange={(e) => setColor(e.target.value)}>
-                       {/* <option selected="selected" disabled="disabled">Select a Project Color</option>*/}
+                    <select className="form-control" required="required" onChange={(e) => setColor(e.target.value)}>
                         {
                             Object.keys(projectColor).map(key =>
-                                <option style={{ color: projectColors(key) }} value={key}>{key}</option>
+                                <option value={key}>{key}</option>
                             )
                         }
                         </select>

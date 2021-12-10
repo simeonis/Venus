@@ -9,23 +9,35 @@ export const ModifyBug = () => {
     const bugSeverity = BugEnums.severity
     const bugCategory = BugEnums.category
 
-    // TO-DO
-    // const [error, setError] = useState();
-    const [bug, setBug] = useState({})
+    // I/O
+    const [bugID, setBugID] = useState("")
+    const [projectID, setProjectID] = useState("")
     const [subject, setSubject] = useState("")
+    const [subjectError, setSubjectError] = useState("")
     const [severity, setSeverity] = useState(bugSeverity.Medium)
     const [category, setCategory] = useState(bugCategory.None)
 
+    // Navigation
     const history = useHistory()
     const location = useLocation()
 
     useEffect(() => {
         const bug = location.state
-        setBug(bug)
+        setBugID(bug.id)
+        setProjectID(bug.projectID)
         setSubject(bug.subject)
         setSeverity(bug.severity)
         setCategory(bug.category)
     }, [])
+
+    // Live Error Checking of "Subject" field
+    useEffect(() => {
+        setSubjectError(validSubject() ? "" : "Field cannot be empty")
+    }, [subject])
+
+    const validSubject = () => {
+        return subject.length > 0 && subject.length <= 50
+    }
 
     const modifyBug = () => {
         const args = [
@@ -33,12 +45,12 @@ export const ModifyBug = () => {
             { "op": "replace", "path": "/severity", "value": `${severity}` },
             { "op": "replace", "path": "/category", "value": `${category}` }
         ]
-        axios.patch(`${ApiUrls.bug}/${bug.id}`, args)
+        axios.patch(`${ApiUrls.bug}/${bugID}`, args)
             .then(response => {
                 if (response.status === 200) {
                     history.push({
                         pathname: '/project-bugs',
-                        query: bug.projectID
+                        query: projectID
                     })
                 }
             })
@@ -48,18 +60,22 @@ export const ModifyBug = () => {
     }
 
     const handleSubmit = (e) => {
-        // Prevents From from submitting
+        // Prevents Form from submitting
         e.preventDefault()
-        modifyBug()
+        if (validSubject()) {
+            modifyBug()
+        }
     }
 
     return (
         <div className="container d-flex flex-column align-items-center">
             <h1>Modify Bug</h1>
+            <button className="float-group-tr">Cancel</button>
             <form className="w-400 mw-full">
                 <div className="form-group">
                     <label>Bug Subject</label>
-                    <input type="text" className="form-control" placeholder="Subject" required="required" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Subject" required="required" minLength="0" maxLength="50" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                    {!validSubject() ? < p className="text-danger font-size-12">{subjectError}</p> : null}
                 </div>
 
                 <div className="form-group">
@@ -86,7 +102,7 @@ export const ModifyBug = () => {
                     </select>
                 </div>
 
-                <input className="btn btn-primary" type="submit" value="Modify" onClick={(e) => handleSubmit(e)} />
+                <input className="btn btn-primary" type="submit" value="Modify" disabled={!validSubject()} onClick={(e) => handleSubmit(e)} />
             </form>
         </div>
     )

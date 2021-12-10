@@ -52,6 +52,8 @@ export const BugList = () => {
                     setSelectedList(response.data.map(bug => { return { id: bug.id, selected: false } }))
                     setSelectedAll(false)
                     setShowLoading(loading = false)
+                    setCanDelete(false)
+                    setCanModify(false)
                 }
             })
             .catch(error => {
@@ -103,9 +105,10 @@ export const BugList = () => {
     const handleCheckbox = (e, id) => {
         if (id === null) {
             setSelectedAll(!selectedAll)
-            setSelectedList(generalBugList.map(bug => { return { id: bug.id, selected: !selectedAll } }))
+            const list = generalBugList.map(bug => { return { id: bug.id, selected: !selectedAll } })
+            setSelectedList(list)
             setCanDelete(!selectedAll)
-            setCanModify(false)
+            setCanModify(list.length === 1)
         } else {
             let trueCount = 0
             setSelectedList(selectedList.map(bug => {
@@ -138,7 +141,7 @@ export const BugList = () => {
                     <summary className="collapse-header">
                         My Bugs
                     </summary>
-                    <div className="collapse-content">
+                    <div className="collapse-content p-0">
                         <BugTable
                             bugList={userBugList}
                             handleCheckbox={handleCheckbox}
@@ -153,7 +156,7 @@ export const BugList = () => {
                     <summary className="collapse-header">
                         All Bugs
                     </summary>
-                    <div className="collapse-content">
+                    <div className="collapse-content p-0">
                         <BugTable
                             bugList={generalBugList}
                             handleCheckbox={handleCheckbox}

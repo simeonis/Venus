@@ -4,12 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 
 export const Register  = () => {
-
     const [userName, setuserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
-    const [response, setResponse] = useState("")
     const [nameError, setNameError] = useState("")
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
@@ -19,7 +17,7 @@ export const Register  = () => {
     
     const history = useHistory()
 
-    const { register, error } = useContext(AuthContext);
+    const { register } = useContext(AuthContext);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -68,7 +66,7 @@ export const Register  = () => {
             <h1>Sign Up</h1>
             {/* <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% --> */}
             <form  className="w-400 mw-full">
-                {/* <!-- name --> */}
+                {/* <!-- Name --> */}
                 <div className="form-group">
                     <p className="text-danger">{nameError}</p>
                     <label htmlFor="user-name" className="required">User Name</label>

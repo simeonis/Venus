@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState, useRef, componentWillMount } from 'react'
+import React, { useContext, useState, useRef  } from 'react'
 import { AuthContext } from "../../context/AuthContext";
 import axios from 'axios'
 import { ApiUrls } from "../../constants/ApiConstants";
 import { Link, useHistory } from 'react-router-dom';
-import {FaRegFolder, FaFolder, FaTrash, FaPen, FaPlus, FaFolderOpen} from 'react-icons/fa'
+import {FaFolder, FaTrash, FaPen, FaPlus, FaFolderOpen} from 'react-icons/fa'
 
 
 const Home = () => {
     //states used to get and set properties
-    const { user, projectList, getUser, getProjects } = useContext(AuthContext);
+    const { user, projectList, getProjects } = useContext(AuthContext);
     const [alert, setAlert] = useState(false);
     const [id, setId] = useState("")
     const [title, setTitle] = useState("")
@@ -22,7 +22,7 @@ const Home = () => {
     const projectColor = (color) => {
         switch (color) {
             case "Red":
-                return "#ff0000"
+                return "#9ecaed"
             case "Blue":
                 return "#0000ff"
             case "Green":
@@ -50,33 +50,35 @@ const Home = () => {
             })
     }
 
-    const cardStyles = (projColor) => ({
-        outline: `solid 1px transparent`,
-        borderColor: projColor,
-        borderWidth: "1px"
-
-    });
+    const cardClass = (projColor) => {
+        switch (projColor) {
+            case "Red":
+                return "folder-red"
+            case "Blue":
+                return "folder-blue"
+            case "Green":
+                return "folder-green"
+            case "Yellow":
+                return "folder-yellow"
+            case "Orange":
+                return "folder-orange"
+            case "Purple":
+                return "folder-purple"
+            default:
+                return "folder-white"
+        }
+    }
     
     const highlightProj = (ind, color, id) => {
-        if (elementsRef.current[ind] != null && openFolderRef.current[ind] != null && closeFolderRef.current[ind] != null) {
-            if (elementsRef.current[ind] != null) {
-                elementsRef.current[ind].style.outline = `solid 3px ${color}`
-            }
-            if (openFolderRef.current[ind] != null) {
-                openFolderRef.current[ind].style.display = "inline"
-            }
-            if (closeFolderRef.current[ind] != null) {
-                closeFolderRef.current[ind].style.display = "none"
-            }
-        } else {
-
+        if (openFolderRef.current[ind] != null) {
+            openFolderRef.current[ind].style.display = "inline"
         }
-        
+        if (closeFolderRef.current[ind] != null) {
+            closeFolderRef.current[ind].style.display = "none"
+        }
     }
+
     const unHighlightProj = (ind, color) => {
-        if (elementsRef.current[ind] != null) {
-            elementsRef.current[ind].style.outline = `${color}`
-        }
         if (closeFolderRef.current[ind] != null) {
             closeFolderRef.current[ind].style.display = "inline"
         }
@@ -98,12 +100,6 @@ const Home = () => {
             query: projectID
         })
     }
-
-    //Hook to load user and projects after rendering
-    useEffect(() => {
-        getUser();
-        getProjects();
-    }, [])
 
     return (
         <div className="overflow-hidden" >
@@ -135,11 +131,10 @@ const Home = () => {
                 {
                     projectList.length === 0 ? (
                         <h4>No projects available</h4>
-                        ) :(
-                    projectList.map((project, index) => {
-                    return <div size={1000} className="folder-card" style={{ color: projectColor(project.color), zIndex: 0}}
-                        ref={el => (elementsRef.current = [...elementsRef.current, el])}
-                        style={cardStyles(projectColor(project.color))}
+                    ) : (
+                            projectList.map((project, index) => {
+                                return <div key={index} size={1000} className={"card folder-card shadow " + cardClass(project.color)}
+                                ref={el => (elementsRef.current = [...elementsRef.current, el])}
                         onMouseEnter={() =>
                             highlightProj(index, projectColor(project.color), project.id)
                         }
@@ -148,7 +143,7 @@ const Home = () => {
                         }
                         onClick={() =>
                             divClick(project.id)}>
-                        <div className="d-flex justify-content-end m-15">
+                        <div className="d-flex justify-content-end m-15 folder-btn">
                             <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to={{
                                 pathname: `/modifyproject`,
                                 query: {
@@ -173,7 +168,7 @@ const Home = () => {
                                         < FaFolder className="folder-icon" size={75} />
                                     </span>
                                     {project.title}</h4>
-                                <h7>{project.description}</h7>
+                                <h6 className="text-break">{project.description}</h6>
                             </div>
                         </div>
                     </div>

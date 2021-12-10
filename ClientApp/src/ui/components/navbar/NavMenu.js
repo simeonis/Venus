@@ -10,8 +10,6 @@ export const NavMenu = ({toggleDarkMode}) => {
   
   const location  = useLocation();
   
-  console.log("Location p " +  JSON.stringify(location))
-  
   return (
     <header className="w-full h-full ">
       <nav className="navbar h-full my-nav">

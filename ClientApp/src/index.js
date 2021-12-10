@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import "halfmoon/css/halfmoon-variables.min.css"
-// import '@fortawesome/fontawesome-free/js/all.js';
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
