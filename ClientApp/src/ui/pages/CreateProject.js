@@ -3,31 +3,21 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { ProjectEnums } from "../../constants/ProjectConstants"
 import { ApiUrls } from "../../constants/ApiConstants"
-import {AuthContext} from "../../context/AuthContext";
+
 
 export const CreateProject = () => {
 
     const projectColor = ProjectEnums.color
-
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
 
-    const { user, getProjects } = useContext(AuthContext)
-
     const history = useHistory()
 
-    const handleAddPeople = (id) => {
-
-        const userToProjDto = {
-            projId : id,
-            userEmail: user.email,
-        };
-
-        axios.post(ApiUrls.addUserToProject, userToProjDto)
+    const addProject = (project) => {
+        axios.post(ApiUrls.project, project)
             .then(response => {
                 if (response !== null) {
-                    getProjects()
                     history.push("/home")
                 }
             })
@@ -36,39 +26,6 @@ export const CreateProject = () => {
             });
     }
 
-    const addProject = (project) => {
-        axios.post(ApiUrls.project, project)
-            .then(response => {
-                if (response !== null) {
-                    handleAddPeople(response.data.id)
-                }
-            })
-            .catch(error => {
-                console.error('There was an error!', error.response);
-            });
-    }
-
-    const projectColors = (color) => {
-        switch (color) {
-            case "Red":
-                return "#ff0000"
-            case "Blue":
-                return "#0000ff"
-            case "Green":
-                return "#009933"
-            case "Yellow":
-                return "#ffff00"
-            case "Orange":
-                return "#ff6600"
-            case "Purple":
-                return "#9900cc"
-            default:
-                return "#fff"
-        }
-    }
-
-    //sumbission handler for adding a project
-    //creates a project with the states set from the text fields to be added to the DB
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -81,8 +38,8 @@ export const CreateProject = () => {
     }
     return (
         <div className="container d-flex flex-column align-items-center">
-
             <h1 className="p-15">Create a Project</h1>
+            <button className="btn btn-primary float-group-tr" onClick={(e) => history.push({pathname: '/home'})}>Back</button>
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
                     <label className="required">Project Title</label>
@@ -95,11 +52,10 @@ export const CreateProject = () => {
                 <div className="form-group">
                     <label className="required">Project Color</label>
                     <span id="select-span">
-                    <select className="custom-select select-project" required="required" onChange={(e) => setColor(e.target.value)}>
-                       {/* <option selected="selected" disabled="disabled">Select a Project Color</option>*/}
+                    <select className="form-control" required="required" onChange={(e) => setColor(e.target.value)}>
                         {
                             Object.keys(projectColor).map(key =>
-                                <option style={{ color: projectColors(key) }} value={key}>{key}</option>
+                                <option value={key}>{key}</option>
                             )
                         }
                         </select>
@@ -107,7 +63,7 @@ export const CreateProject = () => {
                 </div>
 
                 <div className="text-center panel-body">
-                    <button className="btn btn-primary m-10" onClick={(e) => handleSubmit(e)} >
+                    <button className="btn btn-primary w-half" onClick={(e) => handleSubmit(e)} >
                         Create Project
                     </button>
                 </div>

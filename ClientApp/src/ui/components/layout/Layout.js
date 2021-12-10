@@ -1,4 +1,4 @@
-import React, {Component, useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { NavMenu } from '../navbar/NavMenu';
 import {Sidebar} from "../sidebar/Sidebar";
 import {AuthContext} from "../../../context/AuthContext";
@@ -23,31 +23,6 @@ export const Layout = (props) => {
             setSidebar(true)
         }
     }
-    
-
-    // useEffect(() => {
-    //     const currentTheme = localStorage.getItem("theme");
-    //     let pWrap = document.getElementById("page-wrap");
-    //    
-    //     console.log("zcurrentTheme " + currentTheme)
-    //    
-    //     if(currentTheme === "dark"){
-    //         pWrap.classList.add("dark-mode");
-    //        
-    //         console.log("zdark")
-    //
-    //         localStorage.setItem("theme", "dark");
-    //
-    //         setDarkMode(true)
-    //     }
-    //     else{
-    //         pWrap.classList.remove("dark-mode")
-    //         localStorage.setItem("theme", "light");
-    //         setDarkMode(false)
-    //     }
-    //
-    // },[])
-    
     
     const toggleDarkMode = () =>{
         let pWrap = document.getElementById("page-wrap");
@@ -80,8 +55,8 @@ export const Layout = (props) => {
               ):null
           }
         
-      
-          <div className="h100 venus-content overflow-auto">
+
+            <div className="venus-content overflow-auto">
                   {props.children}
           </div>
       </div>

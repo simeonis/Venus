@@ -22,7 +22,7 @@ namespace venus.Models.EFRepositories
         public Project GetProject(Guid id)
         {
             Console.WriteLine(id);
-            return Projects.First(p => p.ID == id);
+            return Projects.FirstOrDefault(p => p.ID == id);
         }
 
         public IEnumerable<Project> GetProjects(string id)
@@ -63,6 +63,15 @@ namespace venus.Models.EFRepositories
         public void Save()
         {
             dbContext.SaveChanges();
+        }
+        
+        public bool IsInProject(Guid projId,Guid userId)
+        {
+            var proj = GetProject(projId);
+            if(proj == null)
+                return false;
+            
+            return proj.UsersList.Exists(u => u.Id == userId.ToString());
         }
 
     }

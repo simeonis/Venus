@@ -10,7 +10,15 @@
 
 html,
 body,
-#root{
+#root {
+    height: 100%;
+    overflow: auto;
+}
+
+.dark-mode,
+html,
+body,
+#root {
     height: 100%;
     overflow: auto;
 }
@@ -69,13 +77,21 @@ th.min, td.min {
 
 .float-group {
     position: fixed;
-    top: 4em;
+    top: 3em;
     right: 4em;
     z-index: 10;
 }
+
+.float-group-tr {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    z-index: 10;
+}
+
 .float-group-bottom {
     position: fixed;
-    bottom: 5em;
+    bottom: 1em;
     right: 4em;
     z-index: 10;
 }
@@ -128,13 +144,13 @@ th.min, td.min {
 .grid-container {
     display: grid;
     grid-template-columns: 45% 45%;
-    grid-gap: 7vh;
+    grid-gap: 2vh;
     margin-left: 3vw;
     padding: 10px;
 }
 .grid-container > div {
-        padding: 20px 0;
-        cursor: pointer
+    padding: 20px 0;
+    cursor: pointer;
 }
 .select-project {
     margin-right: 35px;
@@ -147,25 +163,86 @@ th.min, td.min {
 }
 
 .cust-lg-btn{
-    height: 5em!important;
-    width: 5em!important;
+    height: 64px !important;
+    width: 64px !important;
 }
+
 .folder-card {
-    border-style: solid;
-    border-color: black;
-    padding: 20px 0; 
+    position: relative;
+    z-index: 0;
     border-radius: 20px;
-    /*box-shadow: 3px 5px;*/
+    padding: 20px 0;
+    border: 2px solid #0000;
 }
+
+.dark-mode .folder-card {
+    border: 2px solid #0000;
+}
+
+.folder-red:hover {
+    border: 2px solid #ff4d4f;
+    border-color: #ff4d4f;
+    box-shadow: 0 0 10px #ff4d4f !important;
+}
+
+.folder-blue:hover {
+    border: 2px solid #9ecaed;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed !important;
+}
+
+.folder-green:hover {
+    border: 2px solid #0BE881;
+    border-color: #0BE881;
+    box-shadow: 0 0 10px #0BE881 !important;
+}
+
+.folder-yellow:hover {
+    border: 2px solid #ffcf00;
+    border-color: #ffcf00;
+    box-shadow: 0 0 10px #ffcf00 !important;
+}
+
+.folder-orange:hover {
+    border: 2px solid #ff7211;
+    border-color: #ff7211;
+    box-shadow: 0 0 10px #ff7211 !important;
+}
+
+.folder-purple:hover {
+    border: 2px solid #4e3799;
+    border-color: #4e3799;
+    box-shadow: 0 0 10px #4e3799 !important;
+}
+
+.folder-white:hover {
+    border: 2px solid #333;
+    border-color: #333;
+}
+
 .folder-icon{
     margin-bottom: -20px;
     margin-right: 15px
 }
-.folder-buttons {
-    margin-top: -2vh;
-}
+
 .folder-open{
     display:none;
 }
+
 .folder-close {
+}
+
+.fit-page {
+    width: 97%;
+}
+
+.fake-btn {
+    cursor: pointer;
+}
+
+.folder-btn {
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    right: 0;
 }

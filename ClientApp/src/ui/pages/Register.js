@@ -1,23 +1,19 @@
 import React, {useState, useContext} from 'react';
 import {AuthContext} from "../../context/AuthContext";
-import { useHistory } from 'react-router-dom';
+
 
 
 export const Register  = () => {
-
     const [userName, setuserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
-    const [response, setResponse] = useState("")
     const [nameError, setNameError] = useState("")
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
     const [devChecked, setDevChecked] = useState(false)
     const [specialization, setSpecialization] = useState("")
     const [platform, setPlatform] = useState("")
-    
-    const history = useHistory()
 
     const { register, error } = useContext(AuthContext);
 
@@ -26,25 +22,49 @@ export const Register  = () => {
         
         console.log("Password confirm " + passwordConfirm)
 
+        const passwordRegex =  /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/gm
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        
+        var fail = false;
+        
         if(userName === ""){
-            setNameError("Name cannot be empty")
+            setNameError("Username cannot be empty")
+            fail = true
         }
+        else{
+            setNameError("")
+        }
+        
         if(email === ""){
             setEmailError("Email cannot be empty")
-
+            fail = true
+        }
+        else if(!emailRegex.test(email)){
+            setEmailError("Must enter a valid Email")
+            fail = true
+        }
+        else{
+            setEmailError("")
         }
         if(password === ""){
             setPasswordError("Password cannot be empty")
+            fail = true
         }
-        if(passwordConfirm === ""){
-            setPasswordError("Password Confirm cannot be empty")
+        else if(!passwordRegex.test(password)){
+            console.log("Password Empty!")
+            setPasswordError("Password must be 8 characters long with One Upper and lower character, one number and a special character")
+            fail = true
         }
-        if(passwordConfirm !== password)
+        else if(passwordConfirm !== password)
         {
             setPasswordError("Passwords must match")
+            fail = true
         }
         else{
-
+            setPasswordError("")
+        }
+        
+        if(!fail){
             const userDto = { 
                 userName: userName, 
                 email : email, 
@@ -54,25 +74,20 @@ export const Register  = () => {
                 specialization: specialization,
                 platform: platform
             };
-            
-            console.log("User Dto " + JSON.stringify(userDto))
-
             register(userDto);
-            
-            history.push("/login")
         }
     }
 
     return (
       <div className="container d-flex flex-column align-items-center ">
             <h1>Sign Up</h1>
-            {/* <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% --> */}
             <form  className="w-400 mw-full">
-                {/* <!-- name --> */}
+                {/* <!-- Username --> */}
+                <p className="text-danger">{error}</p>
                 <div className="form-group">
                     <p className="text-danger">{nameError}</p>
-                    <label htmlFor="user-name" className="required">User Name</label>
-                    <input type="text" className="form-control" id="user-name" placeholder="user name" required="required" onChange={(e) => setuserName(e.target.value)} />
+                    <label htmlFor="user-name" className="required">Username</label>
+                    <input type="text" className="form-control" id="user-name" placeholder="Username" required="required" onChange={(e) => setuserName(e.target.value)} />
                 </div>
 
                 {/* <!-- Email --> */}
@@ -94,16 +109,14 @@ export const Register  = () => {
                     <label htmlFor="password-confirm" className="required">Password Confirm</label>
                     <input type="password" className="form-control" id="password-confirm" placeholder="Password Confirm" required="required" onChange={(e) => setPasswordConfirm(e.target.value)}  />
                 </div>
-
-              {/* <!-- Switch --> */}
+                
               <div className="form-group">
                     <div className="custom-switch">
                     <input type="checkbox" id="am-developer" onChange={(e)=>setDevChecked(e.target.checked)} />
                     <label htmlFor="am-developer">Developer</label>
                     </div>
                 </div>
-
-                {/* <!-- Select --> */}
+                
                 <div className="form-group">
                     <label htmlFor="area-of-specialization" className="required">Area of specialization</label>
                     <select className="form-control" defaultValue="" id="area-of-specialization" required="required"
@@ -114,11 +127,10 @@ export const Register  = () => {
                         <option value="full-stack">Full-stack</option>
                     </select>
                 </div>
-
-                {/* <!-- Multi-select --> */}
+                
                 <div className="form-group">
-                    <label htmlFor="languages" className="required">Platform</label>
-                    <select className="form-control" id="languages"  required="required"
+                    <label htmlFor="platform" className="required">Platform</label>
+                    <select className="form-control" id="platform"  required="required" value="windows">
                             onChange={(e) => setPlatform(e.target.value)}>
                         <option value="windows">Windows</option>
                         <option value="mac">Mac</option>

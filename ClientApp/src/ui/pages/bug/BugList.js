@@ -1,7 +1,7 @@
 ﻿import React, {useContext, useEffect, useState} from 'react'
 import axios from 'axios'
 import { ApiUrls } from '../../../constants/ApiConstants'
-import { FaPlus, FaTrash, FaPen } from 'react-icons/fa'
+import { FaPlus, FaTrash, FaPen, FaRedo } from 'react-icons/fa'
 import { BugTable } from '../../components/tables/BugTable'
 import { BugEnums } from "../../../constants/BugConstants"
 import { CreateBug } from './CreateBug';
@@ -52,6 +52,8 @@ export const BugList = () => {
                     setSelectedList(response.data.map(bug => { return { id: bug.id, selected: false } }))
                     setSelectedAll(false)
                     setShowLoading(loading = false)
+                    setCanDelete(false)
+                    setCanModify(false)
                 }
             })
             .catch(error => {
@@ -103,9 +105,10 @@ export const BugList = () => {
     const handleCheckbox = (e, id) => {
         if (id === null) {
             setSelectedAll(!selectedAll)
-            setSelectedList(generalBugList.map(bug => { return { id: bug.id, selected: !selectedAll } }))
+            const list = generalBugList.map(bug => { return { id: bug.id, selected: !selectedAll } })
+            setSelectedList(list)
             setCanDelete(!selectedAll)
-            setCanModify(false)
+            setCanModify(list.length === 1)
         } else {
             let trueCount = 0
             setSelectedList(selectedList.map(bug => {
@@ -119,25 +122,35 @@ export const BugList = () => {
         }
     }
 
+    const refresh = () => {
+        setGeneralBugList([])
+        setShowLoading(loading = true)
+        setTimeout(() => {
+            getBugs()
+        }, 1000)
+    }
+
     return (
-        <div>
+        <div className="fit-page">
             <div className="d-flex justify-content-end m-15 float-group">
                 <Link className="btn btn-square btn-primary rounded-circle mx-5 shadow center text-white" to={{
                     pathname: `/createbug`,
                     query: location.query
                 }}><FaPlus /></Link>
                 {
-                    canModify ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to="/modifybug"><FaPen /></Link>
+                    canModify
+                        ? <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to={{ pathname: `/modifybug`, state: findSelectedBugs()[0] }}><FaPen /></Link>
                         : <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white disabled" to="" onClick={(e) => e.preventDefault()}><FaPen /></Link>
                 }
                 <button className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" disabled={!canDelete} onClick={(e) => delBug()}><FaTrash /></button>
+                <button className="center btn btn-square btn-success rounded-circle mx-5 text-white shadow" onClick={(e) => refresh()}><FaRedo /></button>
             </div>
             <div className="d-flex flex-column align-items-start">
                 <details className="collapse-panel w-lg-full m-15" open>
                     <summary className="collapse-header">
                         My Bugs
                     </summary>
-                    <div className="collapse-content">
+                    <div className="collapse-content p-0">
                         <BugTable
                             bugList={userBugList}
                             handleCheckbox={handleCheckbox}
@@ -152,7 +165,7 @@ export const BugList = () => {
                     <summary className="collapse-header">
                         All Bugs
                     </summary>
-                    <div className="collapse-content">
+                    <div className="collapse-content p-0">
                         <BugTable
                             bugList={generalBugList}
                             handleCheckbox={handleCheckbox}

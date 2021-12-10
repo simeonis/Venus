@@ -14,6 +14,6 @@ namespace venus.Models.IRepositories
         Project UpdateProject(Project project);
         void DeleteProject(Guid id);
         void Save();
-
+        bool IsInProject(Guid projId, Guid userId);
     }
 }

@@ -3,7 +3,6 @@
 public enum BugSeverity { High, Medium, Low }
 public enum BugCategory { Functional, Performance, Usability, Compatibility, Security, None }
 public enum BugStatus { Completed, InProgress, NotStarted }
-public enum BugAssignee { Assigned }
 
 namespace venus.Models
 {
@@ -15,7 +14,6 @@ namespace venus.Models
         public string Creator { get; set; }
         public string Severity { get; set; }
         public string Status { get; set; }
-        public string Assignee { get; set; }
         public DateTime Date { get; set; }
         public Guid ProjectID { get; set; }
 
@@ -28,7 +26,6 @@ namespace venus.Models
             Creator = "";
             Severity = BugSeverity.Medium.ToString();
             Status = BugStatus.NotStarted.ToString();
-            Assignee = BugAssignee.Assigned.ToString();
             Date = DateTime.Now;
             ProjectID = Guid.NewGuid();
         }
@@ -41,7 +38,6 @@ namespace venus.Models
             Creator = bugDto.Creator;
             Severity = bugDto.Severity;
             Status = bugDto.Status;
-            Assignee = bugDto.Assignee;
             Date = bugDto.Date;
             ProjectID = bugDto.ProjectID;
         }

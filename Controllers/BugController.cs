@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using venus.Models;
 using venus.Models.IRepositories;
+using venus.Helpers;
+
 
 namespace venus.Controllers
 {
@@ -13,11 +14,13 @@ namespace venus.Controllers
     [Route("api/bug")]
     public class BugController : Controller
     {
-        private readonly IBugRepository bugRepository;
+        private readonly IBugRepository _bugRepository;
+        private readonly IProjectRepository _projectRepository;
         
-        public BugController(IBugRepository repository)
+        public BugController(IBugRepository repository, IProjectRepository projectRepository)
         {
-            bugRepository = repository;
+            _bugRepository = repository;
+            _projectRepository = projectRepository;
         }
 
         [HttpGet("{id}")]
@@ -27,67 +30,183 @@ namespace venus.Controllers
             {
                 return BadRequest("Invalid Bug-ID");
             }
+            
+            var bugExist = _bugRepository.GetBug(id.Value);
 
-            return Ok(bugRepository.GetBug(id.Value));
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && _projectRepository.IsInProject(bugExist.ProjectID, userId.Value))
+                {
+                    return Ok(_bugRepository.GetBug(id.Value));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+                
         }
 
         [HttpGet("project/{id}")]
         public ActionResult<Bug> GetProjectBugs(Guid? id)
         {
+            
             if (id == null)
             {
                 return BadRequest("Invalid Project-ID");
             }
-
-            return Ok(bugRepository.GetBugs(id.Value));
+            
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && _projectRepository.IsInProject(id.Value, userId.Value))
+                {
+                    return Ok(_bugRepository.GetBugs(id.Value));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
         [HttpGet]
         public ActionResult<Bug> Get()
         {
-            return Ok(bugRepository.GetBugs());
+            return Ok(_bugRepository.GetBugs());
         }
 
         [HttpPost]
-        public Bug Post([FromBody] BugDto bugPost) => bugRepository.AddBug(bugPost);
-
-        [HttpDelete("{id}")]
-        public StatusCodeResult Delete(Guid? id)
+        public ActionResult<Bug> Post([FromBody] BugDto bugPost)
         {
-            if (bugRepository.DeleteBug(id.Value))
+
+            try
             {
-                return Ok();
+                var userId = GetUserId();
+                if (userId != null && _projectRepository.IsInProject(bugPost.ProjectID, userId.Value))
+                {
+                    _bugRepository.AddBug(bugPost);
+                    return Ok();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
-            return NotFound();
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return BadRequest("Invalid Bug-ID");
+            }
+            
+            var bug = _bugRepository.GetBug(id.Value);
+
+            try
+            {
+                var userId = GetUserId();
+                if (userId != null && _projectRepository.IsInProject(bug.ProjectID, userId.Value))
+                {
+                    if (_bugRepository.DeleteBug(id.Value))
+                    {
+                        return Ok();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
+            
         }
 
         [HttpDelete]
-        public StatusCodeResult Delete([FromBody] IEnumerable<Bug> bugs)
+        public IActionResult Delete([FromBody] IEnumerable<Bug> bugs)
         {
-            foreach (Bug bug in bugs)
+            try
             {
-                if (!bugRepository.DeleteBug(bug.ID))
+                var userId = GetUserId();
+                if (userId != null && _projectRepository.IsInProject(bugs.First().ProjectID, userId.Value))
                 {
-                    return NotFound();
+                    foreach (Bug bug in bugs)
+                    {
+                        if (!_bugRepository.DeleteBug(bug.ID))
+                        {
+                            return NotFound();
+                        }
+                    }
+
+                    return Ok();
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
-            return Ok();
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
         [HttpPatch("{id}")]
-        public StatusCodeResult Patch(Guid? id, [FromBody] JsonPatchDocument<Bug> patch)
+        public IActionResult Patch(Guid? id, [FromBody] JsonPatchDocument<Bug> patch)
         {
-            var bug = (Bug)((OkObjectResult)Get(id).Result).Value;
-            if (bug != null)
+            
+            if (id == null)
             {
-                patch.ApplyTo(bug);
-                bugRepository.Save();
-                return Ok();
+                return BadRequest("Invalid Bug-ID");
             }
 
-            return NotFound();
+            var bugExist = _bugRepository.GetBug(id.Value);
+
+            var userId = GetUserId();
+            
+            if (userId != null && !_projectRepository.IsInProject(bugExist.ProjectID, userId.Value))
+            {
+                return new ContentResult() { Content = "User Not In Project", StatusCode = 404 };
+            }
+            
+            var bug = (Bug)((OkObjectResult)Get(id).Result).Value;
+                
+            if (bug == null)
+            {
+                return NotFound();
+            }
+            patch.ApplyTo(bug);
+            
+            _bugRepository.Save();
+            return Ok();
         }
+        
+        private Guid? GetUserId()
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = JwtService.Verify(jwt);
+                var userId = token.Issuer;
+
+                return Guid.Parse(userId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return null;
+        }
+        
     }
 }

@@ -14,39 +14,12 @@ export const ModifyProject = () => {
     const [description, setDescription] = useState(project.description)
     const [color, setColor] = useState(projectColor.Red)
 
-
-
-
     //setTitle(location.title)
     const history = useHistory()
     const location = useLocation();
-    console.log("location" + location)
-    console.log(location.query)
-
-    //Switch for color in select menu
-    const projectColors = (color) => {
-        switch (color) {
-            case "Red":
-                return "#ff0000"
-            case "Blue":
-                return "#0000ff"
-            case "Green":
-                return "#009933"
-            case "Yellow":
-                return "#ffff00"
-            case "Orange":
-                return "#ff6600"
-            case "Purple":
-                return "#9900cc"
-            default:
-                return "#fff"
-        }
-    }
 
     //API call to get project with specific ID to update
     const getProject = (projectId) => {
-        console.log("getting project")
-        console.log(projectId)
         axios.get(ApiUrls.project + `/${projectId}`)
             .then(response => {
                 if (response !== null) {
@@ -60,15 +33,11 @@ export const ModifyProject = () => {
             })
     }
 
-
-
     //API call to update the project in the DB via HttpPUT
     const updateProject = (projectUpdate) => {
         axios.put(ApiUrls.project, projectUpdate)
             .then(response => {
                 if (response !== null) {
-                    console.log("RESP " + JSON.stringify(response.data))
-                    // Go back to homepage(auth)
                     history.push('/home')
                 }
             })
@@ -95,23 +64,18 @@ export const ModifyProject = () => {
     //hook to load projects and set project attributes for editting
     useEffect(() => {
         getProject(location.query.pId)
-        //TO DO: sets the title and desc but will not add them to project until field is editted
         setProject(project)
         setTitle(location.query.pTitle)
         setDescription(location.query.pDesc)
         setColor(location.query.pColor)
-        //setColor(color)
-
-
     }, [])
 
     return (
         <div className="container d-flex flex-column align-items-center">
             <h1 className="p-15">Modify Project</h1>
-           {/* <h2 className="p-15">{project.title}</h2>*/}
+            <button className="btn btn-primary float-group-tr" onClick={(e) => history.push({ pathname: '/home' })}>Back</button>
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
-
                     <label className="required">Project Title</label>
                     <input className="form-control" required="required" maxLength={25} defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} onLoad={(e) => { setTitle(title) }} />
                 </div>
@@ -121,20 +85,17 @@ export const ModifyProject = () => {
                 </div>
                 <div className="form-group">
                     <label className="required">Project Color</label>
-                    <select className="custom-select select-project" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
-                        {/* <option selected="selected" disabled="disabled">value={project.color}</option>*/}
+                    <select className="form-control" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
                         {
                             Object.keys(projectColor).map((key, i) =>
-                                <option key={i} style={{ color: projectColors(key) }} value={projectColor[key]}>{projectColor[key]}</option>
+                                <option key={i} value={projectColor[key]}>{projectColor[key]}</option>
                             )
-
                         }
                         </select>
                 </div>
 
                 <div className="text-center panel-body">
-
-                    <button type="submit" className="btn btn-primary m-10" onClick={(e) => handleSubmit(e)}> Update Project</button>
+                    <button type="submit" className="btn btn-primary w-half" onClick={(e) => handleSubmit(e)}> Update Project</button>
                 </div>
             </form>
 

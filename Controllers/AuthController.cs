@@ -83,12 +83,6 @@ namespace venus.Controllers
 
             await _userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
 
-            var userDto = new UserDto
-            {
-                UserName = user.UserName
-            };
-
-            
             var jwt = JwtService.Generate(user.Id);
 
             if (dto.RememberMe)
@@ -122,6 +116,9 @@ namespace venus.Controllers
 
                 var user = await _userManager.FindByIdAsync(userId);
 
+                if (user == null)
+                    return Ok(null);
+                
                 var userDto = new UserDto
                 {
                     UserName = user.UserName,
