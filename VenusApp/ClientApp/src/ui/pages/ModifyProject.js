@@ -9,28 +9,22 @@ export const ModifyProject = () => {
 
     //states used to get and set properties
     const projectColor = ProjectEnums.color
-    const [project, setProject] = useState({});
-    const [title, setTitle] = useState(project.title)
-    const [description, setDescription] = useState(project.description)
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
+    const [projectId, setProjectId] = useState("")
 
-    //setTitle(location.title)
+    const [titleError, setTitleError] = useState("")
+    const [descriptionError, setDescriptionError] = useState("")
+
     const history = useHistory()
     const location = useLocation();
 
-    //API call to get project with specific ID to update
-    const getProject = (projectId) => {
-        axios.get(ApiUrls.project + `/${projectId}`)
-            .then(response => {
-                if (response !== null) {
-                    console.log("response : " + JSON.stringify(response.data))
-                    setProject(response.data)
-                    console.log("project is:" + project)
-                }
-            })
-            .catch(error => {
-                console.error('There was an error.', error.response)
-            })
+    const validTitle = () => {
+        return title.length > 0 && title.length <= 25
+    }
+    const validDescription = () => {
+        return description.length > 0 && description.length <= 80
     }
 
     //API call to update the project in the DB via HttpPUT
@@ -52,7 +46,7 @@ export const ModifyProject = () => {
 
         //creates a DTO to send to the API
         const projectDto = {
-            id: project.id,
+            id: projectId,
             title: title,
             description: description,
             color: color
@@ -63,12 +57,18 @@ export const ModifyProject = () => {
 
     //hook to load projects and set project attributes for editting
     useEffect(() => {
-        getProject(location.query.pId)
-        setProject(project)
-        setTitle(location.query.pTitle)
-        setDescription(location.query.pDesc)
-        setColor(location.query.pColor)
+        const project = location.state
+        setProjectId(project.id)
+        setTitle(project.title)
+        setDescription(project.description)
+        setColor(project.color)
     }, [])
+
+    //hook to load projects and set project attributes for editting
+    useEffect(() => {
+        setTitleError(validTitle() ? "" : "Field cannot be empty")
+        setDescriptionError(validDescription() ? "" : "Field cannot be empty")
+    }, [title, description])
 
     return (
         <div className="container d-flex flex-column align-items-center">
@@ -77,15 +77,17 @@ export const ModifyProject = () => {
             <form method="post" className="w-400 mw-full p-15">
                 <div className="form-group">
                     <label className="required">Project Title</label>
-                    <input className="form-control" required="required" maxLength={25} defaultValue={project.title} type="text" onChange={(e) => setTitle(e.target.value)} onLoad={(e) => { setTitle(title) }} />
+                    <input className="form-control" required="required" maxLength={25} value={title} type="text" onChange={(e) => setTitle(e.target.value)} onLoad={(e) => { setTitle(title) }} />
+                    {!validTitle() ? < p className="text-danger font-size-12">{titleError}</p> : null}
                 </div>
                 <div className="form-group">
                     <label className="required">Project Description</label>
-                    <input className="form-control" maxLength={65} required="required" defaultValue={project.description} type="text" onChange={(e) => setDescription(e.target.value)} />
+                    <input className="form-control" maxLength={65} required="required" value={description} type="text" onChange={(e) => setDescription(e.target.value)} />
+                    {!validDescription() ? < p className="text-danger font-size-12">{descriptionError}</p> : null}
                 </div>
                 <div className="form-group">
                     <label className="required">Project Color</label>
-                    <select className="form-control" defaultValue={project.color} onChange={(e) => setColor(e.target.value)}>
+                    <select className="form-control" value={color} onChange={(e) => setColor(e.target.value)}>
                         {
                             Object.keys(projectColor).map((key, i) =>
                                 <option key={i} value={projectColor[key]}>{projectColor[key]}</option>
@@ -93,9 +95,8 @@ export const ModifyProject = () => {
                         }
                         </select>
                 </div>
-
                 <div className="text-center panel-body">
-                    <button type="submit" className="btn btn-primary w-half" onClick={(e) => handleSubmit(e)}> Update Project</button>
+                    <button type="submit" className="btn btn-primary w-half" disabled={!validDescription() || !validTitle()}  onClick={(e) => handleSubmit(e)}> Update Project</button>
                 </div>
             </form>
 

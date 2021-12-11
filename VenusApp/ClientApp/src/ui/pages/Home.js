@@ -155,12 +155,7 @@ const Home = () => {
                         <div className="d-flex justify-content-end m-15 folder-btn">
                             <Link className="btn btn-square btn-secondary rounded-circle mx-5 text-white shadow center text-white" to={{
                                 pathname: `/modifyproject`,
-                                query: {
-                                    pId: project.id,
-                                    pTitle: project.title,
-                                    pDesc: project.description,
-                                    pColor: project.color
-                                },
+                                state: project   
                             }} style={{ zIndex: 1 }}
                                 onClick={(e) => { e.stopPropagation(); }}
                             ><FaPen />
