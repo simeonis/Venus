@@ -283,6 +283,43 @@ namespace venus.Controllers
             }
             return new ContentResult() { Content = "Token Error", StatusCode = 404 };
         }
+        
+        [HttpDelete("remove-self")]
+        public async Task<IActionResult> RemoveSelfFromProject([FromBody] UserToProjDto userToProjDto)
+        {
+            var project = _projectRepository.GetProject(userToProjDto.ProjId);
+            
+            if (project == null)
+                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+            
+            try
+            {
+                var userId = GetUserId();
+
+                var accessingUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
+                
+                if (userId != null && userId != Guid.Parse(accessingUser.Id))
+                {
+                    return new ContentResult() { Content = "User Not Owner", StatusCode = 404 };
+                }
+                
+                var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
+            
+                if (user == null)
+                    return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
+            
+                project.UsersList.Remove(user);
+            
+                _projectRepository.UpdateProject(project);
+            
+                return Ok(project.UsersList);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new ContentResult() { Content = "Token Error", StatusCode = 404 };
+        }
 
         private Guid? GetUserId()
         {

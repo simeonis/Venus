@@ -5,14 +5,12 @@ import { ApiUrls } from "../../../constants/ApiConstants";
 import "./manageAccess.css"
 import { FaTimes, FaPlusCircle, FaCrown, FaWindowClose } from 'react-icons/fa';
 
-import {Modal} from "../../components/modal/Modal"
 import {AuthContext} from "../../../context/AuthContext";
 
 export const ManageAccess = () =>{
     
-    const [modal, setModal] = useState(false)
     const [members, setMembers] = useState([])
-    const [user, setUser] = useState()
+    const [selectedUser, setselectedUser] = useState()
     const [addError, setAddAddError] = useState("")
     const [deleteError, setDeleteError] = useState("")
     const [email, setEmail] = useState("")
@@ -20,32 +18,25 @@ export const ManageAccess = () =>{
 
     const location = useLocation()
     
-    const { getProjects, projectList} = useContext(AuthContext)
+    const { getProjects, projectList, user} = useContext(AuthContext)
     
     const handleAddPeople = () => {
 
         const userToProjDto = {
             projId : project.id,
-            userEmail: user.email,
+            userEmail: selectedUser.email,
         };
 
         axios.post(ApiUrls.addUserToProject, userToProjDto)
             .then(response => {
                 if (response !== null) {
                     setMembers([response.data, ...members])
-                    setModal(false)
+                    setselectedUser(null)
                 }
             })
             .catch(error => {
                 setAddAddError(error.response.data)
             });
-    }
-
-    const showModal = () =>{
-        setModal(true)
-    }
-    const hideModal = () =>{
-        setModal(false)
     }
 
     const handleRemovePeople = (email) => {
@@ -62,7 +53,24 @@ export const ManageAccess = () =>{
                 }
             })
             .catch(error => {
-                console.log("ERROR " + JSON.stringify(error.response.data) )
+                setDeleteError(error.response.data)
+            });
+    }
+
+    const handleRemoveSelf = (email) => {
+
+        const userToProjDto = {
+            projId : project.id,
+            userEmail: email,
+        };
+
+        axios.delete(ApiUrls.removeSelfFromProject,{ data: userToProjDto })
+            .then(response => {
+                if (response !== null) {
+                    setMembers([...response.data])
+                }
+            })
+            .catch(error => {
                 setDeleteError(error.response.data)
             });
     }
@@ -85,7 +93,7 @@ export const ManageAccess = () =>{
         axios.get(ApiUrls.searchUser, { params: { email: email } })
             .then(response => {
                 if (response !== null) {
-                    setUser(response.data)
+                    setselectedUser(response.data)
                 }
             })
             .catch(error => {
@@ -94,7 +102,7 @@ export const ManageAccess = () =>{
     }
     
     const handleClose = () =>{
-        setUser(null)
+        setselectedUser(null)
     }
     
     useEffect(() => {
@@ -103,6 +111,8 @@ export const ManageAccess = () =>{
         const currProj = projectList.find(proj => proj.id === location.query)
         setProject(currProj)
         getMembers(currProj.id)
+        
+        console.log("User " + JSON.stringify(user))
     }, [])
     
     return(
@@ -124,12 +134,12 @@ export const ManageAccess = () =>{
                             <p className="text-danger">{addError}</p>
                             
                                 {
-                                    user ? (
+                                    selectedUser ? (
                                         <div className="user-dropdown shadow-lg">
                                             <div className="shadow user-found-row h-full w-full">
                                                 <div className="d-flex h-50 w-full">
                                                     <div className="w-full h-full d-flex align-items-center">
-                                                        <p className="10 font-size-16">{user.userName}</p>
+                                                        <p className="10 font-size-16">{selectedUser.userName}</p>
                                                         <FaPlusCircle className="text-primary ml-10 " onClick={() => handleAddPeople()} />
                                                     </div>
                                                     <div className="w-full h-full d-flex justify-content-end align-items-center p-2">
@@ -169,11 +179,20 @@ export const ManageAccess = () =>{
                                                 </div>
 
                                                 {
-                                                    member.id !== project.ownerID ? (
-                                                        <div className="d-flex w-full justify-content-end">
-                                                            <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemovePeople(member.email)} />
-                                                        </div>
-                                                    ) 
+                                                    (member.id !== project.ownerID && (user.id === member.id) ) ? (
+                                                            <div className="d-flex w-full justify-content-end">
+                                                                <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemoveSelf(member.email)} />
+                                                            </div>
+                                                    )
+                                                    : null
+                                                }
+
+                                                {
+                                                    (member.id !== project.ownerID && user.id === project.ownerID) ? (
+                                                            <div className="d-flex w-full justify-content-end">
+                                                                <FaTimes className="text-danger m-15"  size={25} onClick={() => handleRemovePeople(member.email)} />
+                                                            </div>
+                                                    )
                                                     : null
                                                 }
                                

@@ -31,7 +31,6 @@ namespace venus.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            
             if(dto.Password != dto.PasswordConfirm)
                 return new ContentResult() { Content = "Password Do Not Match", StatusCode = 403 };
 
@@ -82,7 +81,8 @@ namespace venus.Controllers
             }
 
             await _userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
-
+            
+            
             var jwt = JwtService.Generate(user.Id);
 
         
@@ -115,6 +115,7 @@ namespace venus.Controllers
                     UserName = user.UserName,
                     Email = user.Email,
                     Projects = user.Projects,
+                    id = user.Id
                 };
                 return Ok(userDto);
             }
