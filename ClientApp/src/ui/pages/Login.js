@@ -12,14 +12,23 @@ export const Login = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-       
+        let failed = false
+        
         if(email === ""){
             setEmailError("Email cannot be empty")
+            failed = true
+        }
+        else{
+            setEmailError("");
         }
         if(password === ""){
             setPasswordError("Password cannot be empty")
+            failed = true
         }
         else{
+            setPasswordError("")
+        }
+        if(!failed){
 
             const loginDto = { 
                 email : email, 

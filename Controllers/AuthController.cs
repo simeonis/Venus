@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +22,7 @@ namespace venus.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        
         // POST api/Account/Register
         [AllowAnonymous]
         [HttpPost("register")]
@@ -66,7 +63,7 @@ namespace venus.Controllers
 
             if (await _userManager.CheckPasswordAsync(user, dto.Password) == false)
             {
-                return new ContentResult() { Content = "Bad Password", StatusCode = 403 };
+                return new ContentResult() { Content = "Invalid Password", StatusCode = 403 };
             }
 
             var result = await _signInManager.PasswordSignInAsync(user.UserName, dto.Password, false, true);
