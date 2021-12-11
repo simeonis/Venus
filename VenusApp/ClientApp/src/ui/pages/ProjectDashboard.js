@@ -123,8 +123,8 @@ export const ProjectDashboard = () => {
                 <div className="col-xl-4">
                     <div className="card p-20 h-full d-flex flex-column justify-content-between">
                         <div>
-                            <h3 className="card-title mb-0 text-truncate" style={{ fontSize:"4rem" }}>{project.title}</h3>
-                            <p className="mt-0 text-break" style={{ fontSize: "2rem" }}>{project.description}</p>
+                            <h3 className="card-title mb-0 text-break" style={{ fontSize:"3rem" }}>{project.title}</h3>
+                            <p className="mt-0 text-break">{project.description}</p>
                         </div>
                         <div className="card user m-0 p-10 d-flex justify-content-start">
                             <FaCrown className="m-5" color={'#ffd22a'}/>

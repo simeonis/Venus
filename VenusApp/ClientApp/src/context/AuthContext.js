@@ -99,6 +99,7 @@ export const AuthProvider = ({ children }) => {
                 user,
                 projectList,
                 error,
+                setError
             }}>
             {children}
         </AuthContext.Provider>

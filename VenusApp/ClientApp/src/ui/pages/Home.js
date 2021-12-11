@@ -163,7 +163,7 @@ const Home = () => {
                             <button style={{ zIndex: 1 }} className="center btn btn-square btn-danger rounded-circle mx-5 text-white shadow" onClick={(e) => { e.stopPropagation(); showAlert(project.id, project.title) }} ><FaTrash /></button>
                         </div>
                         <div className="row">
-                            <div className="col-8 p-10">
+                            <div className="col p-10">
                                 <h4 className="font-weight-bold">
                                     <span ref={el => (openFolderRef.current = [...openFolderRef.current, el])} className="folder-open">
                                         < FaFolderOpen className="folder-icon" size={75} />

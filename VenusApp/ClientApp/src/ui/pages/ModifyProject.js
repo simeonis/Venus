@@ -13,6 +13,7 @@ export const ModifyProject = () => {
     const [description, setDescription] = useState("")
     const [color, setColor] = useState(projectColor.Red)
     const [projectId, setProjectId] = useState("")
+    const [ownerId, setOwnerId] = useState("")
 
     const [titleError, setTitleError] = useState("")
     const [descriptionError, setDescriptionError] = useState("")
@@ -49,7 +50,8 @@ export const ModifyProject = () => {
             id: projectId,
             title: title,
             description: description,
-            color: color
+            color: color,
+            ownerId: ownerId,
         }
 
         updateProject(projectDto)
@@ -62,6 +64,7 @@ export const ModifyProject = () => {
         setTitle(project.title)
         setDescription(project.description)
         setColor(project.color)
+        setOwnerId(project.ownerID)
     }, [])
 
     //hook to load projects and set project attributes for editting
