@@ -7673,19 +7673,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DS\\.nuget\\packages\\": {}
+    "C:\\Users\\Shae\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DS\\Source\\Repos\\Venus\\Venus.Tests\\Venus.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\Shae\\Desktop\\Venus\\Venus.Tests\\Venus.Tests.csproj",
       "projectName": "Venus.Tests",
-      "projectPath": "C:\\Users\\DS\\Source\\Repos\\Venus\\Venus.Tests\\Venus.Tests.csproj",
-      "packagesPath": "C:\\Users\\DS\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DS\\Source\\Repos\\Venus\\Venus.Tests\\obj\\",
+      "projectPath": "C:\\Users\\Shae\\Desktop\\Venus\\Venus.Tests\\Venus.Tests.csproj",
+      "packagesPath": "C:\\Users\\Shae\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Shae\\Desktop\\Venus\\Venus.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\DS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Shae\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7699,8 +7699,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\DS\\Source\\Repos\\Venus\\VenusApp\\venus.csproj": {
-              "projectPath": "C:\\Users\\DS\\Source\\Repos\\Venus\\VenusApp\\venus.csproj"
+            "C:\\Users\\Shae\\Desktop\\Venus\\VenusApp\\venus.csproj": {
+              "projectPath": "C:\\Users\\Shae\\Desktop\\Venus\\VenusApp\\venus.csproj"
             }
           }
         }
