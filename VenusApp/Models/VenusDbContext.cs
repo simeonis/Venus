@@ -16,9 +16,9 @@ namespace venus.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VenusDb;MultipleActiveResultSets=True;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VenusDb;MultipleActiveResultSets=True;Trusted_Connection=True",
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery));
             }
-
         }
     }
 }

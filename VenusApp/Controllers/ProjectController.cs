@@ -105,7 +105,7 @@ namespace venus.Controllers
         [HttpPut]
         public ActionResult<Project> Put([FromBody] Project project)
         {
-            var preExistingProj = _projectRepository.GetProject(project.ID);
+            var preExistingProj = _projectRepository.GetProjectNoTrack(project.ID);
 
             if (preExistingProj == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
@@ -116,7 +116,7 @@ namespace venus.Controllers
                 if (userId != null && !IsInProject(preExistingProj, userId.Value))
                 {
                     return new ContentResult() { Content = "Not in Project", StatusCode = 404 };
-                }
+                } 
             }
             catch (Exception e)
             {
@@ -223,15 +223,16 @@ namespace venus.Controllers
         public ActionResult<IEnumerable<ApplicationUser>> GetMembers(string id)
         {
             
-            var guid = Guid.Parse(id);
-            
-            var project = _projectRepository.GetProject(guid);
-            
-            if (project == null)
-                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
 
             try
             {
+                var guid = Guid.Parse(id);
+            
+                var project = _projectRepository.GetProject(guid);
+            
+                if (project == null)
+                    return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+                
                 var userId = GetUserId();
                 if (userId != null && IsInProject(project, userId.Value))
                 {
@@ -260,6 +261,43 @@ namespace venus.Controllers
             {
                 var userId = GetUserId();
                 if (userId != null && !IsProjOwner(project, userId.Value))
+                {
+                    return new ContentResult() { Content = "User Not Owner", StatusCode = 404 };
+                }
+                
+                var user = project.UsersList.Find(u => u.Email == userToProjDto.UserEmail);
+            
+                if (user == null)
+                    return new ContentResult() { Content = "User Not Found", StatusCode = 404 };
+            
+                project.UsersList.Remove(user);
+            
+                _projectRepository.UpdateProject(project);
+            
+                return Ok(project.UsersList);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new ContentResult() { Content = "Token Error", StatusCode = 404 };
+        }
+        
+        [HttpDelete("remove-self")]
+        public async Task<IActionResult> RemoveSelfFromProject([FromBody] UserToProjDto userToProjDto)
+        {
+            var project = _projectRepository.GetProject(userToProjDto.ProjId);
+            
+            if (project == null)
+                return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
+            
+            try
+            {
+                var userId = GetUserId();
+
+                var accessingUser = await _userManager.FindByEmailAsync(userToProjDto.UserEmail);
+                
+                if (userId != null && userId != Guid.Parse(accessingUser.Id))
                 {
                     return new ContentResult() { Content = "User Not Owner", StatusCode = 404 };
                 }

@@ -9,6 +9,7 @@ namespace venus.Models.IRepositories
     {
         IEnumerable<Project> Projects { get; }
         Project GetProject(Guid id);
+        Project GetProjectNoTrack(Guid id);
         IEnumerable<Project> GetProjects(string id);
         Project AddProject(Project project);
         Project UpdateProject(Project project);
