@@ -14,7 +14,8 @@ namespace venus.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VenusDb;MultipleActiveResultSets=True;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VenusDb;MultipleActiveResultSets=True;Trusted_Connection=True", 
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery));
         }
     }
 }

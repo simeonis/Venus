@@ -18,11 +18,17 @@ namespace venus.Models.EFRepositories
         
         public IEnumerable<Project> Projects => dbContext.Projects.Include(p => p.UsersList)
                                                                   .Include(p => p.Bugs);
+        private IEnumerable<Project> ProjectsNoTrack => dbContext.Projects.AsNoTracking().Include(p => p.UsersList)
+                                                                                         .Include(p => p.Bugs);
 
         public Project GetProject(Guid id)
         {
-            Console.WriteLine(id);
             return Projects.FirstOrDefault(p => p.ID == id);
+        }
+
+        public Project GetProjectNoTrack(Guid id)
+        {
+            return ProjectsNoTrack.FirstOrDefault(p => p.ID == id);
         }
 
         public IEnumerable<Project> GetProjects(string id)
@@ -36,7 +42,6 @@ namespace venus.Models.EFRepositories
 
         public Project AddProject(Project project)
         {
-            // project = new Project(project);
             if(!dbContext.Projects.Where(p => p.ID.Equals(project.ID)).Any())
             {
                 var res = dbContext.Projects.Add(project);

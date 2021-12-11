@@ -105,7 +105,7 @@ namespace venus.Controllers
         [HttpPut]
         public ActionResult<Project> Put([FromBody] Project project)
         {
-            var preExistingProj = _projectRepository.GetProject(project.ID);
+            var preExistingProj = _projectRepository.GetProjectNoTrack(project.ID);
 
             if (preExistingProj == null)
                 return new ContentResult() { Content = "Project Not found", StatusCode = 404 };
@@ -116,7 +116,7 @@ namespace venus.Controllers
                 if (userId != null && !IsInProject(preExistingProj, userId.Value))
                 {
                     return new ContentResult() { Content = "Not in Project", StatusCode = 404 };
-                }
+                } 
             }
             catch (Exception e)
             {
