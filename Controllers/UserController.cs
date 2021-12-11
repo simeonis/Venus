@@ -22,17 +22,15 @@ namespace venus.Controllers{
         [HttpGet("search")]
         public async Task<IActionResult> Search(string email)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+          
+            if(email == null)
+                return new ContentResult() { Content = "No email", StatusCode = 404 }; 
 
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
-            {
                 return new ContentResult() { Content = "No User Found", StatusCode = 404 };
-            }
+            
 
             return Ok(user);
         }

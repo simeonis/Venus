@@ -111,10 +111,11 @@ namespace venus.Controllers
                 return BadRequest("Invalid Bug-ID");
             }
             
-            var bug = _bugRepository.GetBug(id.Value);
+        
 
             try
             {
+                var bug = _bugRepository.GetBug(id.Value);
                 var userId = GetUserId();
                 if (userId != null && _projectRepository.IsInProject(bug.ProjectID, userId.Value))
                 {
@@ -169,25 +170,35 @@ namespace venus.Controllers
                 return BadRequest("Invalid Bug-ID");
             }
 
-            var bugExist = _bugRepository.GetBug(id.Value);
+         
 
-            var userId = GetUserId();
-            
-            if (userId != null && !_projectRepository.IsInProject(bugExist.ProjectID, userId.Value))
+            try
             {
-                return new ContentResult() { Content = "User Not In Project", StatusCode = 404 };
-            }
+                var bugExist = _bugRepository.GetBug(id.Value);
+                var userId = GetUserId();
             
-            var bug = (Bug)((OkObjectResult)Get(id).Result).Value;
+                if (userId != null && !_projectRepository.IsInProject(bugExist.ProjectID, userId.Value))
+                {
+                    return new ContentResult() { Content = "User Not In Project", StatusCode = 404 };
+                }
+            
+                var bug = (Bug)((OkObjectResult)Get(id).Result).Value;
                 
-            if (bug == null)
-            {
-                return NotFound();
+                if (bug == null)
+                {
+                    return NotFound();
+                }
+                patch.ApplyTo(bug);
+                
+                _bugRepository.Save();
+                return Ok();
             }
-            patch.ApplyTo(bug);
-            
-            _bugRepository.Save();
-            return Ok();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
         
         private Guid? GetUserId()

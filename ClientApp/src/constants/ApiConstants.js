@@ -8,6 +8,7 @@ export const ApiUrls = {
     getProjectMembers: `${baseUrl}/project/get-members`,
     addUserToProject: `${baseUrl}/project/add-user`,
     removeUserFromProject: `${baseUrl}/project/remove-user`,
+    removeSelfFromProject: `${baseUrl}/project/remove-self`,
     bug: `${baseUrl}/bug`,
     projectBug: `${baseUrl}/bug/project`,
     project: `${baseUrl}/project`,

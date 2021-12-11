@@ -7,5 +7,6 @@ namespace venus.Models
         public string Email { get; set;}
         
         public List<Project> Projects { get; set; }
+        public string id { get; set; }
     }
 }
