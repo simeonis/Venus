@@ -1,4 +1,12 @@
-﻿using System.Collections.Generic;
+﻿// *****************************************
+// Creator: Seth CLimenhaga
+// 
+// Description:
+// Transfers data representing a user back 
+// to the client
+// *****************************************
+
+using System.Collections.Generic;
 namespace venus.Models
 {
     public class UserDto

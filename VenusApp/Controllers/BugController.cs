@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿// *****************************************
+// Creator: Shae Simeoni
+// 
+// Description:
+// Web API Controller that acts as an HTTP end-point.
+// Provides CRUD operations that are applied to the database.
+// *****************************************
+
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,14 +15,19 @@ using venus.Models;
 using venus.Models.IRepositories;
 using venus.Helpers;
 
-
 namespace venus.Controllers
 {
     [ApiController]
     [Route("api/bug")]
     public class BugController : Controller
     {
+        /// <summary>
+        /// Injected reference to the bug repository
+        /// </summary>
         private readonly IBugRepository _bugRepository;
+        /// <summary>
+        /// Injected reference to the project repository
+        /// </summary>
         private readonly IProjectRepository _projectRepository;
         
         public BugController(IBugRepository repository, IProjectRepository projectRepository)
@@ -23,6 +36,11 @@ namespace venus.Controllers
             _projectRepository = projectRepository;
         }
 
+        /// <summary>
+        /// GET HTTP Request
+        /// </summary>
+        /// <param name="id">The bug's unique identifier</param>
+        /// <returns>The bug specified by the ID</returns>
         [HttpGet("{id}")]
         public ActionResult<Bug> Get(Guid? id)
         {
@@ -50,6 +68,11 @@ namespace venus.Controllers
                 
         }
 
+        /// <summary>
+        /// GET HTTP Request
+        /// </summary>
+        /// <param name="id">The project's unique identifier</param>
+        /// <returns>All bugs inside the project specified by the ID</returns>
         [HttpGet("project/{id}")]
         public ActionResult<Bug> GetProjectBugs(Guid? id)
         {
@@ -75,12 +98,21 @@ namespace venus.Controllers
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
+        /// <summary>
+        /// GET HTTP Request
+        /// </summary>
+        /// <returns>All bugs in the database</returns>
         [HttpGet]
         public ActionResult<Bug> Get()
         {
             return Ok(_bugRepository.GetBugs());
         }
 
+        /// <summary>
+        /// POST HTTP Request
+        /// </summary>
+        /// <param name="bugPost">Contains the bug information sent by a client</param>
+        /// <returns>Status code 200 if successful, otherwise error status code</returns>
         [HttpPost]
         public ActionResult<Bug> Post([FromBody] BugDto bugPost)
         {
@@ -102,7 +134,11 @@ namespace venus.Controllers
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
-
+        /// <summary>
+        /// DELETE HTTP Request
+        /// </summary>
+        /// <param name="id">The bug's unique identifier</param>
+        /// <returns>Status code 200 if successful, otherwise error status code</returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid? id)
         {
@@ -110,8 +146,6 @@ namespace venus.Controllers
             {
                 return BadRequest("Invalid Bug-ID");
             }
-            
-        
 
             try
             {
@@ -134,6 +168,11 @@ namespace venus.Controllers
             
         }
 
+        /// <summary>
+        /// DELETE HTTP Request
+        /// </summary>
+        /// <param name="bugs">The list of bugs to be deleted</param>
+        /// <returns>Status code 200 if successful, otherwise error status code</returns>
         [HttpDelete]
         public IActionResult Delete([FromBody] IEnumerable<Bug> bugs)
         {
@@ -161,16 +200,19 @@ namespace venus.Controllers
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
+        /// <summary>
+        /// PATCH HTTP Request
+        /// </summary>
+        /// <param name="id">The bug's unique identifier</param>
+        /// <param name="patch">The updated bug information inside a PatchDocument</param>
+        /// <returns>Status code 200 if successful, otherwise error status code</returns>
         [HttpPatch("{id}")]
         public IActionResult Patch(Guid? id, [FromBody] JsonPatchDocument<Bug> patch)
         {
-            
             if (id == null)
             {
                 return BadRequest("Invalid Bug-ID");
             }
-
-         
 
             try
             {

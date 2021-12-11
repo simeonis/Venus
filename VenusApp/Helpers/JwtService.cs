@@ -1,4 +1,12 @@
-﻿using System;
+﻿// *****************************************
+// Creator: Seth CLimenhaga
+// 
+// Description:
+// Helper methods for encoding and veryifying  
+// jwt tokens
+// *****************************************
+
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +17,11 @@ namespace venus.Helpers
     {
         private const string SecureKey = "this is a very secure key";
 
+        /// <summary>
+        /// static method that generates a user 
+        /// </summary>
+        /// <param name="id">id for a user to encode</param>
+        /// <returns>A jwt token</returns>
         public static string Generate(string id)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecureKey));
@@ -20,6 +33,11 @@ namespace venus.Helpers
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
         
+        /// <summary>
+        /// static method that verifies 
+        /// </summary>
+        /// <param name="jwt">A token to verify</param>
+        /// <returns>A validated token</returns>
         public static JwtSecurityToken Verify(string jwt)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -1,3 +1,10 @@
+// *****************************************
+// Creator: Seth CLimenhaga
+// 
+// Description:
+// Transfer data from client to register
+// *****************************************
+
 namespace venus.Models
 {
     public class RegisterDto

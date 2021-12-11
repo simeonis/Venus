@@ -1,3 +1,10 @@
+// *****************************************
+// Creator: Seth CLimenhaga
+// 
+// Description:
+// Configures and sets up the database
+// *****************************************
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -12,6 +19,7 @@ namespace venus.Models
         public DbSet<Bug> Bugs { get; set; }
         public DbSet<Project> Projects { get; set; }
 
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

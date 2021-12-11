@@ -17,13 +17,18 @@ namespace venus.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
         
-        // POST api/Account/Register
+        /// <summary>
+        /// Post endpoint to register for the application 
+        /// </summary>
+        /// <param name="RegisterDto">Register Dto with all the fields: ie username, email, password etc</param>
+        /// <returns>Returns 200 ok or an error msg and status code</returns>
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
@@ -43,7 +48,11 @@ namespace venus.Controllers
             return Ok();
         }
 
-        // POST api/Account/Register
+        /// <summary>
+        /// Post endpoint to login to the application  
+        /// </summary>
+        /// <param name="LoginDto">Register Dto with all the fields: ie email, and password</param>
+        /// <returns>Returns 200 ok or an error msg and status code</returns>
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
@@ -92,7 +101,10 @@ namespace venus.Controllers
             return Ok(new { message="success" });
         }
 
-
+        /// <summary>
+        /// Endpoint to fetch a current user for a given client
+        /// </summary>
+        /// <returns>Returns 200 ok with user or an error msg and status code</returns>
         [HttpPost("user")]
         public async Task<IActionResult> GetUser()
         {
@@ -125,6 +137,11 @@ namespace venus.Controllers
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
         
+
+        /// <summary>
+        /// Post endpoint to logout
+        /// </summary>
+        /// <returns>Returns 200 ok</returns>
         [HttpPost("logout")]
         public async Task<IActionResult> LogOut()
         {

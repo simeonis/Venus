@@ -1,4 +1,13 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿// *****************************************
+// Creator: Shane Guther
+// 
+// Description:
+// The project API controller to get data from the database for use in the client side
+// and send data to the database from the client side of the app
+// *****************************************
+
+
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,6 +33,10 @@ namespace venus.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Get all projects from the database with HttpGet
+        /// </summary>
+        /// <returns>Action result with the user's projects or returns an error</returns>
         [HttpGet("get-all")]
         public ActionResult<Project> GetAll()
         {
@@ -42,6 +55,11 @@ namespace venus.Controllers
             
         }
 
+        /// <summary>
+        /// Retrieves a project from the database based on the id provided with HttpGet
+        /// </summary>
+        /// <param name="projectID">The project ID of the desired project</param>
+        /// <returns>An action result with the project that matches the project ID or an error</returns>
         [HttpGet("{id}")]
         public ActionResult<Project> Get(Guid id)
         {
@@ -71,6 +89,11 @@ namespace venus.Controllers
             return new ContentResult() { Content = "Error Occurred", StatusCode = 403 };
         }
 
+        /// <summary>
+        /// Adds a project to the database based on the user with HttpPost
+        /// </summary>
+        /// <param name="projectDto">A project Dto to be converted into a project in order to get a Guid</param>
+        /// <returns>An action result based on project or error/returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProjectDto projectDto)
         {
@@ -101,6 +124,11 @@ namespace venus.Controllers
             
             return new ContentResult() { Content = "Token Error", StatusCode = 403 };
         }
+        /// <summary>
+        /// Updates a project entered with HttpPut
+        /// </summary>
+        /// <param name="project">The project to be updated</param>
+        /// <returns>An action result with the updated project or an error</returns>
 
         [HttpPut]
         public ActionResult<Project> Put([FromBody] Project project)
@@ -116,7 +144,7 @@ namespace venus.Controllers
                 if (userId != null && !IsInProject(preExistingProj, userId.Value))
                 {
                     return new ContentResult() { Content = "Not in Project", StatusCode = 404 };
-                } 
+                }
             }
             catch (Exception e)
             {
@@ -128,6 +156,11 @@ namespace venus.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes a project based on the project ID provided with HttpDelete
+        /// </summary>
+        /// <param name="projectID">The project ID of the project to be deleted</param>
+        /// <returns>An action result based or error</returns>        }
         [HttpDelete("{id}")]
         public ActionResult Delete(Guid id) {
 
@@ -154,14 +187,19 @@ namespace venus.Controllers
             }
 
             return new ContentResult() { Content = "Token Error", StatusCode = 404 };
-
         }
 
+        /// <summary>
+        /// Patches a project with HttpPatch
+        /// </summary>
+        /// <param name="projectID">The project ID of the desired project</param>
+        /// <param name="JsonPatchDocumentOfProject">The project to be updated via patch</param>
+        /// <returns>A status code result or error</returns>
         [HttpPatch("{id}")]
         public StatusCodeResult Patch(Guid id, [FromBody] JsonPatchDocument<Project> patch)
         {
             var project = (Project)((OkObjectResult)Get(id).Result).Value;
-            
+
             if (project == null)
                 return NotFound();
 
@@ -183,6 +221,11 @@ namespace venus.Controllers
             return new NotFoundResult();
         }
 
+        /// <summary>
+        /// Patches a project with HttpPatch
+        /// </summary>
+        /// <param name="userToProjDto">A user to project data transfer object to add a user to a project</param>
+        /// <returns>A status code result or error</returns>
         [HttpPost("add-user")]
         public async Task<IActionResult> AddUserToProject([FromBody] UserToProjDto userToProjDto)
         {
@@ -217,13 +260,16 @@ namespace venus.Controllers
                 Console.WriteLine(e);
             }
             return new ContentResult() { Content = "Token Error", StatusCode = 404 };
-        }   
+        }
 
+        /// <summary>
+        /// Gets the members of a project
+        /// </summary>
+        /// <param name="ProjectID">The project id of the project to get the members from</param>
+        /// <returns>A list of users from the project or error</returns>
         [HttpGet("get-members")]
         public ActionResult<IEnumerable<ApplicationUser>> GetMembers(string id)
         {
-            
-
             try
             {
                 var guid = Guid.Parse(id);
@@ -246,9 +292,15 @@ namespace venus.Controllers
             {
                 Console.WriteLine(e);
             }
+
             return new ContentResult() { Content = "Token Error", StatusCode = 404 };
         }
         
+        /// <summary>
+        /// Removes a user from a project
+        /// </summary>
+        /// <param name="UsertoProjectDto">A user to project data transfer object of the user and the projec</param>
+        /// <returns>Returns the list of remaining application users</returns>    
         [HttpDelete("remove-user")]
         public ActionResult<List<ApplicationUser>> RemoveUserFromProject([FromBody] UserToProjDto userToProjDto)
         {
@@ -320,6 +372,13 @@ namespace venus.Controllers
             return new ContentResult() { Content = "Token Error", StatusCode = 404 };
         }
 
+        /// <author>
+        /// Created by Seth Climenhaga
+        ///</author>
+        /// <summary>
+        /// Gets the id of a user
+        /// </summary>
+        /// <returns>The guid of a user based on jwt token</returns>
         private Guid? GetUserId()
         {
             try
@@ -330,12 +389,11 @@ namespace venus.Controllers
 
                 return Guid.Parse(userId);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) 
+            { 
                 Console.WriteLine(e);
+                return null;
             }
-
-            return null;
         }
 
         private static bool IsProjOwner(Project project,Guid userId)
@@ -347,13 +405,11 @@ namespace venus.Controllers
                     return true;
                 }
             }
-            catch(Exception e)
-            {
+            catch(Exception e) { 
                 Console.WriteLine(e);
             }
-            
-            return false;
 
+            return false;
         }
         
         private bool IsInProject(Project project,Guid userId)

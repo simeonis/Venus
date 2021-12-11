@@ -19,6 +19,11 @@ namespace venus.Controllers{
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Search endpoint  (Get) 
+        /// </summary>
+        /// <param name="email">A email address</param>
+        /// <returns>Returns a found user, or error</returns>
         [HttpGet("search")]
         public async Task<IActionResult> Search(string email)
         {
@@ -35,6 +40,11 @@ namespace venus.Controllers{
             return Ok(user);
         }
 
+        /// <summary>
+        /// Get a username by id 
+        /// </summary>
+        /// <param name="id">A guid for a user</param>
+        /// <returns>Returns a 200 with username or error</returns>
         [HttpGet("username/{id}")]
         public async Task<IActionResult> Get(Guid? id)
         {
