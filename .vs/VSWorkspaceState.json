@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\VenusApp"
   ],
-  "SelectedNode": "\\venus.sln (VenusApp\\venus.sln)",
+  "SelectedNode": "\\venus.sln",
   "PreviewInSolutionExplorer": false
 }

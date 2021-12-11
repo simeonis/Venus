@@ -8,7 +8,7 @@ export const Login = () => {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
-    const { login, error } = useContext(AuthContext);
+    const { login, error, setError } = useContext(AuthContext);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -23,6 +23,7 @@ export const Login = () => {
         }
         if(password === ""){
             setPasswordError("Password cannot be empty")
+            setError("")
             failed = true
         }
         else{
@@ -30,6 +31,7 @@ export const Login = () => {
         }
         if(!failed){
 
+            setError("")
             const loginDto = { 
                 email : email, 
                 password: password,
@@ -43,9 +45,6 @@ export const Login = () => {
       <div className="container d-flex flex-column align-items-center">
             <h1>Login</h1>
             <form className="w-400 mw-full">
-                {
-                    error ? <p className="text-danger">{error.data}</p> : null
-                }
                 {/* <!-- Input --> */}
                 <div className="form-group">
                     <label htmlFor="email" className="required">Email</label>
@@ -57,6 +56,9 @@ export const Login = () => {
                     <label htmlFor="password" className="required">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" required="required" onChange={(e) => setPassword(e.target.value)} />
                     <p className="text-danger">{passwordError}</p>
+                    {
+                        error ? <p className="text-danger">{error.data}</p> : null
+                    }
                 </div>
                 
                 {/* <!-- Submit button --> */}

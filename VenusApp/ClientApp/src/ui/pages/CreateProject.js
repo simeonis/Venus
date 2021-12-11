@@ -45,6 +45,7 @@ export const CreateProject = () => {
             description: description,
             color: color,
         }
+
         addProject(project)
     }
 
