@@ -1,1 +1,6 @@
 .vs/
+/Venus.Tests/bin/Debug/net5.0/CoverletSourceRootsMapping
+/Venus.Tests/obj/Debug/net5.0/*.cache
+/Venus.Tests/obj/Debug/net5.0/*.editorconfig
+/Venus.Tests/obj/*.json
+/Venus.Tests/obj/*.cache
