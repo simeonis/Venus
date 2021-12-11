@@ -7,7 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "venus", "venus.csproj", "{F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Venus.Tests", "..\Venus.Tests\Venus.Tests.csproj", "{4189EA4B-6358-42F5-A9D7-65EEA80FF9A5}"
 EndProject
-
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +17,10 @@ Global
 		{FB1D3ECA-003D-485B-AC19-F66EFE47FEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1D3ECA-003D-485B-AC19-F66EFE47FEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB1D3ECA-003D-485B-AC19-F66EFE47FEF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4189EA4B-6358-42F5-A9D7-65EEA80FF9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4189EA4B-6358-42F5-A9D7-65EEA80FF9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4189EA4B-6358-42F5-A9D7-65EEA80FF9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4189EA4B-6358-42F5-A9D7-65EEA80FF9A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
